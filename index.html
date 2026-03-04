@@ -242,10 +242,27 @@
       80%  { transform: translate(.5px, -1px) rotate(.2deg); }
       100% { transform: translate(0,0) rotate(0deg); }
     }
+    @keyframes buzz-hard {
+      0%   { transform: translate(0,0) rotate(0deg); }
+      10%  { transform: translate(-2px, 1px) rotate(-.4deg); }
+      20%  { transform: translate(2px, -1px) rotate(.4deg); }
+      30%  { transform: translate(-1.5px, 2px) rotate(-.35deg); }
+      40%  { transform: translate(1.5px, -2px) rotate(.35deg); }
+      50%  { transform: translate(-2px, 1px) rotate(-.3deg); }
+      60%  { transform: translate(2px, -1px) rotate(.3deg); }
+      70%  { transform: translate(-1px, 1.5px) rotate(-.2deg); }
+      80%  { transform: translate(1px, -1.5px) rotate(.2deg); }
+      90%  { transform: translate(-1px, 0.5px) rotate(-.1deg); }
+      100% { transform: translate(0,0) rotate(0deg); }
+    }
     .hero h1 em {
       display: inline-block;
       animation: buzz 0.35s ease-in-out infinite;
       animation-play-state: running; will-change: transform;
+      cursor: default;
+    }
+    .hero h1 em:hover {
+      animation: buzz-hard 0.2s ease-in-out infinite;
     }
 
     .hero-line { overflow: hidden; line-height: 1.1; }
@@ -694,11 +711,10 @@
 
     footer p { font-size: 0.78rem; color: var(--text-muted); }
 
-    .footer-brand { display: flex; align-items: center; gap: 0.6rem; text-decoration: none; color: var(--text); }
-    .footer-brand img { height: 36px; width: auto; border-radius: 0; }
-    @media (min-width: 768px) { .footer-brand img { height: 46px; } }
-    .footer-brand span { font-family: 'Libre Baskerville', serif; font-size: 1.3rem; }
-    @media (min-width: 768px) { .footer-brand span { font-size: 1.5rem; } }
+    .contact-title-row { display: flex; align-items: center; gap: 1.25rem; }
+    .contact-title-row .section-title { margin-bottom: 0; }
+    .contact-logo { height: 44px; width: auto; flex-shrink: 0; }
+    @media (min-width: 768px) { .contact-logo { height: 56px; } }
 
     /* ═══ ANIMATIONS ═══ */
     @keyframes fadeUp { from { opacity:0; transform:translateY(30px); } to { opacity:1; transform:translateY(0); } }
@@ -942,7 +958,10 @@
   <section class="contact" id="contact">
     <div class="reveal">
       <span class="section-label">Contact</span>
-      <h2 class="section-title">Neem contact op</h2>
+      <div class="contact-title-row">
+        <h2 class="section-title">Neem contact op</h2>
+        <img src="assets/footer-logo.png" alt="Kust & Kade logo" class="contact-logo">
+      </div>
       <div class="section-divider">
         <svg viewBox="0 0 50 16" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M0 8 C8 -4, 16 20, 25 8 C34 -4, 42 20, 50 8" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" fill="none"/>
@@ -989,10 +1008,6 @@
 
   <!-- FOOTER -->
   <footer>
-    <a href="#" class="footer-brand">
-      <img src="assets/footer-logo.png" alt="Kust & Kade">
-      <span>Kust & Kade</span>
-    </a>
     <p>&copy; 2026 Kust & Kade. Alle rechten voorbehouden.</p>
   </footer>
 
