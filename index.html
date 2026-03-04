@@ -192,11 +192,11 @@
     /* ═══ HERO ═══ */
     .hero {
       min-height: 100svh;
-      display: flex; flex-direction: column; justify-content: flex-end;
+      display: flex; flex-direction: column; justify-content: center;
       padding: 5rem var(--px) 3.5rem;
       position: relative; background: var(--dark); overflow: hidden;
     }
-    @media (min-width: 768px) { .hero { min-height: 85vh; padding: 6rem var(--px-md) 5rem; } }
+    @media (min-width: 768px) { .hero { min-height: 85vh; justify-content: flex-end; padding: 6rem var(--px-md) 5rem; } }
 
     .hero-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; }
 
