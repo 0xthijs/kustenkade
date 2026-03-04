@@ -1,0 +1,1667 @@
+﻿<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kust & Kade — HR & AI Consultancy</title>
+  <meta name="description"
+    content="Kust & Kade helpt HR-professionals om AI werkend te krijgen in hun organisatie. Workshops, sparring en maatwerk.">
+  <meta property="og:title" content="Kust & Kade — HR & AI Consultancy">
+  <meta property="og:description" content="Van buzzword naar werkwoord. AI-workshops voor HR-professionals.">
+  <meta property="og:image" content="assets/og-image.jpg">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap"
+    rel="stylesheet">
+  <style>
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #F5F3EC;
+      --bg-alt: #EDEAE2;
+      --bg-warm: #F0EDE4;
+      --text: #2E3128;
+      --text-muted: #5C5F56;
+      --accent: #2C5F6E;
+      --accent-light: #3A7A8C;
+      --accent-glow: #4A9AAE;
+      --accent-deep: #1E4552;
+      --border: #D4D0C8;
+      --card-bg: #FDFCF9;
+      --dark: #2E3128;
+      --dark-warm: #363930;
+      --sand: #C8BFA8;
+      --foam: rgba(255,255,255,0.6);
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    @media (min-width: 768px) {
+      body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 9999;
+        opacity: 0.025;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+        background-size: 256px 256px;
+      }
+    }
+
+    /* Accessibility focus states */
+    a:focus-visible,
+    button:focus-visible,
+    input:focus-visible,
+    textarea:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 4px;
+      border-radius: 2px;
+    }
+
+    /* ══════════ NAV ══════════ */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 100;
+      padding: 1.25rem 4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: transparent;
+      border-bottom: 1px solid transparent;
+      transition: background 0.4s, padding 0.4s, backdrop-filter 0.4s;
+    }
+
+    nav.scrolled {
+      padding: 1rem 4rem;
+      background: rgba(200, 191, 168, 0.9); /* sand-colored bg */
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+    }
+
+    nav::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+
+    nav.scrolled::after {
+      opacity: 1;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      text-decoration: none;
+      color: #FFF; /* white text on dark hero */
+      transition: color 0.4s;
+    }
+
+    nav.scrolled .nav-brand {
+      color: var(--text);
+    }
+
+    .nav-brand img {
+      height: 52px; /* slimmed down from 86px */
+      width: auto;
+      border-radius: 6px;
+      transition: height 0.4s;
+    }
+
+    nav.scrolled .nav-brand img {
+      height: 42px; /* shrink further on scroll */
+    }
+
+    .nav-brand-text {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 1.8rem;
+      letter-spacing: 0.01em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: rgba(255,255,255,0.8);
+      font-size: 0.82rem;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      position: relative;
+      transition: color 0.3s;
+    }
+
+    nav.scrolled .nav-links a {
+      color: var(--text-muted);
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 1.5px;
+      background: var(--accent);
+      transition: width 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: #FFF;
+    }
+    
+    nav.scrolled .nav-links a:hover {
+      color: var(--text);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    /* ══════════ HERO ══════════ */
+    .hero {
+      min-height: 85vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 6rem 4rem 5rem;
+      position: relative;
+      background: var(--dark);
+      overflow: hidden;
+    }
+
+    .hero-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+    
+    .hero-gradient-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      background: linear-gradient(180deg, rgba(46,49,40,0.3) 0%, transparent 40%, transparent 55%, rgba(46,49,40,0.4) 80%, rgba(46,49,40,0.85) 100%);
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 10;
+      max-width: 850px;
+    }
+
+    .hero-label-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards;
+    }
+
+    .hero-label-line {
+      width: 1.5rem;
+      height: 1px;
+      background: var(--accent-light);
+    }
+
+    .hero-label {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent-light);
+    }
+
+    .hero h1 {
+      font-family: 'Libre Baskerville', serif;
+      font-size: clamp(3rem, 7vw, 6.5rem);
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      font-weight: 400;
+      color: #FFF;
+      margin-bottom: 3.5rem;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--accent-glow);
+    }
+    
+    .hero-line {
+      overflow: hidden;
+      line-height: 1.1;
+    }
+    
+    .hero-line-inner {
+      display: block;
+      transform: translateY(110%);
+    }
+    
+    .line-1-anim {
+      animation: splitLineReveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+    }
+    
+    .line-2-anim {
+      animation: splitLineReveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.45s forwards;
+    }
+
+    .hero-sub {
+      font-size: 1.1rem;
+      color: rgba(245,243,236,0.6);
+      max-width: 520px;
+      line-height: 1.8;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.9s forwards;
+    }
+
+    .hero-cta-group {
+      display: flex;
+      gap: 1.25rem;
+      margin-top: 3rem;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 1.05s forwards;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.65rem;
+      text-decoration: none;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 1rem 2.2rem;
+      transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+      cursor: pointer;
+      border: none;
+      border-radius: 2px;
+    }
+
+    .btn svg {
+      width: 14px;
+      height: 14px;
+      transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+      flex-shrink: 0;
+    }
+
+    .btn:hover svg {
+      transform: translateX(5px);
+    }
+
+    /* ── Primary Button ── */
+    .btn-primary {
+      background: var(--accent);
+      color: #FFF;
+      border: 1.5px solid var(--accent);
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.08) 50%, transparent 70%);
+      transition: left 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: -1;
+    }
+
+    .btn-primary::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--accent-light);
+      transform: scaleX(0) skewX(-8deg);
+      transform-origin: left;
+      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: -1;
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 8px 28px rgba(44, 95, 110, 0.45), 0 2px 8px rgba(44, 95, 110, 0.2);
+      transform: translateY(-1px);
+      border-color: var(--accent-light);
+    }
+
+    .btn-primary:hover::before { left: 100%; }
+    .btn-primary:hover::after { transform: scaleX(1) skewX(-8deg); }
+
+    .btn-primary:active {
+      transform: translateY(0);
+      box-shadow: 0 4px 12px rgba(44, 95, 110, 0.3);
+    }
+
+    /* ── Outline Button ── */
+    .btn-outline {
+      background: transparent;
+      color: rgba(255,255,255,0.85);
+      border: 1px solid rgba(255,255,255,0.25);
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .btn-outline::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(255,255,255,0.06);
+      transform: translateY(100%);
+      transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: -1;
+    }
+
+    .btn-outline:hover {
+      color: #FFF;
+      border-color: rgba(255,255,255,0.6);
+    }
+
+    .btn-outline:hover::before {
+      transform: translateY(0);
+    }
+    
+    .scroll-indicator {
+      position: absolute;
+      bottom: 4rem;
+      right: 4rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      z-index: 10;
+      opacity: 0;
+      animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 1.2s forwards;
+    }
+    
+    .scroll-text {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: rgba(255,255,255,0.5);
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+    }
+    
+    .scroll-line {
+      width: 1px;
+      height: 60px;
+      background: rgba(255,255,255,0.15);
+      position: relative;
+    }
+    
+    .scroll-dot {
+      position: absolute;
+      top: 0;
+      left: -2px;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--accent-light);
+      animation: scrollPulse 2s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+    }
+
+    /* ══════════ FACTS BAR ══════════ */
+    .facts-bar {
+      background: var(--dark);
+      position: relative;
+      overflow: hidden;
+      padding: 3rem 4rem;
+    }
+
+    .facts-bar::before {
+      content: '';
+      position: absolute;
+      bottom: 0; left: -50%;
+      width: 200%;
+      height: 60px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 60' preserveAspectRatio='none'%3E%3Cpath d='M0,30 C150,10 300,50 450,30 C600,10 750,50 900,30 C1050,10 1150,45 1200,30 L1200,60 L0,60 Z' fill='rgba(44,95,110,0.15)'/%3E%3C/svg%3E");
+      background-size: 50% 100%;
+      background-repeat: repeat-x;
+      animation: waveScroll 12s linear infinite;
+      pointer-events: none;
+    }
+
+    .facts-bar::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: -50%;
+      width: 200%;
+      height: 35px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 40' preserveAspectRatio='none'%3E%3Cpath d='M0,20 C200,5 400,35 600,20 C800,5 1000,35 1200,20 L1200,40 L0,40 Z' fill='rgba(58,122,140,0.1)'/%3E%3C/svg%3E");
+      background-size: 50% 100%;
+      background-repeat: repeat-x;
+      animation: waveScroll 8s linear infinite reverse;
+      pointer-events: none;
+    }
+
+    .facts-bar-inner {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.25rem;
+      position: relative;
+      z-index: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .fact-item {
+      padding: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      position: relative;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 6px;
+      overflow: hidden;
+      transition: background 0.4s ease, border-color 0.4s ease, transform 0.4s cubic-bezier(0.16,1,0.3,1);
+    }
+
+    .fact-item::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent-glow), var(--accent-light));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.55s cubic-bezier(0.16,1,0.3,1);
+      z-index: 2;
+    }
+
+    .fact-item::after { display: none; }
+
+    .fact-item:hover {
+      background: rgba(255,255,255,0.07);
+      border-color: rgba(255,255,255,0.12);
+      transform: translateY(-3px);
+    }
+
+    .fact-item:hover::before {
+      transform: scaleX(1);
+    }
+
+    .fact-item-icon {
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(74, 154, 174, 0.12);
+      border-radius: 50%;
+      color: var(--accent-glow);
+      flex-shrink: 0;
+      transition: background 0.4s ease, transform 0.4s cubic-bezier(0.16,1,0.3,1);
+    }
+
+    .fact-item:hover .fact-item-icon {
+      background: rgba(74, 154, 174, 0.22);
+      transform: scale(1.08);
+    }
+
+    .fact-item-icon svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .fact-value-wrapper {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 1.2rem;
+      color: var(--card-bg);
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      line-height: 1.25;
+      display: flex;
+      align-items: center;
+      gap: 0.2rem;
+    }
+
+    .fact-label {
+      font-size: 0.68rem;
+      color: rgba(245,243,236,0.42);
+      font-weight: 400;
+      line-height: 1.4;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    
+    .fact-item.counted .fact-label {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ══════════ WAVE SEPARATORS ══════════ */
+    .wave-separator {
+      width: 100%;
+      line-height: 0;
+      overflow: hidden;
+      margin-top: -1px;
+    }
+
+    .wave-separator svg {
+      display: block;
+      width: 100%;
+      height: 60px; /* modified to 60px */
+    }
+
+    .wave-separator-dark {
+      background: var(--dark);
+    }
+
+    .wave-separator-bg-alt {
+      background: var(--bg-alt);
+    }
+
+    /* ══════════ SECTION BASICS ══════════ */
+    section { padding: 7rem 4rem; }
+
+    .section-label {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+    }
+
+    .section-title {
+      font-family: 'Libre Baskerville', serif;
+      font-size: clamp(1.8rem, 3.5vw, 3rem);
+      font-weight: 400;
+      letter-spacing: -0.015em;
+      line-height: 1.2;
+      margin-bottom: 1.5rem;
+    }
+
+    .section-divider {
+      width: 50px;
+      margin-bottom: 3rem;
+    }
+
+    .section-divider svg { display: block; width: 100%; height: auto; }
+
+    /* ══════════ ABOUT ══════════ */
+    .about {
+      background: var(--bg-alt);
+      position: relative;
+    }
+
+    .about-inner {
+      display: grid;
+      grid-template-columns: 0.65fr 1fr;
+      gap: 0;
+      margin-top: 3rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .about-lead {
+      padding: 3rem 4rem 3rem 0;
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 0.9rem;
+    }
+
+    .about-lead-quote {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 1rem;
+      font-weight: 400;
+      line-height: 1.8;
+      color: var(--text);
+      letter-spacing: -0.005em;
+    }
+
+    .about-lead-quote em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .about-lead-sub {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 1rem;
+      font-style: italic;
+      color: var(--text-muted);
+      line-height: 1.8;
+    }
+
+    /* Right col: three principles stacked */
+    .about-principles {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .principle-item {
+      padding: 1.6rem 0 1.6rem 3.5rem;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+      cursor: default;
+      transition: padding-left 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .principle-item:last-child { border-bottom: none; }
+
+    .principle-item::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 0;
+      background: linear-gradient(90deg, rgba(44,95,110,0.07), transparent);
+      transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .principle-item:hover { padding-left: 4rem; }
+    .principle-item:hover::before { width: 100%; }
+
+    .principle-index {
+      position: absolute;
+      left: 0;
+      top: 1.6rem;
+      font-family: 'Libre Baskerville', serif;
+      font-size: 0.62rem;
+      letter-spacing: 0.15em;
+      color: var(--accent);
+      opacity: 0.55;
+      transition: opacity 0.3s;
+    }
+
+    .principle-item:hover .principle-index { opacity: 1; }
+
+    .principle-content h4 {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 1rem;
+      font-weight: 400;
+      color: var(--text);
+      line-height: 1.4;
+      margin-bottom: 0.3rem;
+      transition: color 0.3s;
+    }
+
+    .principle-item:hover .principle-content h4 { color: var(--accent); }
+
+    .principle-content p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin: 0;
+    }
+
+    /* ══════════ SERVICES ══════════ */
+    .services-dark {
+      background: var(--dark);
+      color: #FFF;
+    }
+
+    .services-dark .section-label { color: var(--accent-light); }
+    .services-dark .section-title { color: #FFF; }
+    .services-dark .section-divider svg path { stroke: var(--accent-light); }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.75rem;
+      margin-top: 2.5rem;
+      align-items: stretch;
+    }
+
+    .service-card {
+      background: rgba(255, 255, 255, 0.04);
+      padding: 2.5rem 2rem 0;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 6px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    
+    .service-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 2px;
+      background: linear-gradient(90deg, var(--accent-glow), var(--accent-light));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 2;
+    }
+
+    .service-card::after {
+      content: '';
+      position: absolute;
+      left: 0; bottom: -10px; width: 200%; height: 40px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M0,40 C150,80 350,0 600,40 C850,80 1050,0 1200,40 L1200,120 L0,120 Z' fill='%23F5F3EC'/%3E%3C/svg%3E");
+      background-size: 50% 100%;
+      background-repeat: repeat-x;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .service-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 16px 40px rgba(74, 154, 174, 0.18), inset 0 0 0 1px rgba(74,154,174,0.2);
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .service-card:hover::before { transform: scaleX(1); }
+
+    .service-card:hover::after {
+      opacity: 0.15;
+      transform: translateY(0);
+      animation: waveAction 5s infinite linear;
+    }
+
+    .service-card>* { position: relative; z-index: 1; }
+
+    .service-icon-wrap {
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(74, 154, 174, 0.1);
+      border-radius: 50%;
+      margin-bottom: 1.5rem;
+      transition: background 0.4s ease, transform 0.4s cubic-bezier(0.16,1,0.3,1);
+      flex-shrink: 0;
+    }
+
+    .service-card:hover .service-icon-wrap {
+      background: rgba(74, 154, 174, 0.2);
+      transform: scale(1.08);
+    }
+
+    .service-icon {
+      width: 26px; height: 26px;
+      color: var(--accent-glow);
+      display: block;
+    }
+
+    .service-card h3 {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 1.3rem;
+      font-weight: 400;
+      margin-bottom: 0.5rem;
+      color: #FFF;
+    }
+
+    .service-card-meta {
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent-glow);
+      margin-bottom: 1rem;
+      opacity: 0.8;
+    }
+
+    .service-card p {
+      color: rgba(245, 243, 236, 0.65);
+      font-size: 0.92rem;
+      line-height: 1.75;
+      flex-grow: 1;
+    }
+
+    .service-cta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.6rem;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #FFF;
+      text-decoration: none;
+      padding: 1.1rem 2rem;
+      margin-top: 2rem;
+      margin-left: -2rem;
+      margin-right: -2rem;
+      background: rgba(44, 95, 110, 0.25);
+      border-top: 1px solid rgba(255,255,255,0.08);
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 1;
+    }
+
+    .service-cta::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--accent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: -1;
+    }
+
+    .service-cta:hover::before { transform: scaleX(1); }
+
+    .service-cta:hover {
+      border-top-color: transparent;
+      letter-spacing: 0.1em;
+    }
+
+    .service-cta svg { width: 14px; height: 14px; transition: transform 0.4s cubic-bezier(0.16,1,0.3,1); flex-shrink: 0; }
+    .service-cta:hover svg { transform: translateX(5px); }
+
+    /* ══════════ CONTACT ══════════ */
+    .contact {
+      background: var(--bg-alt);
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+      margin-top: 1rem;
+      align-items: start;
+      max-width: 760px;
+    }
+
+    .contact-info p {
+      color: var(--text-muted);
+      font-size: 1.02rem;
+      margin-bottom: 2.5rem;
+      line-height: 1.8;
+    }
+
+    .contact-details { display: flex; flex-direction: column; gap: 0; }
+
+    .contact-item {
+      padding: 1.1rem 0;
+      border-top: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .contact-item:last-child { border-bottom: 1px solid var(--border); }
+
+    .contact-item-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .contact-item-value { font-size: 1rem; color: var(--text); }
+    .contact-item-value a {
+      color: var(--text);
+      text-decoration: none;
+      border-bottom: 1px solid var(--border);
+      transition: border-color 0.3s, color 0.3s;
+    }
+    .contact-item-value a:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ── Form — dark card ── */
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      background: var(--dark);
+      padding: 2.5rem;
+      border-radius: 6px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .form-group label {
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(245,243,236,0.45);
+      transition: color 0.2s;
+    }
+
+    .form-group:focus-within label {
+      color: var(--accent-glow);
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.98rem;
+      font-weight: 300;
+      padding: 0.7rem 0.9rem;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 3px;
+      background: rgba(255,255,255,0.05);
+      color: #FFF;
+      outline: none;
+      transition: border-color 0.25s, box-shadow 0.25s;
+      width: 100%;
+      line-height: 1.5;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      border-color: var(--accent-light);
+      box-shadow: 0 0 0 3px rgba(44, 95, 110, 0.25);
+    }
+
+    .form-group input::placeholder,
+    .form-group textarea::placeholder {
+      color: rgba(245,243,236,0.2);
+      font-weight: 300;
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 110px;
+    }
+
+    .form-group select {
+      cursor: pointer;
+      color: rgba(245,243,236,0.85);
+      -webkit-appearance: none;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 16 16' fill='none' stroke='rgba(245,243,236,0.5)' stroke-width='1.5' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4 6l4 4 4-4'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.75rem center;
+      background-size: 16px;
+      padding-right: 2.25rem;
+    }
+
+    .form-group select option {
+      background: var(--dark-warm);
+      color: var(--card-bg);
+    }
+
+    .form-submit-btn {
+      align-self: flex-start;
+      margin-top: 0.25rem;
+      padding: 1rem 2.25rem;
+      font-size: 0.85rem;
+    }
+
+    /* ══════════ FOOTER ══════════ */
+    footer {
+      padding: 2.5rem 4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--bg);
+      position: relative;
+    }
+
+    footer::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 4rem; right: 4rem; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+    }
+
+    footer p { font-size: 0.78rem; color: var(--text-muted); }
+
+    .footer-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      text-decoration: none;
+      color: var(--text);
+    }
+    .footer-brand img { height: 42px; width: auto; border-radius: 4px; }
+    .footer-brand span { font-family: 'Libre Baskerville', serif; font-size: 1.5rem; }
+
+    /* ══════════ ANIMATIONS ══════════ */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes splitLineReveal {
+      from { transform: translateY(110%); }
+      to { transform: translateY(0); }
+    }
+    
+    @keyframes scrollPulse {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.5); opacity: 0.5; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes waveScroll {
+      from { transform: translateX(0); }
+      to   { transform: translateX(50%); }
+    }
+    
+    @keyframes waveAction {
+      0% { transform: translateX(0) translateY(0); }
+      50% { transform: translateX(-25%) translateY(4px); }
+      100% { transform: translateX(-50%) translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-stagger .reveal:nth-child(2) { transition-delay: 0.1s; }
+    .reveal-stagger .reveal:nth-child(3) { transition-delay: 0.2s; }
+
+    select {
+      appearance: none; -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 16 16' fill='none' stroke='%235C5F56' stroke-width='1.5' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4 6l4 4 4-4'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0 center;
+      background-size: 16px;
+      cursor: pointer;
+    }
+
+    .success-message {
+      background: var(--card-bg);
+      border-left: 3px solid var(--accent);
+      padding: 1.5rem;
+      color: var(--text);
+      font-size: 1.02rem;
+    }
+
+    .hamburger {
+      display: none;
+      background: none;
+      border: none;
+      color: #FFF;
+      cursor: pointer;
+      padding: 0.5rem;
+      z-index: 1000;
+      transition: color 0.3s;
+    }
+    
+    nav.scrolled .hamburger { color: var(--text); }
+    .hamburger:hover { color: var(--accent); }
+
+    /* ══════════ RESPONSIVE ══════════ */
+    @media (max-width: 960px) {
+      nav, nav.scrolled { padding: 1.2rem 2rem; }
+      section, .hero { padding: 5rem 2rem; }
+      .about-inner { grid-template-columns: 1fr; }
+      .about-lead { border-right: none; border-bottom: 1px solid var(--border); padding: 2.5rem 0; }
+      .principle-item { padding-left: 2.5rem; }
+      .principle-item:hover { padding-left: 3rem; }
+      .services-grid { grid-template-columns: 1fr; }
+      .contact-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+      .facts-bar { padding: 2.5rem 2rem; }
+      .facts-bar-inner { grid-template-columns: 1fr 1fr; gap: 1rem; }
+      .fact-item { padding: 1.5rem; }
+      .form-row { grid-template-columns: 1fr; gap: 1.5rem; }
+      .contact-form { padding: 1.75rem; }
+      footer { padding: 2rem; flex-direction: column; gap: 1rem; text-align: center; }
+      footer::before { left: 2rem; right: 2rem; }
+    }
+
+    @media (max-width: 600px) {
+      .hamburger { display: block; }
+      .nav-links {
+        position: fixed; top: 0; right: -100%; width: 100%; height: 100vh;
+        background: var(--card-bg); display: flex; flex-direction: column;
+        justify-content: center; align-items: center; gap: 2rem;
+        transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .nav-links.open { right: 0; }
+      .nav-links a, nav.scrolled .nav-links a { color: var(--text); font-size: 1.2rem; }
+      .hero h1 { font-size: 2.4rem; }
+      .hero-cta-group { flex-direction: column; }
+      .facts-bar-inner { grid-template-columns: 1fr; gap: 0.75rem; }
+      .fact-item { padding: 1.25rem 1.5rem; }
+      .scroll-indicator { display: none; }
+    }
+    
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="navbar">
+    <a href="#" class="nav-brand">
+      <img src="assets/footer-logo.png" alt="Kust & Kade logo">
+      <span class="nav-brand-text">Kust & Kade</span>
+    </a>
+    <button class="hamburger" aria-label="Menu openen">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round">
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+    </button>
+    <ul class="nav-links">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#over-ons">Over Kust & Kade</a></li>
+      <li><a href="#diensten">Workshops</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <canvas id="hero-canvas" class="hero-canvas"></canvas>
+    <div class="hero-gradient-overlay"></div>
+    
+    <div class="hero-content">
+      <div class="hero-label-wrapper">
+        <span class="hero-label-line"></span>
+        <span class="hero-label">HR & AI</span>
+      </div>
+      
+      <h1>
+        <div class="hero-line"><span class="hero-line-inner line-1-anim">Van <em>buzzword</em> naar</span></div>
+        <div class="hero-line"><span class="hero-line-inner line-2-anim">werkwoord.</span></div>
+      </h1>
+      
+      <p class="hero-sub">Kust & Kade helpt HR-professionals om AI werkend te krijgen in hun organisatie. Aansluiten bij wat er al is en inzetten op wat effect heeft.</p>
+      
+      <div class="hero-cta-group">
+        <a href="#diensten" class="btn btn-primary">
+          Bekijk de workshops
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M3 8h10M9 4l4 4-4 4" />
+          </svg>
+        </a>
+        <a href="#contact" class="btn btn-outline">
+          Plan een kennismaking
+        </a>
+      </div>
+    </div>
+    
+    <div class="scroll-indicator">
+      <div class="scroll-text">Scroll</div>
+      <div class="scroll-line">
+        <div class="scroll-dot"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WAVE: Hero -> Facts -->
+  <div class="wave-separator wave-separator-dark">
+    <!-- SVG from bg transparent to dark (hero and facts both dark now, so we don't strictly need a color shift, but let's make it smooth) -->
+    <svg viewBox="0 0 1440 60" preserveAspectRatio="none">
+      <path d="M0,30 C240,50 480,10 720,30 C960,50 1200,10 1440,30 L1440,60 L0,60 Z" fill="var(--dark)"/>
+    </svg>
+  </div>
+
+  <!-- FACTS BAR -->
+  <div class="facts-bar" id="facts">
+    <div class="facts-bar-inner">
+      <div class="fact-item">
+        <div class="fact-item-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <span class="fact-value-wrapper">Geen voorkennis nodig</span>
+        <span class="fact-label">Workshops voor elk niveau</span>
+      </div>
+      <div class="fact-item">
+        <div class="fact-item-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="12" y2="17"/></svg>
+        </div>
+        <span class="fact-value-wrapper">Hands-on</span>
+        <span class="fact-label">van begin tot eind</span>
+      </div>
+      <div class="fact-item">
+        <div class="fact-item-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <span class="fact-value-wrapper">Relevant</span>
+        <span class="fact-label">max. 12 deelnemers per sessie</span>
+      </div>
+      <div class="fact-item">
+        <div class="fact-item-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <span class="fact-value-wrapper">Plaats- en tijdonafhankelijk</span>
+        <span class="fact-label">digitaal of op locatie</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- WAVE: Facts -> About -->
+  <div class="wave-separator wave-separator-dark">
+    <svg viewBox="0 0 1440 60" preserveAspectRatio="none">
+      <path d="M0,30 C240,10 480,50 720,30 C960,10 1200,50 1440,30 L1440,60 L0,60 Z" fill="var(--bg-alt)"/>
+    </svg>
+  </div>
+
+  <!-- ABOUT -->
+  <section class="about" id="over-ons">
+    <div class="reveal">
+      <span class="section-label">Over Kust & Kade</span>
+      <h2 class="section-title">Begin bij wat er al is</h2>
+      <div class="section-divider">
+        <svg viewBox="0 0 50 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 8 C8 -4, 16 20, 25 8 C34 -4, 42 20, 50 8" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" fill="none" />
+        </svg>
+      </div>
+    </div>
+
+    <div class="about-inner reveal">
+      <div class="about-lead">
+        <p class="about-lead-quote">Meer dan tien jaar HR-ervaring en een scherp oog voor wat AI daar <em>concreet</em> aan toevoegt. Het vertrekpunt is altijd wat er al is: de mensen, de structuur, de manier waarop een organisatie écht draait. De kust staat voor beweging en vernieuwing. De kade is wat er al staat. Die twee bij elkaar brengen — zonder omwegen, zonder onzin — is waar Kust & Kade voor staat.</p>
+        
+      </div>
+
+      <div class="about-principles">
+        <div class="principle-item">
+          <span class="principle-index">01</span>
+          <div class="principle-content">
+            <h4>Snap hoe het werkt</h4>
+            <p>Geen aannames. We duiken in de realiteit van jouw organisatie voordat we ook maar één oplossing bedenken.</p>
+          </div>
+        </div>
+        <div class="principle-item">
+          <span class="principle-index">02</span>
+          <div class="principle-content">
+            <h4>Ontdek waar je impact kan maken</h4>
+            <p>Niet implementeren om het implementeren. We zoeken de plekken waar AI écht verschil maakt.</p>
+          </div>
+        </div>
+        <div class="principle-item">
+          <span class="principle-index">03</span>
+          <div class="principle-content">
+            <h4>Ga van daaruit verder</h4>
+            <p>Voortbouwen op wat al werkt. Kleine, iteratieve stappen die blijven.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WAVE: About -> Workshops -->
+  <div class="wave-separator wave-separator-bg-alt">
+    <!-- From bg-alt to dark -->
+    <svg viewBox="0 0 1440 60" preserveAspectRatio="none">
+      <path d="M0,30 C240,50 480,10 720,30 C960,50 1200,10 1440,30 L1440,60 L0,60 Z" fill="var(--dark)" />
+    </svg>
+  </div>
+
+  <!-- DIENSTEN -->
+  <section class="services services-dark" id="diensten">
+    <div class="reveal">
+      <span class="section-label">Workshops</span>
+      <h2 class="section-title">Kies wat past</h2>
+      <div class="section-divider">
+        <svg viewBox="0 0 50 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 8 C8 -4, 16 20, 25 8 C34 -4, 42 20, 50 8" stroke="var(--accent-glow)" stroke-width="2.5" stroke-linecap="round" fill="none" />
+        </svg>
+      </div>
+    </div>
+    <div class="services-grid reveal-stagger">
+      <div class="service-card reveal">
+        <div class="service-icon-wrap">
+          <svg class="service-icon" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round"
+            stroke-linejoin="round">
+            <circle cx="128" cy="64" r="24" />
+            <line x1="128" y1="88" x2="128" y2="224" />
+            <line x1="80" y1="112" x2="176" y2="112" />
+            <path d="M56 144v16a72 72 0 0 0 144 0v-16" />
+            <polyline points="32 168 56 144 80 168" />
+            <polyline points="176 168 200 144 224 168" />
+          </svg>
+        </div>
+        <h3>Workshop: De basis</h3>
+        <p class="service-card-meta">Halve dag · Elk niveau · Max. 10 pers.</p>
+        <p>Voor HR-professionals die willen snappen wat AI is, wat het kan en waar de grenzen liggen. We gaan in op
+          ethiek en beleid, oefenen met prompten en bouwen samen iets concreets. Je gaat naar huis met werkende
+          voorbeelden, niet alleen theorie.</p>
+        <a href="workshop-de-basis.html" class="service-cta">
+          Bekijk de workshop
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+        </a>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-icon-wrap">
+          <svg class="service-icon" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round"
+            stroke-linejoin="round">
+            <line x1="40" y1="232" x2="216" y2="232" />
+            <path d="M80 232 L 104 88 H 152 L 176 232" />
+            <line x1="88" y1="88" x2="168" y2="88" />
+            <rect x="112" y="48" width="32" height="40" />
+            <path d="M96 48 L 128 24 L 160 48 Z" />
+            <line x1="76" y1="68" x2="36" y2="68" />
+            <line x1="180" y1="68" x2="220" y2="68" />
+            <line x1="84" y1="44" x2="52" y2="28" />
+            <line x1="172" y1="44" x2="204" y2="28" />
+          </svg>
+        </div>
+        <h3>Sparring & maatwerk</h3>
+        <p class="service-card-meta">Op maat · 1-op-1 · Flexibel</p>
+        <p>Eén op één sparren over hoe AI past in jouw HR-werk. Geen vast programma, wel een nuchter klankbord dat beide
+          werelden kent. Ideaal als je concreet advies zoekt voor jouw situatie.</p>
+        <a href="#contact" class="service-cta" data-workshop="maatwerk" onclick="selectWorkshop('Sparring & maatwerk')">
+          Neem contact op
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- WAVE: Workshops -> Contact -->
+  <div class="wave-separator wave-separator-dark">
+    <svg viewBox="0 0 1440 60" preserveAspectRatio="none">
+      <path d="M0,30 C240,10 480,50 720,30 C960,10 1200,50 1440,30 L1440,60 L0,60 Z" fill="var(--bg-alt)" />
+    </svg>
+  </div>
+
+  <!-- CONTACT -->
+  <section class="contact" id="contact">
+    <div class="reveal">
+      <span class="section-label">Contact</span>
+      <h2 class="section-title">
+        Neem contact op
+      </h2>
+      <div class="section-divider">
+        <svg viewBox="0 0 50 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 8 C8 -4, 16 20, 25 8 C34 -4, 42 20, 50 8" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" fill="none" />
+        </svg>
+      </div>
+    </div>
+    <div class="contact-grid">
+      <div class="reveal">
+        <div class="contact-info">
+          <p>Nieuwsgierig geworden? Stuur een berichtje — geen verplichtingen, gewoon even kennismaken en kijken wat er mogelijk is.</p>
+        </div>
+      </div>
+      <form class="contact-form reveal" action="https://formspree.io/f/{ID}" method="POST">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="naam">Naam</label>
+            <input type="text" id="naam" name="naam" placeholder="Jouw volledige naam" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="naam@bedrijf.nl" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="workshop">Waarmee kan ik je helpen?</label>
+          <select id="workshop" name="workshop" required>
+            <option value="" disabled selected>Kies een optie…</option>
+            <option value="Workshop: De basis">Workshop: De basis</option>
+            <option value="Sparring & maatwerk">Sparring &amp; maatwerk</option>
+            <option value="Weet ik nog niet">Weet ik nog niet — vertel me meer</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="bericht">Bericht <span style="font-weight:300;text-transform:none;letter-spacing:0">(optioneel)</span></label>
+          <textarea id="bericht" name="bericht" placeholder="Vertel me over jouw situatie, je team of je vraagstuk…"></textarea>
+        </div>
+        <button class="btn btn-primary form-submit-btn" type="submit">
+          Verstuur bericht
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M3 8h10M9 4l4 4-4 4" />
+          </svg>
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <a href="#" class="footer-brand">
+      <img src="assets/footer-logo.png" alt="Kust & Kade">
+      <span>Kust & Kade</span>
+    </a>
+    <p>&copy; 2026 Kust & Kade. Alle rechten voorbehouden.</p>
+  </footer>
+
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+  <script>
+    // Canvas Hero Wave
+    const canvas = document.getElementById('hero-canvas');
+    if (canvas) {
+      const ctx = canvas.getContext('2d');
+      let time = 0;
+      let rq;
+      
+      function drawWave(ctx, w, h, time, amplitude, frequency, speed, yOffset, color) {
+        ctx.beginPath();
+        ctx.moveTo(0, h);
+        for (let x = 0; x <= w; x += 5) {
+          const y = yOffset + Math.sin(x * frequency + time * speed) * amplitude
+                  + Math.sin(x * frequency * 0.5 + time * speed * 0.7) * amplitude * 0.5;
+          ctx.lineTo(x, y);
+        }
+        ctx.lineTo(w, h);
+        ctx.closePath();
+        ctx.fillStyle = color;
+        ctx.fill();
+      }
+      
+      function render() {
+        const w = canvas.width;
+        const h = canvas.height;
+        ctx.clearRect(0, 0, w, h);
+        
+        drawWave(ctx, w, h, time, h*0.06, 0.002, 1, h*0.6, 'rgba(44,95,110,0.15)');
+        drawWave(ctx, w, h, time, h*0.05, 0.0015, 0.8, h*0.7, 'rgba(44,95,110,0.25)');
+        drawWave(ctx, w, h, time, h*0.04, 0.003, 1.2, h*0.8, 'rgba(58,122,140,0.3)');
+        drawWave(ctx, w, h, time, h*0.03, 0.004, 1.5, h*0.9, 'rgba(58,122,140,0.5)');
+      
+        time += 0.01;
+        rq = requestAnimationFrame(render);
+      }
+      
+      function resizeCanvas() {
+        canvas.width = canvas.offsetWidth;
+        canvas.height = canvas.offsetHeight;
+      }
+      
+      window.addEventListener('resize', resizeCanvas);
+      resizeCanvas();
+      
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!prefersReducedMotion) {
+        render();
+      } else {
+        render();
+        cancelAnimationFrame(rq);
+      }
+    }
+
+    // About photo parallax removed
+
+    // Number Count-Up + Fact item reveal
+    const factNumbers = document.querySelectorAll('.fact-number');
+    const factItems = document.querySelectorAll('.fact-item');
+    const factsObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          // For items with numbers
+          const numEl = entry.target.querySelector('.fact-number');
+          if (numEl) {
+            entry.target.classList.add('counted');
+            const target = parseInt(numEl.getAttribute('data-target'));
+            let current = 0;
+            const duration = 2000;
+            const stepTime = Math.max(10, Math.floor(duration / target));
+            const counter = setInterval(() => {
+              current += 1;
+              numEl.textContent = current;
+              if (current >= target) {
+                numEl.textContent = target;
+                clearInterval(counter);
+              }
+            }, stepTime);
+          } else {
+            // Text-based fact items — just reveal after short delay
+            setTimeout(() => entry.target.classList.add('counted'), 200);
+          }
+          factsObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.3 });
+    factItems.forEach(el => factsObserver.observe(el));
+
+    // Pre-select workshop from card CTA click
+    function selectWorkshop(name) {
+      const select = document.getElementById('workshop');
+      if (select) {
+        for (let opt of select.options) {
+          if (opt.value === name) {
+            opt.selected = true;
+            select.classList.add('has-value');
+            break;
+          }
+        }
+        setTimeout(() => select.focus(), 800);
+      }
+    }
+
+    // Select floating label: add has-value class when an option is chosen
+    const workshopSelect = document.getElementById('workshop');
+    if (workshopSelect) {
+      workshopSelect.addEventListener('change', () => {
+        workshopSelect.classList.toggle('has-value', workshopSelect.value !== '');
+      });
+    }
+
+    // Navbar scroll
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      if (navbar) {
+        navbar.classList.toggle('scrolled', window.scrollY > 50);
+      }
+    });
+
+    // Reveal on scroll
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+    reveals.forEach(el => observer.observe(el));
+
+    // Mobile Navigation Toggle
+    const hamburger = document.querySelector('.hamburger');
+    const navLinksList = document.querySelector('.nav-links');
+    const navLinksElements = document.querySelectorAll('.nav-links a');
+
+    if (hamburger && navLinksList) {
+      hamburger.addEventListener('click', () => {
+        navLinksList.classList.toggle('open');
+      });
+      navLinksElements.forEach(link => {
+        link.addEventListener('click', () => {
+          navLinksList.classList.remove('open');
+        });
+      });
+    }
+
+    // Form Submission with Fetch (AJAX)
+    const contactForm = document.querySelector('.contact-form');
+    if (contactForm) {
+      contactForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const btn = contactForm.querySelector('button[type="submit"]');
+        const originalHtml = btn.innerHTML;
+        btn.innerHTML = 'Bezig met verzenden...';
+        try {
+          const response = await fetch(contactForm.action, {
+            method: 'POST',
+            body: new FormData(contactForm),
+            headers: { 'Accept': 'application/json' }
+          });
+          if (response.ok) {
+            contactForm.innerHTML = '<div class="success-message">Bedankt! Je bericht is verzonden. Ik neem zo snel mogelijk contact met je op.</div>';
+          } else {
+            console.error('Formspree error:', response.status);
+            btn.innerHTML = originalHtml;
+            alert('Er ging iets mis. Probeer het later opnieuw of mail rechtstreeks naar thijs@kustenkade.nl.');
+          }
+        } catch (error) {
+          console.error('Network error:', error);
+          btn.innerHTML = originalHtml;
+          alert('Er ging iets mis. Probeer het later opnieuw of mail rechtstreeks naar thijs@kustenkade.nl.');
+        }
+      });
+    }
+  </script>
+</body>
+</html>
