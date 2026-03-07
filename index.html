@@ -369,14 +369,14 @@
     }
 
     /* ═══ FACTS BAR ═══ */
-    .facts-bar { background: var(--bg-warm); position: relative; overflow: hidden; padding: 0 var(--px); }
+    .facts-bar { background: var(--dark); position: relative; overflow: hidden; padding: 0 var(--px); }
     @media (min-width: 768px) { .facts-bar { padding: 0 var(--px-md); } }
 
     .facts-bar-inner {
       display: grid; grid-template-columns: 1fr 1fr;
       position: relative; z-index: 1;
       max-width: 1200px; margin: 0 auto;
-      border-left: 1px solid var(--border);
+      border-left: 1px solid rgba(255,255,255,0.08);
     }
     @media (min-width: 600px) { .facts-bar-inner { grid-template-columns: repeat(4, 1fr); } }
 
@@ -384,8 +384,8 @@
       padding: 2rem 1.25rem 2rem 1.5rem;
       display: flex; flex-direction: column; gap: 0.35rem;
       position: relative;
-      border-right: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
+      border-right: 1px solid rgba(255,255,255,0.08);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
       transition: background 0.35s ease;
     }
     @media (min-width: 600px) { .fact-item { border-bottom: none; } }
@@ -402,13 +402,13 @@
       font-family: 'Libre Baskerville', serif;
       font-size: clamp(0.9rem, 2vw, 1.05rem);
       font-weight: 400;
-      color: var(--text);
+      color: #FFF;
       line-height: 1.35;
     }
 
     .fact-label {
       font-size: 0.67rem;
-      color: var(--text-muted);
+      color: rgba(245,243,236,0.5);
       font-weight: 400; line-height: 1.5;
       letter-spacing: 0.02em;
       opacity: 0; transform: translateY(6px);
@@ -751,6 +751,56 @@
       }
     }
 
+    /* ═══ SERVICES LAB CTA ═══ */
+    .services-lab-cta {
+      margin-top: 3rem;
+      display: flex; justify-content: center;
+    }
+    .services-lab-link {
+      display: inline-flex; flex-direction: column; align-items: center; gap: 0.75rem;
+      text-decoration: none;
+      color: rgba(245,243,236,0.7);
+      font-size: 0.78rem; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      transition: color 0.3s ease;
+    }
+    .services-lab-link:hover { color: #FFF; }
+    .services-lab-btn {
+      display: inline-flex; align-items: center; gap: 0.65rem;
+      padding: 0.85rem 1.75rem;
+      border: 1px solid rgba(255,255,255,0.45);
+      border-radius: 2px;
+      background: rgba(255,255,255,0.1);
+      color: rgba(245,243,236,0.9);
+      font-size: 0.78rem; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      transition: border-color 0.35s ease, color 0.35s ease, background 0.35s ease;
+    }
+    .services-lab-link:hover .services-lab-btn {
+      border-color: rgba(255,255,255,0.8);
+      color: #FFF;
+      background: rgba(255,255,255,0.18);
+    }
+    .services-lab-arrow {
+      width: 18px; height: 18px;
+      animation: labArrowBounce 2s ease-in-out infinite;
+      flex-shrink: 0;
+    }
+    .services-lab-arrow-up {
+      width: 18px; height: 18px;
+      transform: rotate(180deg);
+      animation: labArrowBounceUp 2s ease-in-out infinite;
+      flex-shrink: 0;
+    }
+    @keyframes labArrowBounce {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(4px); }
+    }
+    @keyframes labArrowBounceUp {
+      0%, 100% { transform: rotate(180deg) translateY(0); }
+      50%       { transform: rotate(180deg) translateY(4px); }
+    }
+
     /* ═══ POC SHOWCASE ═══ */
     .poc-section {
       background: var(--dark); color: #FFF;
@@ -919,7 +969,7 @@
       <li><a href="#home">Home <svg class="nav-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a></li>
       <li><a href="#over-ons">Over Kust & Kade <svg class="nav-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a></li>
       <li><a href="#diensten">Workshops <svg class="nav-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a></li>
-      <li><a href="#lab" class="nav-lab"><em>Lab</em> <svg class="nav-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a></li>
+      <li><a href="#lab">Lab <svg class="nav-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a></li>
       <li><a href="#contact">Contact <svg class="nav-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a></li>
     </ul>
   </nav>
@@ -954,10 +1004,10 @@
     </div>
   </section>
 
-  <!-- WAVE: Hero -> Facts -->
+  <!-- WAVE: Hero -> Facts (both dark, subtle transition) -->
   <div class="wave-separator wave-separator-dark">
     <svg viewBox="0 0 1440 60" preserveAspectRatio="none">
-      <path d="M0,30 C240,50 480,10 720,30 C960,50 1200,10 1440,30 L1440,60 L0,60 Z" fill="var(--bg-warm)"/>
+      <path d="M0,30 C240,50 480,10 720,30 C960,50 1200,10 1440,30 L1440,60 L0,60 Z" fill="var(--dark)"/>
     </svg>
   </div>
 
@@ -983,107 +1033,7 @@
     </div>
   </div>
 
-  <!-- WAVE: Facts -> Lab -->
-  <div class="wave-separator wave-separator-bg-warm">
-    <svg viewBox="0 0 1440 60" preserveAspectRatio="none">
-      <path d="M0,30 C240,10 480,50 720,30 C960,10 1200,50 1440,30 L1440,60 L0,60 Z" fill="var(--dark)"/>
-    </svg>
-  </div>
-
-  <!-- POC SECTION -->
-  <section class="poc-section" id="lab">
-    <div class="reveal">
-      <span class="section-label">Kust &amp; Kade Lab</span>
-      <h2 class="section-title">Kijk. Dit levert het op.</h2>
-      <div class="section-divider">
-        <svg viewBox="0 0 50 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M0 8 C8 -4, 16 20, 25 8 C34 -4, 42 20, 50 8" stroke="var(--accent-light)" stroke-width="2.5" stroke-linecap="round" fill="none"/>
-        </svg>
-      </div>
-      <p class="poc-intro">Kust &amp; Kade <em style="font-style:italic; color:var(--accent-glow);">Lab</em> is de plek waar we concepten bouwen en laten zien wat er mogelijk is. Geen pitchdeck, maar werkende tools. Probeer ze zelf.</p>
-    </div>
-
-    <div class="poc-grid reveal-stagger">
-
-      <!-- Card 1: HR Assistent -->
-      <div class="poc-card reveal">
-        <div class="poc-browser-chrome">
-          <div class="poc-dots">
-            <span class="poc-dot poc-dot-r"></span>
-            <span class="poc-dot poc-dot-y"></span>
-            <span class="poc-dot poc-dot-g"></span>
-          </div>
-          <div class="poc-url">lab / hr-assistent</div>
-        </div>
-        <div class="poc-card-body">
-          <span class="poc-tag">Lab: HR Dienstverlening</span>
-          <h3 class="poc-card-title">HR <em>Assistent</em></h3>
-          <p class="poc-card-desc">Stel je HR-vragen over verlof, de CAO of bedrijfsbeleid, en ervaar hoe AI jouw HR-afdeling 24/7 bereikbaar maakt.</p>
-          <div class="poc-preview">
-            <span class="poc-preview-dot"></span>
-            <span class="poc-preview-text">Live demo · AI Tool #1</span>
-          </div>
-        </div>
-        <a href="demos/hr-assistent.html" target="_blank" class="poc-cta">
-          Probeer het
-          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
-        </a>
-      </div>
-
-      <!-- Card 2: Onboarding Routekaart -->
-      <div class="poc-card reveal">
-        <div class="poc-browser-chrome">
-          <div class="poc-dots">
-            <span class="poc-dot poc-dot-r"></span>
-            <span class="poc-dot poc-dot-y"></span>
-            <span class="poc-dot poc-dot-g"></span>
-          </div>
-          <div class="poc-url">lab / onboarding-routekaart</div>
-        </div>
-        <div class="poc-card-body">
-          <span class="poc-tag">Lab: Onboarding</span>
-          <h3 class="poc-card-title">Onboarding <em>Routekaart</em></h3>
-          <p class="poc-card-desc">Geef een paar gegevens op en ontvang een persoonlijke 4-weken onboarding route, klaar om te delen met je nieuwe collega.</p>
-          <div class="poc-preview">
-            <span class="poc-preview-dot" style="animation-delay:0.4s"></span>
-            <span class="poc-preview-text">Live demo · AI Tool #2</span>
-          </div>
-        </div>
-        <a href="demos/onboarding-routekaart.html" target="_blank" class="poc-cta">
-          Probeer het
-          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
-        </a>
-      </div>
-
-      <!-- Card 3: Vacaturetekst Generator -->
-      <div class="poc-card reveal">
-        <div class="poc-browser-chrome">
-          <div class="poc-dots">
-            <span class="poc-dot poc-dot-r"></span>
-            <span class="poc-dot poc-dot-y"></span>
-            <span class="poc-dot poc-dot-g"></span>
-          </div>
-          <div class="poc-url">lab / vacaturetekst-generator</div>
-        </div>
-        <div class="poc-card-body">
-          <span class="poc-tag">Lab: Werving &amp; Selectie</span>
-          <h3 class="poc-card-title">Vacaturetekst Generator<br><em>op maat, in seconden</em></h3>
-          <p class="poc-card-desc">Vul een paar velden in en ontvang een volledige vacaturetekst afgestemd op jullie toon, functie-eisen en cultuur. Geen blanco pagina meer.</p>
-          <div class="poc-preview">
-            <span class="poc-preview-dot" style="animation-delay:0.8s"></span>
-            <span class="poc-preview-text">Live demo · AI Tool #3</span>
-          </div>
-        </div>
-        <a href="demos/vacaturetekst-generator.html" target="_blank" class="poc-cta">
-          Probeer het
-          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
-        </a>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- WAVE: Lab -> About -->
+  <!-- WAVE: Facts -> About -->
   <div class="wave-separator wave-separator-dark">
     <svg viewBox="0 0 1440 60" preserveAspectRatio="none">
       <path d="M0,30 C240,10 480,50 720,30 C960,10 1200,50 1440,30 L1440,60 L0,60 Z" fill="var(--bg-alt)"/>
@@ -1188,12 +1138,227 @@
         </a>
       </div>
     </div>
-  </section>
 
-  <!-- WAVE: Workshops -> Contact -->
+    <!-- Pijl naar Lab -->
+    <div class="services-lab-cta reveal">
+      <a href="#lab" class="services-lab-link">
+        <div class="services-lab-btn">
+          <svg class="services-lab-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;flex-shrink:0;opacity:0.7">
+            <line x1="12" y1="4" x2="12" y2="18"/>
+            <polyline points="6 13 12 19 18 13"/>
+          </svg>
+          Eerst zien wat het oplevert?
+          <svg class="services-lab-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="4" x2="12" y2="18"/>
+            <polyline points="6 13 12 19 18 13"/>
+          </svg>
+        </div>
+      </a>
+    </div>
+  </section>
   <div class="wave-separator wave-separator-dark">
     <svg viewBox="0 0 1440 60" preserveAspectRatio="none">
-      <path d="M0,30 C240,10 480,50 720,30 C960,10 1200,50 1440,30 L1440,60 L0,60 Z" fill="var(--bg-alt)"/>
+      <path d="M0,30 C240,10 480,50 720,30 C960,10 1200,50 1440,30 L1440,60 L0,60 Z" fill="var(--bg)"/>
+    </svg>
+  </div>
+
+  <!-- LIGHT BREAK: geanimeerde golven -->
+  <div class="wbt-section">
+    <canvas id="wbt-canvas" class="wbt-canvas"></canvas>
+  </div>
+
+  <!-- WAVE: light break -> Lab (dark) -->
+  <div class="wave-separator" style="background: var(--bg);">
+    <svg viewBox="0 0 1440 60" preserveAspectRatio="none">
+      <path d="M0,30 C240,50 480,10 720,30 C960,50 1200,10 1440,30 L1440,60 L0,60 Z" fill="var(--dark)"/>
+    </svg>
+  </div>
+
+  <style>
+    .wbt-section {
+      background: var(--bg);
+      line-height: 0;
+      overflow: hidden;
+      position: relative;
+      height: 90px;
+    }
+    @media (min-width: 768px) { .wbt-section { height: 140px; } }
+    .wbt-canvas {
+      position: absolute; top: 0; left: 0;
+      width: 100%; height: 100%;
+    }
+  </style>
+
+  <script>
+    (function() {
+      const canvas = document.getElementById('wbt-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let t = 0, raf;
+
+      // Palet: --sand #C8BFA8, --border #D4D0C8, --accent #2C5F6E, --accent-light #3A7A8C, --accent-glow #4A9AAE, --bg-alt #EDEAE2
+      const waves = [
+        { amp: 0.18, freq: 0.0018, speed: 0.6,  yFrac: 0.3,  color: '#2C5F6E', alpha: 0.08 },
+        { amp: 0.14, freq: 0.0025, speed: 0.9,  yFrac: 0.45, color: '#3A7A8C', alpha: 0.12 },
+        { amp: 0.16, freq: 0.0015, speed: 0.5,  yFrac: 0.55, color: '#2C5F6E', alpha: 0.18 },
+        { amp: 0.12, freq: 0.003,  speed: 1.1,  yFrac: 0.65, color: '#4A9AAE', alpha: 0.15 },
+        { amp: 0.10, freq: 0.002,  speed: 0.75, yFrac: 0.78, color: '#3A7A8C', alpha: 0.25 },
+      ];
+
+      function draw() {
+        const w = canvas.width, h = canvas.height;
+        ctx.clearRect(0, 0, w, h);
+
+        waves.forEach(wave => {
+          ctx.beginPath();
+          ctx.moveTo(0, h);
+          for (let x = 0; x <= w; x += 4) {
+            const y = wave.yFrac * h
+              + Math.sin(x * wave.freq + t * wave.speed) * wave.amp * h
+              + Math.sin(x * wave.freq * 0.5 + t * wave.speed * 0.6) * wave.amp * h * 0.4;
+            ctx.lineTo(x, y);
+          }
+          ctx.lineTo(w, h);
+          ctx.closePath();
+          ctx.fillStyle = wave.color;
+          ctx.globalAlpha = wave.alpha;
+          ctx.fill();
+        });
+
+        ctx.globalAlpha = 1;
+        t += 0.012;
+        raf = requestAnimationFrame(draw);
+      }
+
+      function resize() {
+        canvas.width  = canvas.offsetWidth;
+        canvas.height = canvas.offsetHeight;
+      }
+
+      window.addEventListener('resize', resize, { passive: true });
+      resize();
+
+      const noMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (noMotion) {
+        resize(); draw(); cancelAnimationFrame(raf);
+      } else {
+        draw();
+      }
+    })();
+  </script>
+
+  <!-- POC SECTION -->
+  <section class="poc-section" id="lab">
+    <div class="reveal">
+      <span class="section-label">Kust &amp; Kade Lab</span>
+      <h2 class="section-title">Kijk. Dit levert het op.</h2>
+      <div class="section-divider">
+        <svg viewBox="0 0 50 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 8 C8 -4, 16 20, 25 8 C34 -4, 42 20, 50 8" stroke="var(--accent-light)" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+        </svg>
+      </div>
+      <p class="poc-intro">Kust &amp; Kade <em style="font-style:italic; font-weight:700; color:var(--accent-glow);">Lab</em> is de plek waar we concepten bouwen en laten zien wat er mogelijk is. Geen pitchdeck, maar werkende tools. Probeer ze zelf.</p>
+    </div>
+
+    <div class="poc-grid reveal-stagger">
+
+      <!-- Card 1: HR Assistent -->
+      <div class="poc-card reveal">
+        <div class="poc-browser-chrome">
+          <div class="poc-dots">
+            <span class="poc-dot poc-dot-r"></span>
+            <span class="poc-dot poc-dot-y"></span>
+            <span class="poc-dot poc-dot-g"></span>
+          </div>
+          <div class="poc-url">lab / hr-assistent</div>
+        </div>
+        <div class="poc-card-body">
+          <span class="poc-tag">Lab: HR Dienstverlening</span>
+          <h3 class="poc-card-title">HR <em>Assistent</em></h3>
+          <p class="poc-card-desc">Stel je HR-vragen over verlof, de CAO of bedrijfsbeleid, en ervaar hoe AI jouw HR-afdeling 24/7 bereikbaar maakt.</p>
+          <div class="poc-preview">
+            <span class="poc-preview-dot"></span>
+            <span class="poc-preview-text">Live demo · AI Tool #1</span>
+          </div>
+        </div>
+        <a href="demos/hr-assistent.html" target="_blank" class="poc-cta">
+          Probeer het
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+        </a>
+      </div>
+
+      <!-- Card 2: Onboarding Routekaart -->
+      <div class="poc-card reveal">
+        <div class="poc-browser-chrome">
+          <div class="poc-dots">
+            <span class="poc-dot poc-dot-r"></span>
+            <span class="poc-dot poc-dot-y"></span>
+            <span class="poc-dot poc-dot-g"></span>
+          </div>
+          <div class="poc-url">lab / onboarding-routekaart</div>
+        </div>
+        <div class="poc-card-body">
+          <span class="poc-tag">Lab: Onboarding</span>
+          <h3 class="poc-card-title">Onboarding <em>Routekaart</em></h3>
+          <p class="poc-card-desc">Geef een paar gegevens op en ontvang een persoonlijke 4-weken onboarding route, klaar om te delen met je nieuwe collega.</p>
+          <div class="poc-preview">
+            <span class="poc-preview-dot" style="animation-delay:0.4s"></span>
+            <span class="poc-preview-text">Live demo · AI Tool #2</span>
+          </div>
+        </div>
+        <a href="demos/onboarding-routekaart.html" target="_blank" class="poc-cta">
+          Probeer het
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+        </a>
+      </div>
+
+      <!-- Card 3: Vacaturetekst Generator -->
+      <div class="poc-card reveal">
+        <div class="poc-browser-chrome">
+          <div class="poc-dots">
+            <span class="poc-dot poc-dot-r"></span>
+            <span class="poc-dot poc-dot-y"></span>
+            <span class="poc-dot poc-dot-g"></span>
+          </div>
+          <div class="poc-url">lab / vacaturetekst-generator</div>
+        </div>
+        <div class="poc-card-body">
+          <span class="poc-tag">Lab: Werving &amp; Selectie</span>
+          <h3 class="poc-card-title">Vacaturetekst Generator<br><em>op maat, in seconden</em></h3>
+          <p class="poc-card-desc">Vul een paar velden in en ontvang een volledige vacaturetekst afgestemd op jullie toon, functie-eisen en cultuur. Geen blanco pagina meer.</p>
+          <div class="poc-preview">
+            <span class="poc-preview-dot" style="animation-delay:0.8s"></span>
+            <span class="poc-preview-text">Live demo · AI Tool #3</span>
+          </div>
+        </div>
+        <a href="demos/vacaturetekst-generator.html" target="_blank" class="poc-cta">
+          Probeer het
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+        </a>
+      </div>
+
+    </div>
+
+    <!-- Terug naar workshops -->
+    <div class="services-lab-cta reveal" style="margin-top: 3rem;">
+      <a href="#diensten" class="services-lab-link">
+        <div class="services-lab-btn">
+          <svg class="services-lab-arrow-up" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;flex-shrink:0;opacity:0.7;">
+            <line x1="12" y1="4" x2="12" y2="18"/>
+            <polyline points="6 13 12 19 18 13"/>
+          </svg>
+          Aan de slag
+          <svg class="services-lab-arrow-up" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;flex-shrink:0;">
+            <line x1="12" y1="4" x2="12" y2="18"/>
+            <polyline points="6 13 12 19 18 13"/>
+          </svg>
+        </div>
+      </a>
+    </div>
+  </section>
+  <div class="wave-separator wave-separator-dark">
+    <svg viewBox="0 0 1440 60" preserveAspectRatio="none">
+      <path d="M0,30 C240,50 480,10 720,30 C960,50 1200,10 1440,30 L1440,60 L0,60 Z" fill="var(--bg-alt)"/>
     </svg>
   </div>
 
