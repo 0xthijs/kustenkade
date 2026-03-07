@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HR Assistent — Kust & Kade Lab</title>
+  <title>HR Assistent · Kust & Kade Lab</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
@@ -361,12 +361,12 @@
   <section class="hero">
     <div class="tool-label">⚓ AI Tool #1</div>
     <h1>HR <em>Assistent</em></h1>
-    <p>Stel je HR-vragen over verlof, de CAO of bedrijfsbeleid — en ervaar hoe AI jouw HR-afdeling 24/7 bereikbaar maakt.</p>
+    <p>Stel je HR-vragen over verlof, de CAO of bedrijfsbeleid, en ervaar hoe AI jouw HR-afdeling 24/7 bereikbaar maakt.</p>
   </section>
 
   <!-- Info strip -->
   <div class="info-strip">
-    <strong>Demo:</strong> Fictief bedrijfsbeleid &amp; CAO van Kust &amp; Kade LAB — voor illustratieve doeleinden.
+    <strong>Demo:</strong> Fictief bedrijfsbeleid &amp; CAO van Kust &amp; Kade LAB, voor illustratieve doeleinden.
   </div>
 
   <!-- Chat card -->
@@ -376,7 +376,7 @@
     <div class="chat-header">
       <div class="bot-avatar">⚓</div>
       <div>
-        <div class="bot-name">Sophie — HR Assistent</div>
+        <div class="bot-name">Sophie, HR Assistent</div>
         <div class="bot-status"><span class="status-dot"></span>Online &middot; Kust &amp; Kade LAB</div>
       </div>
     </div>
@@ -386,7 +386,7 @@
 
     <!-- Suggestion chips -->
     <div class="chips-area" id="chipsArea">
-      <div class="chips-label">Veelgestelde vragen — klik om te starten</div>
+      <div class="chips-label">Veelgestelde vragen, klik om te starten</div>
       <button class="chip" onclick="sendChip(this)">Hoeveel vakantiedagen heb ik?</button>
       <button class="chip" onclick="sendChip(this)">Hoe vraag ik verlof aan?</button>
       <button class="chip" onclick="sendChip(this)">Wat zegt de CAO over overwerk?</button>
@@ -447,7 +447,7 @@ Kust & Kade LAB is een fictief consultancybureau in Nederland, ca. 80 medewerker
 JOUW STIJL:
 - Vriendelijk, helder en to-the-point
 - Altijd in het Nederlands
-- Geen onnodige uitweiding — bondig maar volledig
+- Geen onnodige uitweiding, bondig maar volledig
 - Bij complexe juridische vragen doorverwijzen naar HR Manager (Emma Zeeman) of Legal Counsel (Nathalie Kok)
 - Gebruik geen opsommingen tenzij het de leesbaarheid echt verbetert
 
@@ -510,7 +510,7 @@ ONKOSTENVERGOEDING
 • Boven € 250: voorafgaande goedkeuring manager vereist
 
 ────────────────────────────────────────
-VERLOFAANVRAAG — BEGELEIDE FLOW
+VERLOFAANVRAAG: BEGELEIDE FLOW
 ────────────────────────────────────────
 Als een medewerker verlof wil aanvragen, doorloop je deze stappen:
 1. Welk type verlof? (vakantie / bijzonder verlof / zorgverlof / anders)
@@ -523,14 +523,14 @@ Als een medewerker verlof wil aanvragen, doorloop je deze stappen:
 ────────────────────────────────────────
 TEAM (voor doorverwijzingen)
 ────────────────────────────────────────
-• Emma Zeeman — HR Manager (HR & People)
-• Pieter Kooiman — Managing Director
-• Lars van der Haven — Controller (Finance)
-• Nora Dijkstra — CFO
-• Vera Mulder — CTO
-• Daan Bakker — IT Lead
-• Nathalie Kok — Legal Counsel
-• Sophie de Groot — Marketing Lead`;
+• Emma Zeeman, HR Manager (HR & People)
+• Pieter Kooiman, Managing Director
+• Lars van der Haven, Controller (Finance)
+• Nora Dijkstra, CFO
+• Vera Mulder, CTO
+• Daan Bakker, IT Lead
+• Nathalie Kok, Legal Counsel
+• Sophie de Groot, Marketing Lead`;
 
   /* ─────────────────────────────────────────────
      STATE
@@ -687,7 +687,7 @@ TEAM (voor doorverwijzingen)
     } catch (err) {
       hideLoading();
       console.error('API error:', err);
-      appendMessage('bot', `Er ging iets mis: ${err.message}\n\nProbeer het opnieuw of neem contact op met IT (Daan Bakker — IT Lead).`);
+      appendMessage('bot', `Er ging iets mis: ${err.message}\n\nProbeer het opnieuw of neem contact op met IT (Daan Bakker, IT Lead).`);
       // Remove failed user message from history
       history.pop();
     }
