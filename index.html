@@ -123,6 +123,9 @@
     nav.scrolled .nav-links a:hover { color: var(--text); }
     .nav-links a:hover::after { width: 100%; }
 
+    .nav-lab em { font-style: italic; font-weight: 600; color: var(--accent-glow); transition: color 0.3s; }
+    nav.scrolled .nav-lab em { color: var(--accent); }
+
     .nav-arrow { display: none; }
 
     /* ═══ HAMBURGER ═══ */
@@ -366,14 +369,14 @@
     }
 
     /* ═══ FACTS BAR ═══ */
-    .facts-bar { background: var(--dark); position: relative; overflow: hidden; padding: 0 var(--px); }
+    .facts-bar { background: var(--bg-warm); position: relative; overflow: hidden; padding: 0 var(--px); }
     @media (min-width: 768px) { .facts-bar { padding: 0 var(--px-md); } }
 
     .facts-bar-inner {
       display: grid; grid-template-columns: 1fr 1fr;
       position: relative; z-index: 1;
       max-width: 1200px; margin: 0 auto;
-      border-left: 1px solid rgba(255,255,255,0.07);
+      border-left: 1px solid var(--border);
     }
     @media (min-width: 600px) { .facts-bar-inner { grid-template-columns: repeat(4, 1fr); } }
 
@@ -381,14 +384,14 @@
       padding: 2rem 1.25rem 2rem 1.5rem;
       display: flex; flex-direction: column; gap: 0.35rem;
       position: relative;
-      border-right: 1px solid rgba(255,255,255,0.07);
-      border-bottom: 1px solid rgba(255,255,255,0.07);
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
       transition: background 0.35s ease;
     }
     @media (min-width: 600px) { .fact-item { border-bottom: none; } }
     @media (min-width: 768px) { .fact-item { padding: 2.5rem 1.75rem 2.5rem 2rem; gap: 0.45rem; } }
 
-    .fact-item:hover { background: rgba(255,255,255,0.03); }
+    .fact-item:hover { background: rgba(44,95,110,0.05); }
     .fact-item::before { display: none; }
     .fact-item::after  { display: none; }
     .fact-item-icon { display: none; }
@@ -399,13 +402,13 @@
       font-family: 'Libre Baskerville', serif;
       font-size: clamp(0.9rem, 2vw, 1.05rem);
       font-weight: 400;
-      color: rgba(245,243,236,0.92);
+      color: var(--text);
       line-height: 1.35;
     }
 
     .fact-label {
       font-size: 0.67rem;
-      color: rgba(245,243,236,0.32);
+      color: var(--text-muted);
       font-weight: 400; line-height: 1.5;
       letter-spacing: 0.02em;
       opacity: 0; transform: translateY(6px);
@@ -419,6 +422,7 @@
     @media (min-width: 768px) { .wave-separator svg { height: 60px; } }
     .wave-separator-dark { background: var(--dark); }
     .wave-separator-bg-alt { background: var(--bg-alt); }
+    .wave-separator-bg-warm { background: var(--bg-warm); }
 
     /* ═══ SECTIONS ═══ */
     section { padding: 3.5rem var(--px); }
@@ -596,13 +600,7 @@
     }
     @media (min-width: 768px) { .service-cta { padding: 1.1rem 2rem; margin-left: -2rem; margin-right: -2rem; } }
 
-    .service-cta::before {
-      content: ''; position: absolute; inset: 0;
-      background: var(--accent); transform: scaleX(0); transform-origin: left;
-      transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1); z-index: -1;
-    }
-    .service-cta:hover::before { transform: scaleX(1); }
-    .service-cta:hover { border-top-color: transparent; letter-spacing: 0.1em; }
+    .service-cta:hover { background: rgba(44,95,110,0.45); border-top-color: transparent; letter-spacing: 0.1em; }
     .service-cta svg { width: 14px; height: 14px; transition: transform 0.4s cubic-bezier(0.16,1,0.3,1); flex-shrink: 0; }
     .service-cta:hover svg { transform: translateX(5px); }
 
@@ -752,6 +750,150 @@
         transition-duration: 0.01ms !important;
       }
     }
+
+    /* ═══ POC SHOWCASE ═══ */
+    .poc-section {
+      background: var(--dark); color: #FFF;
+      position: relative; overflow: hidden;
+    }
+    .poc-section .section-label { color: var(--accent-light); }
+    .poc-section .section-title { color: #FFF; }
+    .poc-section .section-divider svg path { stroke: var(--accent-light); }
+
+    .poc-intro {
+      font-size: 0.95rem; color: rgba(245,243,236,0.55);
+      max-width: 560px; line-height: 1.8; margin-bottom: 0;
+    }
+    @media (min-width: 768px) { .poc-intro { font-size: 1rem; } }
+
+    .poc-grid {
+      display: grid; grid-template-columns: 1fr;
+      gap: 1.25rem; margin-top: 2.5rem;
+    }
+    @media (min-width: 600px) { .poc-grid { grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 3.5rem; } }
+
+    /* Browser-mockup card */
+    .poc-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px; overflow: hidden;
+      display: flex; flex-direction: column;
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+    }
+    .poc-card::before {
+      content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px;
+      background: linear-gradient(90deg, var(--accent-glow), var(--accent-light));
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1); z-index: 2;
+    }
+    .poc-card::after {
+      content: ''; position: absolute; left: 0; bottom: -10px; width: 200%; height: 60px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M0,40 C150,80 350,0 600,40 C850,80 1050,0 1200,40 L1200,120 L0,120 Z' fill='%232C5F6E'/%3E%3C/svg%3E");
+      background-size: 50% 100%; background-repeat: repeat-x;
+      opacity: 0; transform: translateY(20px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+      pointer-events: none; z-index: 0;
+    }
+    .poc-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 50px rgba(74,154,174,0.18), inset 0 0 0 1px rgba(74,154,174,0.2);
+      background: rgba(255,255,255,0.06);
+    }
+    .poc-card:hover::before { transform: scaleX(1); }
+    .poc-card:hover::after { opacity: 0.65; transform: translateY(0); animation: waveAction 5s infinite linear; }
+    .poc-card > * { position: relative; z-index: 1; }
+
+    /* Browser chrome strip */
+    .poc-browser-chrome {
+      background: rgba(255,255,255,0.06);
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      padding: 0.6rem 0.85rem;
+      display: flex; align-items: center; gap: 0.6rem;
+      flex-shrink: 0;
+    }
+    .poc-dots { display: flex; gap: 5px; align-items: center; flex-shrink: 0; }
+    .poc-dot {
+      width: 9px; height: 9px; border-radius: 50%;
+      opacity: 0.4;
+    }
+    .poc-dot-r { background: #FF6059; }
+    .poc-dot-y { background: #FFBD2E; }
+    .poc-dot-g { background: #28CA42; }
+    .poc-url {
+      flex: 1; background: rgba(255,255,255,0.06);
+      border-radius: 4px; padding: 0.22rem 0.6rem;
+      font-size: 0.62rem; color: rgba(245,243,236,0.3);
+      letter-spacing: 0.04em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    /* Card body */
+    .poc-card-body {
+      padding: 1.5rem 1.5rem 0;
+      display: flex; flex-direction: column; flex: 1;
+    }
+    @media (min-width: 768px) { .poc-card-body { padding: 1.75rem 2rem 0; } }
+
+    .poc-tag {
+      font-size: 0.63rem; font-weight: 500;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--accent-glow); opacity: 0.8;
+      margin-bottom: 0.85rem;
+    }
+
+    .poc-card-title {
+      font-family: 'Libre Baskerville', serif;
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      font-weight: 400; color: #FFF;
+      line-height: 1.25; margin-bottom: 0.75rem;
+    }
+    .poc-card-title em { font-style: italic; color: var(--accent-glow); }
+
+    .poc-card-desc {
+      font-size: 0.875rem; color: rgba(245,243,236,0.55);
+      line-height: 1.75; flex-grow: 1;
+    }
+
+    /* Preview strip inside card */
+    .poc-preview {
+      margin: 1.25rem -1.5rem 0;
+      padding: 0.9rem 1.5rem;
+      background: rgba(255,255,255,0.03);
+      border-top: 1px solid rgba(255,255,255,0.06);
+      display: flex; align-items: center; gap: 0.6rem;
+    }
+    @media (min-width: 768px) { .poc-preview { margin: 1.5rem -2rem 0; padding: 0.9rem 2rem; } }
+
+    .poc-preview-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--accent-glow); flex-shrink: 0;
+      box-shadow: 0 0 6px rgba(74,154,174,0.6);
+      animation: scrollPulse 2.5s ease-in-out infinite;
+    }
+    .poc-preview-text {
+      font-size: 0.7rem; color: rgba(245,243,236,0.35);
+      letter-spacing: 0.06em; font-weight: 400;
+    }
+
+    /* CTA row at bottom — identiek aan service-cta */
+    .poc-cta {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 0.6rem; font-size: 0.78rem; font-weight: 500;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: #FFF; text-decoration: none;
+      padding: 1rem 1.5rem;
+      background: rgba(44,95,110,0.25);
+      border-top: 1px solid rgba(255,255,255,0.08);
+      position: relative; overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); z-index: 1;
+      min-height: 52px;
+    }
+    @media (min-width: 768px) { .poc-cta { padding: 1.1rem 2rem; } }
+    .poc-cta:hover { background: rgba(44,95,110,0.45); border-top-color: transparent; letter-spacing: 0.1em; }
+    .poc-cta svg { width: 14px; height: 14px; transition: transform 0.4s cubic-bezier(0.16,1,0.3,1); flex-shrink: 0; }
+    .poc-cta:hover svg { transform: translateX(5px); }
+
   </style>
 </head>
 <body>
@@ -777,6 +919,7 @@
       <li><a href="#home">Home <svg class="nav-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a></li>
       <li><a href="#over-ons">Over Kust & Kade <svg class="nav-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a></li>
       <li><a href="#diensten">Workshops <svg class="nav-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a></li>
+      <li><a href="#lab" class="nav-lab"><em>Lab</em> <svg class="nav-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a></li>
       <li><a href="#contact">Contact <svg class="nav-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a></li>
     </ul>
   </nav>
@@ -794,7 +937,7 @@
         <div class="hero-line"><span class="hero-line-inner line-1-anim">Van <em>buzzword</em> naar</span></div>
         <div class="hero-line"><span class="hero-line-inner line-2-anim">werkwoord.</span></div>
       </h1>
-      <p class="hero-sub">Kust & Kade helpt HR-professionals om AI werkend te krijgen in hun organisatie. Aansluiten bij wat er al is en inzetten op waar het iets toevoegt.</p>
+      <p class="hero-sub">KKust & Kade helpt HR-professionals om AI werkend te krijgen in hun organisatie. Aansluiten bij wat er al is en inzetten op waar het iets toevoegt.</p>
       <div class="hero-cta-group">
         <a href="#diensten" class="btn btn-primary">
           Bekijk de workshop
@@ -814,7 +957,7 @@
   <!-- WAVE: Hero -> Facts -->
   <div class="wave-separator wave-separator-dark">
     <svg viewBox="0 0 1440 60" preserveAspectRatio="none">
-      <path d="M0,30 C240,50 480,10 720,30 C960,50 1200,10 1440,30 L1440,60 L0,60 Z" fill="var(--dark)"/>
+      <path d="M0,30 C240,50 480,10 720,30 C960,50 1200,10 1440,30 L1440,60 L0,60 Z" fill="var(--bg-warm)"/>
     </svg>
   </div>
 
@@ -840,7 +983,107 @@
     </div>
   </div>
 
-  <!-- WAVE: Facts -> About -->
+  <!-- WAVE: Facts -> Lab -->
+  <div class="wave-separator wave-separator-bg-warm">
+    <svg viewBox="0 0 1440 60" preserveAspectRatio="none">
+      <path d="M0,30 C240,10 480,50 720,30 C960,10 1200,50 1440,30 L1440,60 L0,60 Z" fill="var(--dark)"/>
+    </svg>
+  </div>
+
+  <!-- POC SECTION -->
+  <section class="poc-section" id="lab">
+    <div class="reveal">
+      <span class="section-label">Kust &amp; Kade Lab</span>
+      <h2 class="section-title">Kijk. Dit levert het op.</h2>
+      <div class="section-divider">
+        <svg viewBox="0 0 50 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 8 C8 -4, 16 20, 25 8 C34 -4, 42 20, 50 8" stroke="var(--accent-light)" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+        </svg>
+      </div>
+      <p class="poc-intro">Kust &amp; Kade <em style="font-style:italic; color:var(--accent-glow);">Lab</em> is de plek waar we concepten bouwen en laten zien wat er mogelijk is. Geen pitchdeck, maar werkende tools. Probeer ze zelf.</p>
+    </div>
+
+    <div class="poc-grid reveal-stagger">
+
+      <!-- Card 1: HR Assistent -->
+      <div class="poc-card reveal">
+        <div class="poc-browser-chrome">
+          <div class="poc-dots">
+            <span class="poc-dot poc-dot-r"></span>
+            <span class="poc-dot poc-dot-y"></span>
+            <span class="poc-dot poc-dot-g"></span>
+          </div>
+          <div class="poc-url">lab / hr-assistent</div>
+        </div>
+        <div class="poc-card-body">
+          <span class="poc-tag">Lab — HR Dienstverlening</span>
+          <h3 class="poc-card-title">HR <em>Assistent</em></h3>
+          <p class="poc-card-desc">Stel je HR-vragen over verlof, de CAO of bedrijfsbeleid — en ervaar hoe AI jouw HR-afdeling 24/7 bereikbaar maakt.</p>
+          <div class="poc-preview">
+            <span class="poc-preview-dot"></span>
+            <span class="poc-preview-text">Live demo · AI Tool #1</span>
+          </div>
+        </div>
+        <a href="../Kust%20%26%20Kade%20Lab/hr-assistent.html" target="_blank" class="poc-cta">
+          Probeer het
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+        </a>
+      </div>
+
+      <!-- Card 2: Onboarding Routekaart -->
+      <div class="poc-card reveal">
+        <div class="poc-browser-chrome">
+          <div class="poc-dots">
+            <span class="poc-dot poc-dot-r"></span>
+            <span class="poc-dot poc-dot-y"></span>
+            <span class="poc-dot poc-dot-g"></span>
+          </div>
+          <div class="poc-url">lab / onboarding-routekaart</div>
+        </div>
+        <div class="poc-card-body">
+          <span class="poc-tag">Lab — Onboarding</span>
+          <h3 class="poc-card-title">Onboarding <em>Routekaart</em></h3>
+          <p class="poc-card-desc">Geef een paar gegevens op en ontvang een persoonlijke 4-weken onboarding route — klaar om te delen met je nieuwe collega.</p>
+          <div class="poc-preview">
+            <span class="poc-preview-dot" style="animation-delay:0.4s"></span>
+            <span class="poc-preview-text">Live demo · AI Tool #2</span>
+          </div>
+        </div>
+        <a href="../Kust%20%26%20Kade%20Lab/onboarding-routekaart.html" target="_blank" class="poc-cta">
+          Probeer het
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+        </a>
+      </div>
+
+      <!-- Card 3: Vacaturetekst Generator -->
+      <div class="poc-card reveal">
+        <div class="poc-browser-chrome">
+          <div class="poc-dots">
+            <span class="poc-dot poc-dot-r"></span>
+            <span class="poc-dot poc-dot-y"></span>
+            <span class="poc-dot poc-dot-g"></span>
+          </div>
+          <div class="poc-url">lab / vacaturetekst-generator</div>
+        </div>
+        <div class="poc-card-body">
+          <span class="poc-tag">Lab — Werving &amp; Selectie</span>
+          <h3 class="poc-card-title">Vacaturetekst Generator<br><em>op maat, in seconden</em></h3>
+          <p class="poc-card-desc">Vul een paar velden in en ontvang een volledige vacaturetekst afgestemd op jullie toon, functie-eisen en cultuur. Geen blanco pagina meer.</p>
+          <div class="poc-preview">
+            <span class="poc-preview-dot" style="animation-delay:0.8s"></span>
+            <span class="poc-preview-text">Live demo · AI Tool #3</span>
+          </div>
+        </div>
+        <a href="../Kust%20%26%20Kade%20Lab/vacaturetekst-generator.html" target="_blank" class="poc-cta">
+          Probeer het
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- WAVE: Lab -> About -->
   <div class="wave-separator wave-separator-dark">
     <svg viewBox="0 0 1440 60" preserveAspectRatio="none">
       <path d="M0,30 C240,10 480,50 720,30 C960,10 1200,50 1440,30 L1440,60 L0,60 Z" fill="var(--bg-alt)"/>
@@ -851,7 +1094,7 @@
   <section class="about" id="over-ons">
     <div class="reveal">
       <span class="section-label">Over Kust & Kade</span>
-      <h2 class="section-title">Begin bij wat er al is</h2>
+      <h2 class="section-title">Begin bij wat er al is.</h2>
       <div class="section-divider">
         <svg viewBox="0 0 50 16" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M0 8 C8 -4, 16 20, 25 8 C34 -4, 42 20, 50 8" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" fill="none"/>
@@ -899,7 +1142,7 @@
   <section class="services services-dark" id="diensten">
     <div class="reveal">
       <span class="section-label">Workshops</span>
-      <h2 class="section-title">Kies wat past</h2>
+      <h2 class="section-title">Kies wat past.</h2>
       <div class="section-divider">
         <svg viewBox="0 0 50 16" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M0 8 C8 -4, 16 20, 25 8 C34 -4, 42 20, 50 8" stroke="var(--accent-glow)" stroke-width="2.5" stroke-linecap="round" fill="none"/>
@@ -959,7 +1202,7 @@
     <div class="reveal">
       <span class="section-label">Contact</span>
       <div class="contact-title-row">
-        <h2 class="section-title">Neem contact op</h2>
+        <h2 class="section-title">Neem contact op.</h2>
         <img src="assets/footer-logo.png" alt="Kust & Kade logo" class="contact-logo">
       </div>
       <div class="section-divider">
@@ -971,14 +1214,14 @@
     <div class="contact-grid">
       <div class="reveal">
         <div class="contact-info">
-          <p>Nieuwsgierig geworden? Stuur een berichtje.</p>
+          <p>Nieuwsgierig geworden? Stuur een berichtje, gewoon even kennismaken en kijken wat er mogelijk is.</p>
         </div>
       </div>
       <form class="contact-form reveal" action="https://formspree.io/f/mqedryrq" method="POST" novalidate>
         <div class="form-row">
           <div class="form-group">
             <label for="naam">Naam</label>
-            <input type="text" id="naam" name="naam" placeholder="Naam" required autocomplete="name">
+            <input type="text" id="naam" name="naam" placeholder="Jouw volledige naam" required autocomplete="name">
           </div>
           <div class="form-group">
             <label for="email">Email</label>
@@ -986,7 +1229,7 @@
           </div>
         </div>
         <div class="form-group">
-          <label for="workshop">Waarmee kunnen we helpen?</label>
+          <label for="workshop">Waarmee kan ik je helpen?</label>
           <select id="workshop" name="workshop" required>
             <option value="" disabled selected>Kies een optie…</option>
             <option value="Workshop: De basis">Workshop: De basis</option>
@@ -996,7 +1239,7 @@
         </div>
         <div class="form-group">
           <label for="bericht">Bericht <span style="font-weight:300;text-transform:none;letter-spacing:0">(optioneel)</span></label>
-          <textarea id="bericht" name="bericht" placeholder="Vertel over de situatie, je team of je vraagstuk…"></textarea>
+          <textarea id="bericht" name="bericht" placeholder="Vertel me over jouw situatie, je team of je vraagstuk…"></textarea>
         </div>
         <button class="btn btn-primary form-submit-btn" type="submit">
           Verstuur bericht
