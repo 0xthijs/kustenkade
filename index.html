@@ -4,12 +4,58 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Kust & Kade</title>
-  <meta name="description" content="Kust & Kade helpt HR-professionals om AI werkend te krijgen in hun organisatie. Workshops, sparring en maatwerk.">
-  <meta property="og:title" content="Kust & Kade | HR & AI Consultancy">
-  <meta property="og:description" content="Van buzzword naar werkwoord. AI-workshop voor HR-professionals.">
-  <meta property="og:image" content="assets/og-image.jpg">
+  <title>AI Workshops voor HR-Professionals | Kust & Kade</title>
+  <meta name="description" content="Kust & Kade helpt HR-professionals AI concreet inzetten. Hands-on workshops, sparring en maatwerk — geen kennis vereist, wel resultaat. Plan een gratis kennismakingsgesprek.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://www.kustenkade.nl/">
+  <meta property="og:title" content="AI Workshops voor HR-Professionals | Kust & Kade">
+  <meta property="og:description" content="Van buzzword naar werkwoord. Hands-on AI-workshops voor HR-professionals. Geen technische kennis vereist — wel werkende resultaten.">
+  <meta property="og:image" content="https://www.kustenkade.nl/assets/og-image.jpg">
   <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.kustenkade.nl/">
+  <meta property="og:locale" content="nl_NL">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="AI Workshops voor HR-Professionals | Kust & Kade">
+  <meta name="twitter:description" content="Van buzzword naar werkwoord. Hands-on AI-workshops voor HR-professionals.">
+  <meta name="twitter:image" content="https://www.kustenkade.nl/assets/og-image.jpg">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Kust & Kade",
+    "url": "https://www.kustenkade.nl",
+    "logo": "https://www.kustenkade.nl/assets/footer-logo.png",
+    "description": "Kust & Kade helpt HR-professionals AI concreet en werkend te krijgen in hun organisatie via workshops, sparring en maatwerk.",
+    "founder": {
+      "@type": "Person",
+      "name": "Thijs",
+      "jobTitle": "HR & AI Specialist",
+      "description": "Meer dan tien jaar HR-ervaring gecombineerd met diepgaande kennis van AI-toepassingen voor HR-professionals."
+    },
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "contactType": "customer service",
+      "availableLanguage": "Dutch"
+    },
+    "offers": [
+      {
+        "@type": "Course",
+        "name": "Workshop: De Basis",
+        "description": "Voor HR-professionals die willen snappen wat AI is, wat het kan en waar de grenzen liggen. Hands-on workshop met echte HR-cases.",
+        "provider": { "@type": "Organization", "name": "Kust & Kade" },
+        "url": "https://www.kustenkade.nl/workshop-de-basis.html",
+        "inLanguage": "nl"
+      },
+      {
+        "@type": "Course",
+        "name": "Workshop: Van idee naar werkende tool",
+        "description": "Voor HR-professionals die al weten wat AI kan en nu iets willen bouwen. Breng een concreet probleem mee, ga naar huis met een werkend prototype.",
+        "provider": { "@type": "Organization", "name": "Kust & Kade" },
+        "inLanguage": "nl"
+      }
+    ]
+  }
+  </script>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%232E3128'/%3E%3Cpath d='M2 20 C6 14, 10 26, 14 20 C18 14, 22 26, 26 20 C28 17, 30 18, 30 20' stroke='%232C5F6E' stroke-width='2.5' stroke-linecap='round' fill='none'/%3E%3Cpath d='M2 24 C6 18, 10 30, 14 24 C18 18, 22 30, 26 24 C28 21, 30 22, 30 24' stroke='%233A7A8C' stroke-width='2' stroke-linecap='round' fill='none' opacity='0.7'/%3E%3C/svg%3E" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -473,6 +519,35 @@
       line-height: 1.85; color: var(--text); letter-spacing: -0.005em;
     }
     .about-lead-quote em { font-style: italic; color: var(--accent); }
+
+    .about-profile {
+      display: flex; align-items: center; gap: 1.1rem;
+      margin-top: 1.5rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--border);
+    }
+    .about-profile-img {
+      width: 72px; height: 72px;
+      border-radius: 4px;
+      object-fit: cover; object-position: center 15%;
+      border: 1px solid var(--border);
+      flex-shrink: 0;
+      filter: grayscale(20%);
+      box-shadow: 0 2px 10px rgba(46,49,40,0.10);
+    }
+    @media (min-width: 768px) {
+      .about-profile-img { width: 80px; height: 80px; }
+    }
+    .about-profile-info { display: flex; flex-direction: column; gap: 0.25rem; }
+    .about-profile-name {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 1rem; font-weight: 400; color: var(--text);
+    }
+    .about-profile-role {
+      font-size: 0.72rem; font-weight: 400;
+      letter-spacing: 0.04em; color: var(--text-muted);
+      line-height: 1.5;
+    }
 
     .about-principles { display: flex; flex-direction: column; }
 
@@ -988,11 +1063,11 @@
       <p class="hero-sub">Kust & Kade helpt HR-professionals om AI werkend te krijgen in hun organisatie. Aansluiten bij wat er al is en inzetten op waar het iets toevoegt. Workshops, advies en maatwerk.</p>
       <div class="hero-cta-group">
         <a href="#diensten" class="btn btn-primary">
-          Bekijk de workshop
+          Bekijk de workshops
           <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
         </a>
         <a href="#contact" class="btn btn-outline">
-          Plan een kennismaking
+          Plan een gratis kennismakingsgesprek
         </a>
       </div>
     </div>
@@ -1014,19 +1089,19 @@
     <div class="facts-bar-inner">
       <div class="fact-item">
         <span class="fact-value-wrapper">Geen AI-kennis nodig</span>
-        <span class="fact-label">beginnen waar jullie staan</span>
+        <span class="fact-label">je begint waar jullie staan</span>
       </div>
       <div class="fact-item">
-        <span class="fact-value-wrapper">Hands-on</span>
-        <span class="fact-label">zelf aan de knoppen</span>
+        <span class="fact-value-wrapper">Max. 8 deelnemers</span>
+        <span class="fact-label">persoonlijk, concreet en relevant</span>
       </div>
       <div class="fact-item">
-        <span class="fact-value-wrapper">Kleine groepen</span>
-        <span class="fact-label">persoonlijk en relevant</span>
+        <span class="fact-value-wrapper">Werkend resultaat</span>
+        <span class="fact-label">je gaat naar huis met iets bruikbaars</span>
       </div>
       <div class="fact-item">
-        <span class="fact-value-wrapper">Flexibel</span>
-        <span class="fact-label">online of bij jullie op kantoor</span>
+        <span class="fact-value-wrapper">Online of op locatie</span>
+        <span class="fact-label">volledig flexibel in te plannen</span>
       </div>
     </div>
   </div>
@@ -1052,6 +1127,13 @@
     <div class="about-inner reveal">
       <div class="about-lead">
         <p class="about-lead-quote">Meer dan tien jaar HR-ervaring en een scherp oog voor wat AI daar <em>concreet</em> aan toevoegt. Het vertrekpunt is altijd wat er al is: de mensen, de structuur, data en de manier waarop een organisatie écht draait. De kust staat voor beweging en vernieuwing. De kade is wat er al is aan fundament en basis. Die twee bij elkaar brengen is waar Kust & Kade voor staat.</p>
+        <div class="about-profile">
+          <img src="assets/profielfoto thijs.jpg" alt="Thijs — oprichter van Kust &amp; Kade" class="about-profile-img">
+          <div class="about-profile-info">
+            <span class="about-profile-name">Thijs</span>
+            <span class="about-profile-role">HR &amp; AI Specialist · Oprichter Kust &amp; Kade</span>
+          </div>
+        </div>
       </div>
       <div class="about-principles">
         <div class="principle-item">
@@ -1427,7 +1509,11 @@
 
   <!-- FOOTER -->
   <footer>
-    <p>&copy; 2026 Kust & Kade. Alle rechten voorbehouden.</p>
+    <p>&copy; 2026 Kust &amp; Kade. Alle rechten voorbehouden.</p>
+    <a href="https://www.linkedin.com/company/kust-en-kade" target="_blank" rel="noopener noreferrer" aria-label="Kust &amp; Kade op LinkedIn" style="display:inline-flex;align-items:center;gap:0.45rem;text-decoration:none;color:var(--text-muted);font-size:0.78rem;transition:color 0.2s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--text-muted)'">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+      LinkedIn
+    </a>
   </footer>
 
   <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
