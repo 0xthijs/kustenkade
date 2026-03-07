@@ -73,11 +73,13 @@
     }
 
     .logo-icon {
-      width: 36px; height: 36px;
-      background: var(--dark);
-      border-radius: 4px;
+      height: 36px;
       display: flex; align-items: center; justify-content: center;
       flex-shrink: 0;
+    }
+    .logo-icon img {
+      max-height: 100%;
+      width: auto;
     }
 
     .logo-name { font-family: var(--serif); font-size: 1rem; color: var(--text); display: block; }
@@ -94,7 +96,7 @@
       flex: 1;
       display: flex;
       flex-direction: column;
-      max-width: 860px;
+      max-width: 1000px; /* Made widget container larger */
       width: 100%;
       margin: 0 auto;
       padding: 2.5rem 1.5rem 2rem;
@@ -134,7 +136,6 @@
     }
     .info-strip strong { color: var(--accent); font-weight: 500; }
 
-    /* ── Chat card ── */
     .chat-card {
       background: var(--card-bg);
       border: 1px solid var(--border);
@@ -143,6 +144,7 @@
       overflow: hidden;
       display: flex;
       flex-direction: column;
+      height: 750px; /* Made widget taller */
     }
 
     /* Card header */
@@ -175,8 +177,6 @@
       flex: 1;
       padding: 1.5rem;
       overflow-y: auto;
-      min-height: 360px;
-      max-height: 460px;
       display: flex;
       flex-direction: column;
       gap: 1rem;
@@ -247,6 +247,7 @@
       display: flex;
       flex-wrap: wrap;
       gap: 0.45rem;
+      z-index: 10;
     }
     .chips-label {
       width: 100%;
@@ -340,19 +341,17 @@
 <header>
   <a href="#" class="logo-link">
     <div class="logo-icon">
-      <svg viewBox="0 0 24 24" width="22" height="22" fill="none">
-        <rect x="3" y="3" width="5" height="18" rx="0.5" fill="#F5F3EC"/>
-        <path d="M8 12 L18 4"  stroke="#F5F3EC" stroke-width="2.2" stroke-linecap="square"/>
-        <path d="M8 12 L18 20" stroke="#F5F3EC" stroke-width="2.2" stroke-linecap="square"/>
-        <path d="M2 22 C5 19, 8 23, 11 20 C14 17, 17 21, 20 19" stroke="#3A7A8C" stroke-width="1.4" stroke-linecap="round" fill="none"/>
-      </svg>
+      <img src="../logo/kust%20&%20kade%20logo%20high%20res%20vector%20large%20white%20bg%20cut.png" alt="Kust & Kade Lab Logo">
     </div>
     <div>
       <span class="logo-name">Kust &amp; Kade</span>
       <span class="logo-sub">Lab · AI Demo</span>
     </div>
   </a>
-  <span class="header-badge">AI Tool #3</span>
+  <div style="display: flex; gap: 15px; align-items: center;">
+    <a href="https://www.kustenkade.nl" style="font-size: 0.7rem; font-weight: 500; color: var(--text-muted); text-decoration: none; letter-spacing: 0.05em;">&larr; Terug naar website</a>
+    <span class="header-badge">AI Tool #3</span>
+  </div>
 </header>
 
 <!-- ── Main ── -->
@@ -377,7 +376,7 @@
     <div class="chat-header">
       <div class="bot-avatar">⚓</div>
       <div>
-        <div class="bot-name">Emma — HR Assistent</div>
+        <div class="bot-name">Sophie — HR Assistent</div>
         <div class="bot-status"><span class="status-dot"></span>Online &middot; Kust &amp; Kade BV</div>
       </div>
     </div>
@@ -433,7 +432,14 @@
   ───────────────────────────────────────────── */
   const API_URL = 'https://ai-proxy.thijsaa.workers.dev';
 
-  const SYSTEM_PROMPT = `Je bent Emma, de vriendelijke en deskundige HR Assistent van Kust & Kade BV. Je helpt medewerkers snel en helder met al hun HR-vragen.
+  const SYSTEM_PROMPT = `Je bent Sophie, de vriendelijke en deskundige HR Assistent van Kust & Kade BV. Je helpt medewerkers snel en helder met al hun HR-vragen.
+
+BELANGRIJK VOOR DEZE DEMO:
+Speel het spel altijd mee! Dit is een test/demo-omgeving. 
+1. **Persoonlijke informatie:** Als de gebruiker vragen stelt in de ik-vorm over zijn/haar persoonlijke situatie (bijvoorbeeld: "Hoeveel vakantiedagen heb ik nog?" of "Mag ik al thuiswerken?"), dan **verzin jij zelfstandig** een kloppend profiel voor de gebruiker zodat je direct antwoord kunt geven. Verzin een fictief openstaand verlofsaldo, indiensttredingsdatum en functie, alsof Kust & Kade BV direct gekoppeld is met hun medewerkersdossier in AFAS.
+2. **Ontbrekend beleid (Belangrijk!):** Als de gebruiker vraagt naar regelingen die niet in deze prompt staan (zoals een fitnessbudget, fietsenplan, leaseauto, opleidingen, etc.), mag je NOOIT zeggen dat je het niet weet of dat het niet in je data staat. **Verzin ter plekke** een realistisch, genereus "Kust & Kade"-beleid voor dat onderwerp en beantwoord de vraag alsof dit altijd al de officiële regel was.
+
+Zeg NOOIT dat je geen toegang hebt tot systemen, persoonlijke gegevens, of bepaald beleid. Geef altijd direct de benodigde gegevens.
 
 OVER KUST & KADE BV:
 Kust & Kade BV is een HR & AI consultancybureau in Nederland, ca. 80 medewerkers, verdeeld over HR & People, IT & Data, Sales & BD, Marketing, Finance, Operations en Juridisch.
@@ -536,7 +542,7 @@ TEAM (voor doorverwijzingen)
      INIT
   ───────────────────────────────────────────── */
   window.addEventListener('DOMContentLoaded', () => {
-    appendMessage('bot', 'Hoi! Ik ben **Emma**, jouw HR assistent bij Kust & Kade. 👋\n\nIk help je graag met vragen over verlof, de CAO, thuiswerken, ziekteverzuim of onkostendeclaraties. Klik hieronder op een veelgestelde vraag of stel direct je eigen vraag.');
+    appendMessage('bot', 'Hoi! Ik ben **Sophie**, jouw HR assistent bij Kust & Kade. 👋\n\nIk help je graag met vragen over verlof, de CAO, thuiswerken, ziekteverzuim of onkostendeclaraties. Klik hieronder op een veelgestelde vraag of stel direct je eigen vraag.');
     document.getElementById('chatInput').focus();
   });
 
@@ -639,9 +645,9 @@ TEAM (voor doorverwijzingen)
     input.value = '';
     input.style.height = 'auto';
 
-    // Hide chips after first interaction
-    const chips = document.getElementById('chipsArea');
-    if (chips) chips.style.display = 'none';
+    // Commented out to keep chips visible in the demo
+    // const chips = document.getElementById('chipsArea');
+    // if (chips) chips.style.display = 'none';
 
     // Show user message
     appendMessage('user', msg);
