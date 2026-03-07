@@ -526,6 +526,7 @@
       gap: 1.1rem; margin-top: 1.75rem; align-items: stretch;
     }
     @media (min-width: 600px) { .services-grid { grid-template-columns: repeat(2, 1fr); gap: 1.75rem; margin-top: 2.5rem; } }
+    @media (min-width: 1024px) { .services-grid { grid-template-columns: repeat(3, 1fr); } }
 
     .service-card {
       background: rgba(255,255,255,0.04);
@@ -1129,14 +1130,34 @@
         <h3>Sparring & maatwerk</h3>
         <p class="service-card-meta">Op maat · 1-op-1 · Flexibel</p>
         <p>Eén op één sparren over hoe AI past in jouw HR-werk. Geen vast programma, wel een nuchter klankbord dat beide werelden kent. Ideaal als je concreet advies zoekt voor jouw situatie.</p>
-        <a href="#contact" class="service-cta" data-workshop="maatwerk" onclick="selectWorkshop('Sparring &amp; maatwerk')">
+        <a href="#contact" class="service-cta" onclick="selectWorkshop('Sparring &amp; maatwerk')">
           Neem contact op
           <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
         </a>
       </div>
+      <div class="service-card reveal">
+        <div class="service-icon-wrap">
+          <svg class="service-icon" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
+            <!-- mast -->
+            <line x1="108" y1="24" x2="108" y2="196"/>
+            <!-- groot hoofdzeil: breed naar links -->
+            <path d="M108 32 L28 188 L108 188 Z"/>
+            <!-- fok: smaller naar rechts -->
+            <path d="M108 72 L184 168 L108 168 Z"/>
+            <!-- romp -->
+            <path d="M24 196 L232 196"/>
+            <path d="M24 196 Q128 228 232 196"/>
+          </svg>
+        </div>
+        <h3>Workshop: Van idee naar werkende tool</h3>
+        <p class="service-card-meta">Volledige dag · Verdieping · Max. 8 pers.</p>
+        <p>Voor HR-professionals die al weten wat AI kan en nu iets willen maken. Je brengt een concreet probleem mee, en gaat naar huis met een werkend prototype: gebouwd, getest en klaar om te gebruiken.</p>
+        <div class="service-cta" style="cursor: default; opacity: 0.5;">
+          Coming soon
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 3a5 5 0 1 1 0 10A5 5 0 0 1 8 3M8 7v2M8 11h.01"/></svg>
+        </div>
+      </div>
     </div>
-
-    <!-- Pijl naar Lab -->
     <div class="services-lab-cta reveal">
       <a href="#lab" class="services-lab-link">
         <div class="services-lab-btn">
@@ -1387,6 +1408,7 @@
           <select id="workshop" name="workshop" required>
             <option value="" disabled selected>Kies een optie…</option>
             <option value="Workshop: De basis">Workshop: De basis</option>
+            <option value="Workshop: Van idee naar werkende tool">Workshop: Van idee naar werkende tool</option>
             <option value="Sparring & maatwerk">Sparring &amp; maatwerk</option>
             <option value="Weet ik nog niet">Weet ik nog niet</option>
           </select>
