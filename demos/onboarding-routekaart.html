@@ -425,42 +425,54 @@
 <!-- FORM -->
 <div class="form-card" id="formCard">
   <div class="form-header">
-    <div class="form-header-num">✦ Vul de gegevens in</div>
+    <div class="form-header-num">✦ Klik je keuzes aan</div>
     <h2>Over de nieuwe medewerker</h2>
-    <p>Hoe meer je invult, hoe persoonlijker de routekaart wordt.</p>
+    <p>Klik op de opties — geen typen nodig.</p>
   </div>
   <div class="form-body">
-    <div class="field-row">
-      <div class="field">
-        <label>Naam nieuwe medewerker</label>
-        <input type="text" id="emp-name" placeholder="bijv. Sarah de Vries" />
-      </div>
-      <div class="field">
-        <label>Functietitel *</label>
-        <input type="text" id="job-title" placeholder="bijv. HR Business Partner" oninput="autoDetect(this.value)" />
-      </div>
-    </div>
-    <div class="field-row">
-      <div class="field">
-        <label>Afdeling <span id="dept-auto-badge" style="display:none;font-size:0.65rem;font-weight:500;color:var(--accent);letter-spacing:0.06em;margin-left:6px;">✦ automatisch ingevuld</span></label>
-        <select id="department" onchange="autoAssignBuddy()">
-          <option value="">Kies afdeling</option>
-          <option>HR & People</option>
-          <option>Finance & Control</option>
-          <option>Marketing & Communicatie</option>
-          <option>IT & Data</option>
-          <option>Operations & Logistiek</option>
-          <option>Sales & Business Development</option>
-          <option>Juridisch & Compliance</option>
-          <option>Directie & Management</option>
-          <option>Klantenservice</option>
-        </select>
-      </div>
-      <div class="field">
-        <label>Startdatum</label>
-        <input type="date" id="start-date" />
+
+    <!-- Naam -->
+    <div class="field">
+      <label>Naam nieuwe medewerker</label>
+      <div class="chips" id="name-chips">
+        <span class="chip" data-val="Sarah de Vries">Sarah de Vries</span>
+        <span class="chip" data-val="Tom Janssen">Tom Janssen</span>
+        <span class="chip" data-val="Emma Bakker">Emma Bakker</span>
+        <span class="chip" data-val="Lars van der Berg">Lars van der Berg</span>
+        <span class="chip" data-val="Nora Meijer">Nora Meijer</span>
+        <span class="chip" data-val="Joost de Groot">Joost de Groot</span>
       </div>
     </div>
+
+    <!-- Afdeling chips -->
+    <div class="field">
+      <label>Afdeling *</label>
+      <div class="chips" id="dept-chips">
+        <span class="chip" data-val="HR & People">HR & People</span>
+        <span class="chip" data-val="Finance & Control">Finance & Control</span>
+        <span class="chip" data-val="Marketing & Communicatie">Marketing</span>
+        <span class="chip" data-val="IT & Data">IT & Data</span>
+        <span class="chip" data-val="Operations & Logistiek">Operations</span>
+        <span class="chip" data-val="Sales & Business Development">Sales</span>
+        <span class="chip" data-val="Juridisch & Compliance">Juridisch</span>
+        <span class="chip" data-val="Directie & Management">Directie</span>
+        <span class="chip" data-val="Klantenservice">Klantenservice</span>
+      </div>
+    </div>
+
+    <!-- Functietitel chips (verschijnt na afdeling-keuze) -->
+    <div class="field" id="jobtitle-field" style="display:none;">
+      <label>Functietitel *</label>
+      <div class="chips" id="jobtitle-chips"></div>
+    </div>
+
+    <!-- Startdatum -->
+    <div class="field">
+      <label>Startdatum</label>
+      <input type="date" id="start-date" />
+    </div>
+
+    <!-- Niveau -->
     <div class="field">
       <label>Niveau</label>
       <div class="chips" id="level-chips">
@@ -470,6 +482,8 @@
         <span class="chip" data-val="manager">Lead / Manager</span>
       </div>
     </div>
+
+    <!-- Werkomgeving -->
     <div class="field">
       <label>Werkomgeving</label>
       <div class="chips" id="remote-chips">
@@ -478,12 +492,13 @@
         <span class="chip" data-val="remote">Volledig remote</span>
       </div>
     </div>
-    <div class="field">
-      <label>Buddy / Mentor <span id="buddy-auto-badge" style="display:none;font-size:0.65rem;font-weight:500;color:var(--accent);letter-spacing:0.06em;margin-left:6px;">✦ automatisch toegewezen</span></label>
-      <input type="text" id="buddy-name" placeholder="Wordt automatisch toegewezen o.b.v. afdeling" />
-    </div>
+
+    <!-- Buddy (auto, verborgen) -->
+    <input type="hidden" id="buddy-name" />
+
   </div>
-  <div class="form-footer">
+  <div class="form-footer" style="justify-content: space-between; align-items: center;">
+    <span id="form-status" style="font-size:0.75rem;color:var(--text-muted);font-weight:300;font-style:italic;"></span>
     <button class="btn btn-dark" onclick="generate()">✦ Genereer routekaart</button>
   </div>
 </div>
@@ -561,9 +576,22 @@
 <div class="toast" id="toast"></div>
 
 <script>
-  const state = { level: 'medior', remote: 'hybride' };
+  const state = { level: 'medior', remote: 'hybride', dept: '', jobTitle: '', name: '' };
 
-  // Chips init
+  // ── JOB TITLES PER AFDELING ──
+  const jobTitlesPerDept = {
+    'HR & People':                  ['HR Business Partner','HR Manager','Recruiter','L&D Consultant','HR Adviseur','Onboarding Specialist','Talent Acquisition Manager','Compensation & Benefits Specialist'],
+    'Finance & Control':            ['Financial Controller','Accountant','CFO','Budget Analyst','Audit Manager','Finance Manager','Financial Analyst','Business Controller'],
+    'Marketing & Communicatie':     ['Marketing Manager','Content Specialist','Social Media Manager','Copywriter','Brand Manager','Digital Marketing Specialist','Communicatieadviseur','Growth Marketer'],
+    'IT & Data':                    ['Software Developer','Data Analist','DevOps Engineer','Product Owner','UX Designer','Data Scientist','IT Manager','Security Analyst','Cloud Architect'],
+    'Operations & Logistiek':       ['Operations Manager','Supply Chain Manager','Inkoper','Facilitair Manager','Planner','Logistiek Coördinator','Process Manager'],
+    'Sales & Business Development': ['Account Manager','Sales Manager','Business Developer','Key Account Manager','Sales Representative','Commercial Director','Partner Manager'],
+    'Juridisch & Compliance':       ['Legal Counsel','Compliance Officer','Privacy Officer','Contract Manager','Jurist','Legal Manager','AVG Specialist'],
+    'Directie & Management':        ['Directeur','CEO','COO','Afdelingshoofd','Managing Director','General Manager','VP Operations','Chief of Staff'],
+    'Klantenservice':               ['Klantenservice Medewerker','Team Lead Klantenservice','Customer Success Manager','Helpdesk Medewerker','Service Desk Specialist','Head of Customer Success'],
+  };
+
+  // ── CHIP HELPER ──
   function initChip(id, key, onChange) {
     document.getElementById(id).querySelectorAll('.chip').forEach(c => {
       if (c.classList.contains('selected')) state[key] = c.dataset.val;
@@ -575,18 +603,85 @@
       });
     });
   }
-  initChip('level-chips', 'level', autoAssignBuddy);
+
+  initChip('level-chips', 'level', () => autoAssignBuddy());
   initChip('remote-chips', 'remote');
+
+  // ── NAAM CHIPS ──
+  document.getElementById('name-chips').querySelectorAll('.chip').forEach(c => {
+    c.addEventListener('click', () => {
+      document.getElementById('name-chips').querySelectorAll('.chip').forEach(x => x.classList.remove('selected'));
+      c.classList.add('selected');
+      state.name = c.dataset.val;
+      updateFormStatus();
+    });
+  });
+
+  // ── AFDELING CHIPS ──
+  document.getElementById('dept-chips').querySelectorAll('.chip').forEach(c => {
+    c.addEventListener('click', () => {
+      document.getElementById('dept-chips').querySelectorAll('.chip').forEach(x => x.classList.remove('selected'));
+      c.classList.add('selected');
+      state.dept = c.dataset.val;
+      state.jobTitle = '';
+      buildJobTitleChips(c.dataset.val);
+      autoAssignBuddy();
+      updateFormStatus();
+    });
+  });
+
+  function buildJobTitleChips(dept) {
+    const titles = jobTitlesPerDept[dept] || [];
+    const wrap = document.getElementById('jobtitle-chips');
+    wrap.innerHTML = titles.map(t =>
+      `<span class="chip" data-val="${t}">${t}</span>`
+    ).join('');
+    wrap.querySelectorAll('.chip').forEach(c => {
+      c.addEventListener('click', () => {
+        wrap.querySelectorAll('.chip').forEach(x => x.classList.remove('selected'));
+        c.classList.add('selected');
+        state.jobTitle = c.dataset.val;
+        updateFormStatus();
+      });
+    });
+    const field = document.getElementById('jobtitle-field');
+    field.style.display = 'block';
+    // animate in
+    field.style.opacity = '0';
+    field.style.transform = 'translateY(8px)';
+    field.style.transition = 'opacity 0.3s, transform 0.3s';
+    requestAnimationFrame(() => { field.style.opacity = '1'; field.style.transform = 'translateY(0)'; });
+  }
+
+  function updateFormStatus() {
+    const statusEl = document.getElementById('form-status');
+    if (!state.dept) { statusEl.textContent = ''; return; }
+    if (!state.jobTitle) { statusEl.textContent = '✦ Kies nog een functietitel'; return; }
+    statusEl.textContent = '✓ Klaar om te genereren';
+    statusEl.style.color = 'var(--accent)';
+  }
 
   // Set today as default date
   const today = new Date();
   document.getElementById('start-date').value = today.toISOString().split('T')[0];
 
   function generate() {
-    const title = document.getElementById('job-title').value.trim();
-    if (!title) {
-      document.getElementById('job-title').focus();
-      document.getElementById('job-title').style.borderColor = '#C0392B';
+    if (!state.dept) {
+      const deptField = document.getElementById('dept-chips');
+      deptField.style.outline = '2px solid #C0392B';
+      deptField.style.borderRadius = '4px';
+      setTimeout(() => { deptField.style.outline = ''; }, 1800);
+      document.getElementById('form-status').textContent = '← Kies eerst een afdeling';
+      document.getElementById('form-status').style.color = '#C0392B';
+      return;
+    }
+    if (!state.jobTitle) {
+      const jtField = document.getElementById('jobtitle-chips');
+      jtField.style.outline = '2px solid #C0392B';
+      jtField.style.borderRadius = '4px';
+      setTimeout(() => { jtField.style.outline = ''; }, 1800);
+      document.getElementById('form-status').textContent = '← Kies nog een functietitel';
+      document.getElementById('form-status').style.color = '#C0392B';
       return;
     }
     document.getElementById('formCard').style.display = 'none';
@@ -596,9 +691,9 @@
   }
 
   function buildResult() {
-    const name   = document.getElementById('emp-name').value.trim();
-    const title  = document.getElementById('job-title').value.trim();
-    const dept   = document.getElementById('department').value || 'de afdeling';
+    const name   = state.name || '';
+    const title  = state.jobTitle;
+    const dept   = state.dept || 'de afdeling';
     const buddy  = document.getElementById('buddy-name').value.trim();
     const dateEl = document.getElementById('start-date').value;
     const level  = state.level;
@@ -712,20 +807,7 @@
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  // ── AUTO-DETECT DEPARTMENT ──
-  const deptRules = [
-    { keys: ['hr ', 'h&r', 'human resource', 'people', 'talent', 'recruiter', 'recruitment', 'personeels', 'l&d', 'learning', 'compensation', 'arbeids', 'onboarding'], dept: 'HR & People' },
-    { keys: ['finance', 'financieel', 'controller', 'boekhouding', 'accountant', 'treasury', 'control', 'budget', 'audit', 'cfo'], dept: 'Finance & Control' },
-    { keys: ['marketing', 'communicatie', 'content', 'social media', 'brand', 'campagne', 'digital marketing', 'copywriter', 'redacteur', 'growth'], dept: 'Marketing & Communicatie' },
-    { keys: ['developer', 'software', 'engineer', 'devops', 'cloud', 'architect', 'data analist', 'data scientist', 'scrum', 'product owner', 'ux', 'ui designer', 'programmer', 'cyber', 'security', ' it ', 'informatica'], dept: 'IT & Data' },
-    { keys: ['operations', 'logistiek', 'supply chain', 'inkoop', 'procurement', 'warehouse', 'planning', 'facilitair', 'facility'], dept: 'Operations & Logistiek' },
-    { keys: ['sales', 'accountmanager', 'business development', 'commercieel', 'verkoop', 'relatiebeheer', 'account executive'], dept: 'Sales & Business Development' },
-    { keys: ['jurist', 'legal', 'compliance', 'juridisch', 'advocaat', 'privacy', 'avg', 'gdpr', 'contract manager'], dept: 'Juridisch & Compliance' },
-    { keys: ['directeur', 'ceo', 'coo', 'cto', 'managing director', 'general manager', 'hoofd ', 'chief', 'vp ', 'vice president'], dept: 'Directie & Management' },
-    { keys: ['klantservice', 'klantenservice', 'customer success', 'helpdesk', 'support medewerker', 'service desk'], dept: 'Klantenservice' },
-  ];
-
-  // Fictitious K&K Lab buddy pool per department
+  // ── BUDDY POOL ──
   const buddyPool = {
     'HR & People':                { junior: 'Emma Zeeman (HR Adviseur)', medior: 'Emma Zeeman (HR Manager)', senior: 'Pieter Kooiman (Directeur HR)', manager: 'Pieter Kooiman (Directeur HR)' },
     'Finance & Control':          { junior: 'Lars van der Haven (Financial Analyst)', medior: 'Lars van der Haven (Controller)', senior: 'Nora Dijkstra (CFO)', manager: 'Nora Dijkstra (CFO)' },
@@ -738,34 +820,13 @@
     'Klantenservice':             { junior: 'Lotte Smits (Klantenservice Medewerker)', medior: 'Lotte Smits (Team Lead Klantenservice)', senior: 'Bas Janssen (Head of Customer Success)', manager: 'Bas Janssen (Head of Customer Success)' },
   };
 
-  function autoDetect(titleVal) {
-    const lower = ' ' + titleVal.toLowerCase() + ' ';
-    let matched = '';
-    for (const rule of deptRules) {
-      if (rule.keys.some(k => lower.includes(k))) { matched = rule.dept; break; }
-    }
-    if (matched) {
-      const sel = document.getElementById('department');
-      // find matching option
-      for (let i = 0; i < sel.options.length; i++) {
-        if (sel.options[i].text === matched) { sel.selectedIndex = i; break; }
-      }
-      document.getElementById('dept-auto-badge').style.display = 'inline';
-      autoAssignBuddy();
-    } else {
-      document.getElementById('dept-auto-badge').style.display = 'none';
-    }
-  }
-
   function autoAssignBuddy() {
-    const dept  = document.getElementById('department').value;
+    const dept  = state.dept;
     const level = state.level || 'medior';
     const pool  = buddyPool[dept];
     if (!pool) return;
-    const name = pool[level] || pool['medior'];
-    const field = document.getElementById('buddy-name');
-    field.value = name;
-    document.getElementById('buddy-auto-badge').style.display = 'inline';
+    const buddyName = pool[level] || pool['medior'];
+    document.getElementById('buddy-name').value = buddyName;
   }
 
   function printResult() {
@@ -775,7 +836,16 @@
   function restart() {
     document.getElementById('resultSection').classList.remove('visible');
     document.getElementById('formCard').style.display = 'block';
-    document.getElementById('job-title').style.borderColor = '';
+    // Reset state
+    state.dept = ''; state.jobTitle = ''; state.name = '';
+    // Reset dept chips
+    document.getElementById('dept-chips').querySelectorAll('.chip').forEach(x => x.classList.remove('selected'));
+    // Reset name chips
+    document.getElementById('name-chips').querySelectorAll('.chip').forEach(x => x.classList.remove('selected'));
+    // Hide job title field
+    document.getElementById('jobtitle-field').style.display = 'none';
+    document.getElementById('jobtitle-chips').innerHTML = '';
+    document.getElementById('form-status').textContent = '';
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
