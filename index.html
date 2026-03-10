@@ -4,19 +4,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>AI Workshops voor HR-Professionals | Kust & Kade</title>
-  <meta name="description" content="Kust & Kade helpt HR-professionals AI concreet inzetten. Hands-on workshops, sparring en maatwerk — geen kennis vereist, wel resultaat. Plan een gratis kennismakingsgesprek.">
+  <title>AI voor HR-professionals | Kust & Kade</title>
+  <meta name="description" content="Kust & Kade helpt HR-professionals AI concreet inzetten: van advies en workshops tot het ontwerp en integratie van AI-instrumenten in bestaande processen.">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://www.kustenkade.nl/">
-  <meta property="og:title" content="AI Workshops voor HR-Professionals | Kust & Kade">
-  <meta property="og:description" content="Van buzzword naar werkwoord. Hands-on AI-workshops voor HR-professionals. Geen technische kennis vereist — wel werkende resultaten.">
+  <meta property="og:title" content="AI voor HR-professionals | Kust & Kade">
+  <meta property="og:description" content="Kust & Kade helpt HR-professionals AI concreet inzetten, van advies tot werkende AI-instrumenten in bestaande processen.">
   <meta property="og:image" content="https://www.kustenkade.nl/assets/og-image.jpg">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://www.kustenkade.nl/">
   <meta property="og:locale" content="nl_NL">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="AI Workshops voor HR-Professionals | Kust & Kade">
-  <meta name="twitter:description" content="Van buzzword naar werkwoord. Hands-on AI-workshops voor HR-professionals.">
+  <meta name="twitter:title" content="AI voor HR-professionals | Kust & Kade">
+  <meta name="twitter:description" content="Van advies tot werkende AI-instrumenten: Kust & Kade helpt HR-professionals AI concreet inzetten.">
   <meta name="twitter:image" content="https://www.kustenkade.nl/assets/og-image.jpg">
   <script type="application/ld+json">
   {
@@ -25,7 +25,7 @@
     "name": "Kust & Kade",
     "url": "https://www.kustenkade.nl",
     "logo": "https://www.kustenkade.nl/assets/footer-logo.png",
-    "description": "Kust & Kade helpt HR-professionals AI concreet en werkend te krijgen in hun organisatie via workshops, sparring en maatwerk.",
+    "description": "Kust & Kade helpt HR-professionals AI concreet en werkend te krijgen in hun organisatie via advies, workshops, AI-instrumenten en procesintegratie.",
     "founder": {
       "@type": "Person",
       "name": "Thijs",
@@ -367,17 +367,19 @@
       transition: left 0.55s cubic-bezier(0.16, 1, 0.3, 1); z-index: -1;
     }
     .btn-primary::after {
-      content: ''; position: absolute; inset: 0;
-      background: var(--accent-light);
-      transform: scaleX(0) skewX(-8deg); transform-origin: left;
-      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1); z-index: -1;
+      content: ''; position: absolute; left: 0; bottom: -4px; width: 200%; height: 40px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M0,40 C150,80 350,0 600,40 C850,80 1050,0 1200,40 L1200,120 L0,120 Z' fill='%235a9fb5'/%3E%3C/svg%3E");
+      background-size: 50% 100%; background-repeat: repeat-x;
+      opacity: 0; transform: translateY(12px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+      pointer-events: none; z-index: -1;
     }
     .btn-primary:hover {
       box-shadow: 0 8px 28px rgba(44,95,110,0.45), 0 2px 8px rgba(44,95,110,0.2);
       transform: translateY(-1px); border-color: var(--accent-light);
     }
     .btn-primary:hover::before { left: 100%; }
-    .btn-primary:hover::after { transform: scaleX(1) skewX(-8deg); }
+    .btn-primary:hover::after { opacity: 0.35; transform: translateY(0); animation: waveAction 5s infinite linear; }
     .btn-primary:active { transform: translateY(0); box-shadow: 0 4px 12px rgba(44,95,110,0.3); }
 
     .btn-outline {
@@ -391,8 +393,17 @@
       transform: translateY(100%);
       transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1); z-index: -1;
     }
+    .btn-outline::after {
+      content: ''; position: absolute; left: 0; bottom: -4px; width: 200%; height: 40px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M0,40 C150,80 350,0 600,40 C850,80 1050,0 1200,40 L1200,120 L0,120 Z' fill='%23ffffff'/%3E%3C/svg%3E");
+      background-size: 50% 100%; background-repeat: repeat-x;
+      opacity: 0; transform: translateY(12px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+      pointer-events: none; z-index: -1;
+    }
     .btn-outline:hover { color: #FFF; border-color: rgba(255,255,255,0.6); }
     .btn-outline:hover::before { transform: translateY(0); }
+    .btn-outline:hover::after { opacity: 0.12; transform: translateY(0); animation: waveAction 5s infinite linear; }
 
     .scroll-indicator {
       position: absolute; bottom: 4rem; right: 4rem;
@@ -450,6 +461,9 @@
       font-weight: 400;
       color: #FFF;
       line-height: 1.35;
+      min-height: 2lh;
+      display: flex;
+      align-items: flex-end;
     }
 
     .fact-label {
@@ -1210,7 +1224,7 @@
     <ul class="nav-links" id="navMenu" role="list">
       <li><a href="#home">Home <svg class="nav-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a></li>
       <li><a href="#over-ons">Over Kust & Kade <svg class="nav-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a></li>
-      <li><a href="#diensten">Workshops <svg class="nav-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a></li>
+      <li><a href="#diensten">Diensten <svg class="nav-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a></li>
       <li><a href="#lab">Lab <svg class="nav-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a></li>
       <li><a href="#contact">Contact <svg class="nav-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a></li>
     </ul>
@@ -1229,10 +1243,10 @@
         <div class="hero-line"><span class="hero-line-inner line-1-anim">Van <em>buzzword</em> naar</span></div>
         <div class="hero-line"><span class="hero-line-inner line-2-anim">werkwoord.</span></div>
       </h1>
-      <p class="hero-sub">Kust & Kade helpt HR-professionals die weten wat AI is maar nog niet wat ze ermee moeten. Begrijpen, oefenen en samen HR&#8209;tools bouwen die aansluiten op wat er al is. Workshops, advies en maatwerk.</p>
+      <p class="hero-sub">Kust & Kade helpt HR-professionals die weten wat AI is, maar nog niet wat ze ermee moeten. Begrijpen, oefenen en samen HR&#8209;tools bouwen die aansluiten op wat er al is. Workshops, advies en maatwerk.</p>
       <div class="hero-cta-group">
         <a href="#diensten" class="btn btn-primary">
-          Bekijk de workshops
+          Bekijk het aanbod
           <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
         </a>
         <a href="#contact" class="btn btn-outline">
@@ -1257,20 +1271,20 @@
   <div class="facts-bar" id="facts">
     <div class="facts-bar-inner">
       <div class="fact-item">
-        <span class="fact-value-wrapper">Geen AI-kennis nodig</span>
-        <span class="fact-label">je begint waar jullie staan</span>
+        <span class="fact-value-wrapper">De uitdaging voorop</span>
+        <span class="fact-label">niet de technologie, maar jullie HR-vraagstuk is het startpunt</span>
       </div>
       <div class="fact-item">
-        <span class="fact-value-wrapper">Max. 8 deelnemers</span>
-        <span class="fact-label">persoonlijk, concreet en relevant</span>
+        <span class="fact-value-wrapper">Concreet en toepasbaar</span>
+        <span class="fact-label">de theorie als basis, de praktijk als doel</span>
       </div>
       <div class="fact-item">
-        <span class="fact-value-wrapper">Werkend resultaat</span>
-        <span class="fact-label">je gaat naar huis met iets bruikbaars</span>
+        <span class="fact-value-wrapper">Klankbord tot prototype</span>
+        <span class="fact-label">het aanbod past zich aan op wat jouw situatie vraagt</span>
       </div>
       <div class="fact-item">
-        <span class="fact-value-wrapper">Online of op locatie</span>
-        <span class="fact-label">volledig flexibel in te plannen</span>
+        <span class="fact-value-wrapper">Binnen de kaders</span>
+        <span class="fact-label">respect voor AVG, ethiek en jullie HR-beleid</span>
       </div>
     </div>
   </div>
@@ -1601,13 +1615,14 @@
           </div>
         </div>
         <div class="form-group">
-          <label for="workshop">Waarmee kan ik je helpen?</label>
-          <select id="workshop" name="workshop" required>
+          <label for="onderwerp">Waarmee kan ik je helpen?</label>
+          <select id="onderwerp" name="onderwerp" required>
             <option value="" disabled selected>Kies een optie…</option>
             <option value="Kennismakingsgesprek (gratis, 20 min)">Kennismakingsgesprek (gratis, 20 min)</option>
             <option value="Workshop: De basis">Workshop: De basis</option>
             <option value="Workshop: Van idee naar werkende tool">Workshop: Van idee naar werkende tool</option>
-            <option value="Sparring & maatwerk">Sparring &amp; maatwerk</option>
+            <option value="Advies, sparring & maatwerk">Advies, sparring &amp; maatwerk</option>
+            <option value="Iets anders / Ik weet het nog niet precies">Iets anders / Ik weet het nog niet precies</option>
           </select>
         </div>
         <div class="form-group">
