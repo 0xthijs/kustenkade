@@ -146,11 +146,11 @@
     /* ══════════ HERO ══════════ */
     .hero {
       background: var(--dark);
-      min-height: 82vh;
+      min-height: 62vh;
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
-      padding: 7rem 4rem 5rem;
+      padding: 5rem 4rem 5rem;
       position: relative;
       overflow: hidden;
     }
@@ -401,95 +401,124 @@
     .program { background: var(--bg-alt); }
 
     .program-intro {
-      max-width: 560px;
+      max-width: 540px;
       color: var(--text-muted);
       font-size: 1rem;
       line-height: 1.8;
-      margin-bottom: 3.5rem;
+      margin-bottom: 2.5rem;
     }
 
     .program-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 0;
-      border-top: 1px solid var(--border);
-      border-left: 1px solid var(--border);
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
     }
 
+    /* ── Card ── */
     .program-block {
-      background: var(--card-bg);
-      padding: 2rem 1.75rem;
-      border-right: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
+      background: var(--block-bg, var(--dark));
+      padding: 1.5rem 1.75rem 6.5rem;
+      border-radius: 6px;
       position: relative;
       overflow: hidden;
-      transition: background 0.4s cubic-bezier(0.16,1,0.3,1);
+      border: 1px solid rgba(255,255,255,0.06);
+      transition: border-color 0.45s cubic-bezier(0.16,1,0.3,1),
+                  box-shadow   0.45s cubic-bezier(0.16,1,0.3,1),
+                  transform    0.45s cubic-bezier(0.16,1,0.3,1);
     }
 
-    /* Top accent bar */
+    /* Top shimmer — always on, brightens on hover */
     .program-block::before {
       content: '';
       position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 2px;
-      background: linear-gradient(90deg, var(--accent-glow), var(--accent-light));
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform 0.45s cubic-bezier(0.16,1,0.3,1);
+      top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg,
+        transparent, rgba(74,154,174,0.55) 40%,
+        rgba(74,154,174,0.55) 60%, transparent);
+      opacity: 0.4;
+      transition: opacity 0.45s;
     }
 
-    .program-block:hover { background: var(--bg); }
-    .program-block:hover::before { transform: scaleX(1); }
-
-    .block-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      margin-bottom: 1.25rem;
+    /* Inner light wash — revealed on hover */
+    .program-block::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 60%;
+      background: linear-gradient(180deg, rgba(74,154,174,0.07), transparent);
+      opacity: 0;
+      transition: opacity 0.55s cubic-bezier(0.16,1,0.3,1);
+      pointer-events: none;
+      z-index: 1;
     }
+
+    .program-block:hover::before { opacity: 1; }
+    .program-block:hover::after  { opacity: 1; }
+
+    /* ── Canvas wave stage at bottom of card ── */
+    .block-waves {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 100px;
+      pointer-events: none;
+      opacity: 0.35;
+    }
+
+    .block-waves canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* ── Text content ── */
+    .block-content { position: relative; z-index: 2; }
 
     .block-num {
+      display: block;
       font-family: 'Libre Baskerville', serif;
-      font-size: 0.65rem;
-      letter-spacing: 0.18em;
-      color: var(--accent);
-      opacity: 0.6;
-    }
-
-    .block-duration {
-      font-size: 0.68rem;
-      font-weight: 500;
-      letter-spacing: 0.1em;
+      font-size: 0.58rem;
+      letter-spacing: 0.26em;
+      color: rgba(245,243,236,0.45);
+      margin-bottom: 0.75rem;
       text-transform: uppercase;
-      color: var(--accent);
-      background: rgba(44,95,110,0.08);
-      padding: 0.2rem 0.55rem;
-      border-radius: 2px;
     }
 
     .block-title {
       font-family: 'Libre Baskerville', serif;
-      font-size: 1rem;
+      font-size: 1.25rem;
       font-weight: 400;
-      color: var(--text);
-      margin-bottom: 0.25rem;
+      color: rgba(245,243,236,0.95);
+      line-height: 1.18;
+      margin-bottom: 0.3rem;
+      transition: color 0.5s ease;
     }
 
     .block-sub {
-      font-size: 0.75rem;
-      color: var(--accent);
+      font-size: 0.7rem;
+      color: rgba(245,243,236,0.42);
       font-weight: 500;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
-      margin-bottom: 0.75rem;
-      opacity: 0.75;
+      transition: color 0.5s ease;
+    }
+
+    .block-divider {
+      width: 100%;
+      height: 1px;
+      background: rgba(245,243,236,0.18);
+      margin: 1rem 0;
+      border-radius: 2px;
     }
 
     .block-desc {
       font-size: 0.86rem;
-      color: var(--text-muted);
-      line-height: 1.7;
+      color: rgba(245,243,236,0.44);
+      line-height: 1.8;
+      transition: color 0.5s ease;
     }
+
+    .program-block:hover .block-title { color: rgba(245,243,236,1); }
+    .program-block:hover .block-sub   { color: rgba(245,243,236,0.65); }
+    .program-block:hover .block-desc  { color: rgba(245,243,236,0.75); }
 
     .program-total {
       margin-top: 2.5rem;
@@ -804,7 +833,7 @@
       section { padding: 5rem 2rem; }
       .hero { padding: 8rem 2rem 4rem; min-height: auto; }
       .hero-inner { grid-template-columns: 1fr; gap: 3rem; }
-      .program-grid { grid-template-columns: 1fr 1fr; }
+      .program-grid { grid-template-columns: 1fr; }
       .for-who-grid { grid-template-columns: 1fr; gap: 3rem; }
       .practical-grid { grid-template-columns: 1fr; gap: 3rem; }
       footer { padding: 2rem; flex-direction: column; gap: 1rem; text-align: center; }
@@ -812,7 +841,6 @@
     }
 
     @media (max-width: 600px) {
-      .program-grid { grid-template-columns: 1fr; }
       .form-row { grid-template-columns: 1fr; }
     }
   </style>
@@ -842,15 +870,11 @@
         <div class="hero-meta">
           <span class="meta-pill">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            Circa 3 uur
+            ~4 uur
           </span>
           <span class="meta-pill">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
-            Max. 12 deelnemers
-          </span>
-          <span class="meta-pill">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            Op locatie
+            Max. 10 deelnemers
           </span>
           <span class="meta-pill">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
@@ -871,22 +895,22 @@
           <div class="outcome-item">
             <span class="outcome-num">01</span>
             <div class="outcome-text">
-              <strong>AI live zien werken op HR-vraagstukken</strong>
-              <p>Geen abstracte demo's. We werken met echte cases uit werving, onboarding, verzuim en beleid.</p>
+              <strong>De theorie voorbij.</strong>
+              <p>Geen abstracte demo's of eindeloze slides. Je ziet live hoe AI direct toepasbaar is op jouw eigen HR-vraagstukken, zoals verzuim of onboarding.</p>
             </div>
           </div>
           <div class="outcome-item">
             <span class="outcome-num">02</span>
             <div class="outcome-text">
-              <strong>Zelf een prompt geschreven en beoordeeld</strong>
-              <p>Je oefent live, inclusief feedback van AI op jouw eigen prompt. De beste prompt wint.</p>
+              <strong>Zelf aan de knoppen.</strong>
+              <p>Je ontdekt dat je geen techneut hoeft te zijn om de technologie voor je te laten werken. Je bouwt zélf je eerste werkende oplossing voor een dagelijkse HR-taak.</p>
             </div>
           </div>
           <div class="outcome-item">
             <span class="outcome-num">03</span>
             <div class="outcome-text">
-              <strong>Een concrete eerste stap voor morgen</strong>
-              <p>Je verlaat de sessie met één specifieke situatie, een datum en iemand om het mee te delen.</p>
+              <strong>Zelfvertrouwen om het gewoon te doen.</strong>
+              <p>Je stapt naar buiten zonder de drempelvrees die veel HR-professionals voelen. Je weet precies wat AI wél en niet voor je kan oplossen, en je hebt de eerste stap al gezet.</p>
             </div>
           </div>
         </div>
@@ -905,73 +929,64 @@
   <section class="program">
     <div class="reveal">
       <span class="section-label">Programma</span>
-      <h2 class="section-title">Hoe ziet de workshop eruit?</h2>
+      <h2 class="section-title">Wat kan je verwachten?</h2>
       <div class="section-divider">
         <svg viewBox="0 0 50 16" fill="none"><path d="M0 8 C8 -4, 16 20, 25 8 C34 -4, 42 20, 50 8" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" fill="none"/></svg>
       </div>
-      <p class="program-intro">Zeven blokken. Elk met een eigen tempo, een eigen werkvorm en een eigen punt. Geen diashow die je ook thuis had kunnen lezen.</p>
+      <p class="program-intro">Vier blokken. Elk met een eigen tempo, een eigen werkvorm en een eigen punt. Geen diashow die je ook thuis had kunnen lezen.</p>
     </div>
 
     <div class="program-grid reveal-stagger">
-      <div class="program-block reveal">
-        <div class="block-header">
+
+      <div class="program-block reveal" style="--block-bg: #302E27;">
+        <div class="block-content">
           <span class="block-num">01</span>
-          <span class="block-duration">45 min</span>
+          <h3 class="block-title">De Aftrap</h3>
+          <p class="block-sub">AI als spiegel van jouw team</p>
+          <div class="block-divider"></div>
+          <p class="block-desc">We starten niet met slides, maar met een interactieve energizer. Jouw input vormt direct de data voor onze eerste AI-analyse.</p>
         </div>
-        <h3 class="block-title">Fundament</h3>
-        <p class="block-sub">Wat is AI, zonder bullshit</p>
-        <p class="block-desc">We beginnen met een stellingenspel: mythe of feit? Daarna: hoe werkt het echt, en waarom is context alles.</p>
+        <div class="block-waves"></div>
       </div>
-      <div class="program-block reveal">
-        <div class="block-header">
+
+      <div class="program-block reveal" style="--block-bg: #262E34;">
+        <div class="block-content">
           <span class="block-num">02</span>
-          <span class="block-duration">15 min</span>
+          <h3 class="block-title">AI in HR</h3>
+          <p class="block-sub">Van probleem naar stip op de horizon</p>
+          <div class="block-divider"></div>
+          <p class="block-desc">We halen de echte pijnpunten op rondom actuele en relevante HR-thema's in relatie tot AI. We bespreken werkende AI-oplossingen en hoe die eruit kunnen zien in jouw organisatie.</p>
         </div>
-        <h3 class="block-title">Energizer</h3>
-        <p class="block-sub">Jij als data voor AI</p>
-        <p class="block-desc">Deelnemers beschrijven zichzelf als medewerker, AI analyseert alle antwoorden live. Wat zegt dat over privacy en data?</p>
+        <div class="block-waves"></div>
       </div>
-      <div class="program-block reveal">
-        <div class="block-header">
+
+      <div class="program-block reveal" style="--block-bg: #27312E;">
+        <div class="block-content">
           <span class="block-num">03</span>
-          <span class="block-duration">40 min</span>
+          <h3 class="block-title">Nu jij</h3>
+          <p class="block-sub">Zelf bouwen en testen</p>
+          <div class="block-divider"></div>
+          <p class="block-desc">Handen uit de mouwen. Je leert het fundament van een goede AI-instructie en gaat vervolgens zélf aan de slag met AI-tools en een casus uit jouw praktijk. Ik loop rond, stuur bij en we leren plenair van elkaars missers en successen.</p>
         </div>
-        <h3 class="block-title">Use Case Carousel</h3>
-        <p class="block-sub">AI in jouw HR-praktijk</p>
-        <p class="block-desc">Vier tafels, vier HR-thema's: werving, onboarding, verzuim en beleid. Groepen roteren, lezen voor/na-prompts en benoemen kansen en risico's.</p>
+        <div class="block-waves"></div>
       </div>
-      <div class="program-block reveal">
-        <div class="block-header">
+
+      <div class="program-block reveal" style="--block-bg: #312B29;">
+        <div class="block-content">
           <span class="block-num">04</span>
-          <span class="block-duration">25 min</span>
+          <h3 class="block-title">Afsluiting &amp; Borging</h3>
+          <p class="block-sub">De volgende stap</p>
+          <div class="block-divider"></div>
+          <p class="block-desc">Wat ga jij morgen anders doen? We borgen wat we geleerd hebben en zorgen dat de workshop maandagochtend niet vergeten is.</p>
         </div>
-        <h3 class="block-title">Promptbeoordeling</h3>
-        <p class="block-sub">De beste prompt wint</p>
-        <p class="block-desc">Elk groepje schrijft een prompt voor een moeilijk HR-gesprek. AI beoordeelt live op scherpte. De groep kiest de winnaar.</p>
+        <div class="block-waves"></div>
       </div>
-      <div class="program-block reveal">
-        <div class="block-header">
-          <span class="block-num">05</span>
-          <span class="block-duration">35 min</span>
-        </div>
-        <h3 class="block-title">Live PoC</h3>
-        <p class="block-sub">Van idee naar werkende app</p>
-        <p class="block-desc">We bouwen live een gesprekscoach voor leidinggevenden, van idee tot werkend prototype. Iets wat vroeger weken kostte.</p>
-      </div>
-      <div class="program-block reveal">
-        <div class="block-header">
-          <span class="block-num">06 &amp; 07</span>
-          <span class="block-duration">27 min</span>
-        </div>
-        <h3 class="block-title">Commitment &amp; Evaluatie</h3>
-        <p class="block-sub">Mijn next step in AI</p>
-        <p class="block-desc">Elke deelnemer vult een kaart in: wat ga ik uitproberen, wanneer en met wie deel ik het? Afsluiting met een ronde langs iedereen.</p>
-      </div>
+
     </div>
 
     <div class="program-total reveal">
-      <strong>± 3 uur</strong>
-      <span>totale duur, inclusief pauze van 15 minuten</span>
+      <strong>3,5 – 4 uur</strong>
+      <span>totale duur</span>
     </div>
   </section>
 
@@ -1015,7 +1030,7 @@
       <div class="reveal">
         <div class="not-for">
           <p class="not-for-title">Minder geschikt als…</p>
-          <p>Je team al actief met AI werkt en dieper wil in het bouwen van eigen tools of het inzetten van organisatiedata. Daarvoor is er <em>Workshop: Aan de slag</em>, die gaat verder waar deze stopt.</p>
+          <p>Je team al actief met AI werkt en dieper wil in het bouwen van eigen tools of het inzetten van organisatiedata. Daarvoor is er <em>Workshop: Van idee naar werkende tool</em>, die gaat verder waar deze stopt.</p>
         </div>
       </div>
     </div>
@@ -1042,17 +1057,17 @@
       <div class="detail-items reveal">
         <div class="detail-item">
           <div class="detail-label">Duur</div>
-          <div class="detail-value">Circa 3 uur</div>
+          <div class="detail-value">3,5 tot 4 uur</div>
           <div class="detail-note">Inclusief pauze, op te plannen als ochtend- of middagsessie</div>
         </div>
         <div class="detail-item">
           <div class="detail-label">Groepsgrootte</div>
-          <div class="detail-value">6 tot 12 deelnemers</div>
-          <div class="detail-note">Kleiner kan, grotere groepen op aanvraag</div>
+          <div class="detail-value">Max. 10 deelnemers</div>
+          <div class="detail-note">Dit garandeert voldoende persoonlijke aandacht tijdens het bouwen.</div>
         </div>
         <div class="detail-item">
           <div class="detail-label">Locatie</div>
-          <div class="detail-value">Bij jou op kantoor</div>
+          <div class="detail-value">Digitaal of bij jou op kantoor</div>
           <div class="detail-note">Benodigdheden: beamer/scherm, wifi en ruimte om in groepjes te werken</div>
         </div>
         <div class="detail-item">
@@ -1086,7 +1101,7 @@
           </div>
 
           <div class="form-group">
-            <label for="bericht">Wat speelt er? <span style="font-weight:300;text-transform:none;letter-spacing:0;">(optioneel)</span></label>
+            <label for="bericht">Iets dat je aan de voorkant wil meegeven? <span style="font-weight:300;text-transform:none;letter-spacing:0;">(optioneel)</span></label>
             <textarea id="bericht" name="bericht" placeholder="Een korte schets van je team of vraagstuk is meer dan genoeg…"></textarea>
           </div>
           <input type="hidden" name="workshop" value="Workshop: De Basis">
@@ -1153,6 +1168,73 @@
       resize();
       draw();
     }
+
+    // ── Canvas wave engine ────────────────────────────────────────────
+    (function () {
+      const LAYERS = [
+        { yR: 0.30, aB: 6,  aE: 10, fB: 0.010, sB: 0.020, sE: 0.022, color: '#1A3D4A', alpha: 0.70 },
+        { yR: 0.46, aB: 5,  aE:  8, fB: 0.014, sB: 0.028, sE: 0.028, color: '#2C5F6E', alpha: 0.60 },
+        { yR: 0.60, aB: 4,  aE:  6, fB: 0.019, sB: 0.038, sE: 0.035, color: '#3A7A8C', alpha: 0.45 },
+        { yR: 0.74, aB: 3,  aE:  4, fB: 0.027, sB: 0.052, sE: 0.045, color: '#4A9AAE', alpha: 0.28 },
+      ];
+
+      function drawLayer(ctx, W, H, L, energy, t) {
+        const amp   = L.aB + energy * L.aE;
+        const speed = L.sB + energy * L.sE;
+        const ph    = t * speed;
+        const yBase = H * L.yR;
+        ctx.beginPath();
+        for (let x = 0; x <= W; x++) {
+          const y = yBase
+            + Math.sin(x * L.fB          + ph)          * amp
+            + Math.sin(x * L.fB * 1.73   + ph * 0.61)   * amp * 0.40
+            + Math.sin(x * L.fB * 2.97   + ph * 1.33)   * amp * 0.16
+            + Math.sin(x * L.fB * 0.47   + ph * 0.29)   * amp * 0.22;
+          x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+        }
+        ctx.lineTo(W, H); ctx.lineTo(0, H); ctx.closePath();
+        ctx.fillStyle = L.color;
+        ctx.globalAlpha = L.alpha;
+        ctx.fill();
+        ctx.globalAlpha = 1;
+      }
+
+      document.querySelectorAll('.program-block').forEach(block => {
+        const stage = block.querySelector('.block-waves');
+        if (!stage) return;
+
+        const cvs = document.createElement('canvas');
+        cvs.style.cssText = 'position:absolute;bottom:0;left:0;width:100%;height:100%;';
+        stage.appendChild(cvs);
+        const ctx = cvs.getContext('2d');
+
+        let t = Math.random() * 800;
+        let energy = 0;
+        let targetEnergy = 0;
+
+        block.addEventListener('mouseenter', () => { targetEnergy = 0.15; });
+        block.addEventListener('mouseleave', () => { targetEnergy = 0; });
+
+        function size() {
+          cvs.width  = stage.offsetWidth  || block.offsetWidth;
+          cvs.height = stage.offsetHeight || 120;
+        }
+
+        function loop() {
+          energy += (targetEnergy - energy) * 0.04; // smooth glide in/out
+          size();
+          ctx.clearRect(0, 0, cvs.width, cvs.height);
+          LAYERS.forEach(L => drawLayer(ctx, cvs.width, cvs.height, L, energy, t));
+          t++;
+          requestAnimationFrame(loop);
+        }
+
+        window.addEventListener('resize', size);
+        size();
+        loop();
+      });
+    })();
+    // ─────────────────────────────────────────────────────────────────
 
     // Reveal on scroll
     const reveals = document.querySelectorAll('.reveal');
