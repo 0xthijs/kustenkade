@@ -497,6 +497,7 @@
       background: var(--bg);
       border: 1px solid var(--border);
       border-radius: var(--radius-md);
+      white-space: pre-wrap;
       padding: 1.5rem;
       font-size: 0.875rem;
       line-height: 1.8;
@@ -664,7 +665,7 @@
 <section class="hero">
   <span class="hero-label">Kust & Kade Lab · AI Tool #3</span>
   <h1><span class="sr-only">AI Vacaturetekst Generator voor HR: </span>Vacaturetekst Generator<br><em>op maat, in seconden</em></h1>
-  <p>Beantwoord vier korte vragen en ontvang een professionele, inclusieve vacaturetekst, klaar voor publicatie.</p>
+  <p>Vul drie gegevens in en ontvang een professionele, inclusieve vacaturetekst — geschreven door AI.</p>
 </section>
 
 <!-- PROGRESS -->
@@ -675,18 +676,6 @@
       <div class="step-label">Functie</div>
     </div>
     <div class="step-item" id="step-ind-2">
-      <div class="step-circle">2</div>
-      <div class="step-label">Taken</div>
-    </div>
-    <div class="step-item" id="step-ind-3">
-      <div class="step-circle">3</div>
-      <div class="step-label">Profiel</div>
-    </div>
-    <div class="step-item" id="step-ind-4">
-      <div class="step-circle">4</div>
-      <div class="step-label">Cultuur</div>
-    </div>
-    <div class="step-item" id="step-ind-5">
       <div class="step-circle">✓</div>
       <div class="step-label">Resultaat</div>
     </div>
@@ -699,177 +688,38 @@
   <!-- STEP 1 -->
   <div id="s1">
     <div class="card-header">
-      <div class="card-header-num">Stap 1 van 4</div>
+      <div class="card-header-num">Drie vragen — AI schrijft de rest</div>
       <h2>Over de functie</h2>
-      <p>Vertel ons een beetje over de rol die je wilt invullen.</p>
+      <p>Geef vier gegevens op — de AI schrijft de rest.</p>
     </div>
     <div class="card-body">
       <div class="field" id="f-title">
         <label>Functietitel *</label>
-        <input type="text" id="job-title" placeholder="bijv. HR Business Partner, Recruitmentspecialist" />
+        <input type="text" id="job-title" placeholder="bijv. Software Developer, Projectmanager, Financieel Analist" />
         <span class="error-msg">Vul een functietitel in</span>
       </div>
-      <div class="field-row">
-        <div class="field">
-          <label>Afdeling</label>
-          <select id="department">
-            <option value="">Kies afdeling</option>
-            <option>HR & People</option>
-            <option>Finance & Control</option>
-            <option>Marketing & Communicatie</option>
-            <option>IT & Data</option>
-            <option>Operations & Logistiek</option>
-            <option>Sales & Business Development</option>
-            <option>Juridisch & Compliance</option>
-            <option>Directie & Management</option>
-            <option>Klantenservice</option>
-            <option>R&D / Innovatie</option>
-          </select>
-        </div>
-        <div class="field">
-          <label>Contractvorm</label>
-          <select id="contract">
-            <option value="">Kies contractvorm</option>
-            <option>Vast dienstverband</option>
-            <option>Tijdelijk met uitzicht op vast</option>
-            <option>Tijdelijk contract</option>
-            <option>Freelance / ZZP</option>
-            <option>Parttime (min. 24 uur)</option>
-            <option>Stage / Afstudeeropdracht</option>
-          </select>
-        </div>
-      </div>
-      <div class="field-row">
-        <div class="field">
-          <label>Locatie</label>
-          <input type="text" id="location" placeholder="bijv. Amsterdam, Rotterdam" />
-        </div>
-        <div class="field">
-          <label>Werkomgeving</label>
-          <select id="remote">
-            <option value="">Kies optie</option>
-            <option>Op kantoor</option>
-            <option>Hybride (2-3 dagen thuis)</option>
-            <option>Overwegend remote</option>
-            <option>Volledig remote</option>
-          </select>
+      <div class="field">
+        <label>Branche</label>
+        <div class="chips" id="branche-chips">
+          <span class="chip" data-val="Technologie & IT">Technologie</span>
+          <span class="chip" data-val="Zorg & Welzijn">Zorg</span>
+          <span class="chip" data-val="Financiën & Banking">Financiën</span>
+          <span class="chip" data-val="Retail & E-commerce">Retail</span>
+          <span class="chip" data-val="Overheid & Non-profit">Overheid</span>
+          <span class="chip" data-val="Industrie & Productie">Industrie</span>
+          <span class="chip" data-val="Onderwijs & Onderzoek">Onderwijs</span>
+          <span class="chip" data-val="Marketing & Media">Marketing</span>
         </div>
       </div>
       <div class="field">
         <label>Niveau</label>
         <div class="chips" id="level-chips">
           <span class="chip" data-val="Junior (0–2 jaar)">Junior</span>
-          <span class="chip" data-val="Medior (2–5 jaar)">Medior</span>
+          <span class="chip selected" data-val="Medior (2–5 jaar)">Medior</span>
           <span class="chip" data-val="Senior (5+ jaar)">Senior</span>
           <span class="chip" data-val="Lead / Manager">Lead / Manager</span>
-          <span class="chip" data-val="Directeur / C-level">Directeur</span>
         </div>
       </div>
-    </div>
-    <div class="card-footer">
-      <span></span>
-      <button class="btn btn-primary" onclick="goTo(2)">Volgende →</button>
-    </div>
-  </div>
-
-  <!-- STEP 2 -->
-  <div id="s2" style="display:none">
-    <div class="card-header">
-      <div class="card-header-num">Stap 2 van 4</div>
-      <h2>Taken & verantwoordelijkheden</h2>
-      <p>Wat doet deze persoon dagelijks? Voeg de belangrijkste taken toe.</p>
-    </div>
-    <div class="card-body">
-      <div class="field">
-        <label>Hoofdtaken *</label>
-        <div class="hint">Voeg minimaal 3 taken toe</div>
-        <div class="task-list" id="task-list">
-          <div class="task-row"><input type="text" placeholder="bijv. Adviseren van leidinggevenden op HR-vraagstukken" /><button class="btn-icon remove" onclick="removeTask(this)">✕</button></div>
-          <div class="task-row"><input type="text" placeholder="bijv. Begeleiden van het volledige recruitmentproces" /><button class="btn-icon remove" onclick="removeTask(this)">✕</button></div>
-          <div class="task-row"><input type="text" placeholder="bijv. Bijdragen aan HR-beleid en procesoptimalisatie" /><button class="btn-icon remove" onclick="removeTask(this)">✕</button></div>
-        </div>
-        <button class="btn btn-ghost" style="margin-top:10px; font-size:0.75rem; padding:8px 14px;" onclick="addTask()">+ Taak toevoegen</button>
-        <span class="error-msg" id="task-error">Vul minimaal 3 taken in</span>
-      </div>
-      <div class="field">
-        <label>Uren per week</label>
-        <input type="range" id="hours-range" min="16" max="40" step="4" value="40" oninput="document.getElementById('hours-val').textContent=this.value" />
-        <div class="range-labels">
-          <span>16 uur</span>
-          <span><strong id="hours-val">40</strong> uur / week</span>
-          <span>40 uur</span>
-        </div>
-      </div>
-    </div>
-    <div class="card-footer">
-      <button class="btn btn-ghost" onclick="goTo(1)">← Terug</button>
-      <button class="btn btn-primary" onclick="goTo(3)">Volgende →</button>
-    </div>
-  </div>
-
-  <!-- STEP 3 -->
-  <div id="s3" style="display:none">
-    <div class="card-header">
-      <div class="card-header-num">Stap 3 van 4</div>
-      <h2>Gewenst profiel</h2>
-      <p>Wie zoek je eigenlijk? Beschrijf het ideale profiel.</p>
-    </div>
-    <div class="card-body">
-      <div class="field">
-        <label>Opleidingsniveau</label>
-        <div class="chips" id="edu-chips">
-          <span class="chip" data-val="MBO+">MBO+</span>
-          <span class="chip" data-val="HBO">HBO</span>
-          <span class="chip selected" data-val="HBO / WO">HBO / WO</span>
-          <span class="chip" data-val="WO / Master">WO / Master</span>
-          <span class="chip" data-val="Geen specifieke eis">Geen eis</span>
-        </div>
-      </div>
-      <div class="field">
-        <label>Must-have competenties</label>
-        <div class="hint">Selecteer de kerncompetenties (max. 4)</div>
-        <div class="chips" id="comp-chips">
-          <span class="chip" data-val="Communicatief sterk">Communicatief sterk</span>
-          <span class="chip" data-val="Analytisch denkvermogen">Analytisch</span>
-          <span class="chip" data-val="Zelfstandig werken">Zelfstandig</span>
-          <span class="chip" data-val="Resultaatgericht">Resultaatgericht</span>
-          <span class="chip" data-val="Samenwerken in teamverband">Teamspeler</span>
-          <span class="chip" data-val="Proactieve houding">Proactief</span>
-          <span class="chip" data-val="Organisatiesensitiviteit">Organisatiesensitief</span>
-          <span class="chip" data-val="Adviesvaardigheid">Adviesvaardig</span>
-          <span class="chip" data-val="Datagedreven werken">Datagedreven</span>
-          <span class="chip" data-val="Veranderbereidheid">Veranderbereid</span>
-        </div>
-      </div>
-      <div class="field">
-        <label>Kennis / ervaring (nice-to-haves)</label>
-        <textarea id="nice-to-have" placeholder="bijv. Ervaring met HRIS-systemen, kennis van arbeidsrecht, affiniteit met data-analyse..."></textarea>
-      </div>
-      <div class="field">
-        <label>Taalvereisten</label>
-        <div class="chips" id="lang-chips">
-          <span class="chip selected" data-val="Nederlands (vloeiend)">Nederlands</span>
-          <span class="chip" data-val="Engels (vloeiend)">Engels</span>
-          <span class="chip" data-val="Nederlands & Engels">NL + EN</span>
-          <span class="chip" data-val="Duits (pré)">Duits (pré)</span>
-          <span class="chip" data-val="Geen specifieke taaleis">Geen eis</span>
-        </div>
-      </div>
-    </div>
-    <div class="card-footer">
-      <button class="btn btn-ghost" onclick="goTo(2)">← Terug</button>
-      <button class="btn btn-primary" onclick="goTo(4)">Volgende →</button>
-    </div>
-  </div>
-
-  <!-- STEP 4 -->
-  <div id="s4" style="display:none">
-    <div class="card-header">
-      <div class="card-header-num">Stap 4 van 4</div>
-      <h2>Cultuur & tone of voice</h2>
-      <p>Hoe wil jij overkomen als werkgever?</p>
-    </div>
-    <div class="card-body">
       <div class="field">
         <label>Toon van de vacaturetekst</label>
         <div class="tone-grid">
@@ -890,39 +740,9 @@
           </div>
         </div>
       </div>
-      <div class="field">
-        <label>Kernwaarden van de organisatie</label>
-        <div class="hint">Selecteer wat het beste past (max. 3)</div>
-        <div class="chips" id="value-chips">
-          <span class="chip warm" data-val="innovatie">Innovatie</span>
-          <span class="chip warm" data-val="mensgerichtheid">Mensgericht</span>
-          <span class="chip warm" data-val="resultaatgerichtheid">Resultaatgericht</span>
-          <span class="chip warm" data-val="duurzaamheid">Duurzaamheid</span>
-          <span class="chip warm" data-val="integriteit">Integriteit</span>
-          <span class="chip warm" data-val="samenwerking">Samenwerking</span>
-          <span class="chip warm" data-val="klantgerichtheid">Klantgericht</span>
-          <span class="chip warm" data-val="lef en ambitie">Lef & Ambitie</span>
-          <span class="chip warm" data-val="diversiteit en inclusie">Diversiteit & Inclusie</span>
-        </div>
-      </div>
-      <div class="field">
-        <label>Type organisatie</label>
-        <div class="chips" id="org-chips">
-          <span class="chip" data-val="een dynamische startup">Startup</span>
-          <span class="chip" data-val="een snelgroeiende scale-up">Scale-up</span>
-          <span class="chip selected" data-val="een middelgrote organisatie">Middelgroot</span>
-          <span class="chip" data-val="een grote corporatie">Corporate</span>
-          <span class="chip" data-val="een non-profit organisatie">Non-profit</span>
-          <span class="chip" data-val="een overheidsorganisatie">Overheid</span>
-        </div>
-      </div>
-      <div class="field">
-        <label>Aanvullende info (arbeidsvoorwaarden etc.)</label>
-        <textarea id="extra-info" placeholder="bijv. Marktconform salaris, 27 vakantiedagen, thuiswerkvergoeding, opleidingsbudget..."></textarea>
-      </div>
     </div>
     <div class="card-footer">
-      <button class="btn btn-ghost" onclick="goTo(3)">← Terug</button>
+      <span></span>
       <button class="btn btn-dark" onclick="generate()">✦ Genereer vacaturetekst</button>
     </div>
   </div>
@@ -975,7 +795,7 @@
   <div class="seo-context-inner">
     <h2>Waarom een vacaturetekst schrijven met AI?</h2>
     <p>Je kent het wel: die knipperende cursor op een lege pagina. Het schrijven van een goede, inclusieve vacaturetekst kost vaak stiekem meer tijd dan je lief is. Met deze AI-generator haal je de drempel weg. Je hoeft zelf geen ingewikkelde opdrachten ('prompts') aan ChatGPT te geven. Je selecteert simpelweg de harde eisen en de tool doet het typewerk voor je.</p>
-    <a href="workshop-de-basis.html" class="seo-link">Zelf leren bouwen? Bekijk de HR & AI workshops →</a>
+    <a href="https://kustenkade.nl/workshop-de-basis.html" class="seo-link">Zelf leren bouwen? Bekijk de HR & AI workshops →</a>
   </div>
 </section>
 
@@ -992,52 +812,32 @@
 <div class="toast" id="toast"></div>
 
 <script>
+  // ── CONFIG ──
+  const API_KEY = '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';
+
   // ── STATE ──
   const state = {
-    currentStep: 1,
     tone: 'professioneel-vriendelijk',
-    level: '',
-    edu: 'HBO / WO',
-    lang: 'Nederlands (vloeiend)',
-    org: 'een middelgrote organisatie',
-    comps: [],
-    values: []
+    level: 'Medior (2–5 jaar)',
+    branche: ''
   };
 
   // ── CHIPS ──
-  function initChips(id, key, max) {
+  function initChips(id, key) {
     const c = document.getElementById(id);
     if (!c) return;
     c.querySelectorAll('.chip').forEach(chip => {
-      if (chip.classList.contains('selected')) {
-        if (key === 'comps' || key === 'values') state[key].push(chip.dataset.val);
-        else state[key] = chip.dataset.val;
-      }
+      if (chip.classList.contains('selected')) state[key] = chip.dataset.val;
       chip.addEventListener('click', () => {
-        if (key === 'comps' || key === 'values') {
-          if (chip.classList.contains('selected')) {
-            chip.classList.remove('selected');
-            state[key] = state[key].filter(v => v !== chip.dataset.val);
-          } else {
-            if (max && state[key].length >= max) return;
-            chip.classList.add('selected');
-            state[key].push(chip.dataset.val);
-          }
-        } else {
-          c.querySelectorAll('.chip').forEach(x => x.classList.remove('selected'));
-          chip.classList.add('selected');
-          state[key] = chip.dataset.val;
-        }
+        c.querySelectorAll('.chip').forEach(x => x.classList.remove('selected'));
+        chip.classList.add('selected');
+        state[key] = chip.dataset.val;
       });
     });
   }
 
-  initChips('level-chips', 'level', 1);
-  initChips('edu-chips', 'edu', 1);
-  initChips('comp-chips', 'comps', 4);
-  initChips('lang-chips', 'lang', 1);
-  initChips('value-chips', 'values', 3);
-  initChips('org-chips', 'org', 1);
+  initChips('level-chips', 'level');
+  initChips('branche-chips', 'branche');
 
   function selectTone(card) {
     document.querySelectorAll('.tone-card').forEach(c => c.classList.remove('selected'));
@@ -1045,170 +845,132 @@
     state.tone = card.dataset.val;
   }
 
-  // ── TASKS ──
-  function addTask() {
-    const list = document.getElementById('task-list');
-    const row = document.createElement('div');
-    row.className = 'task-row';
-    row.innerHTML = `<input type="text" placeholder="Voeg een taak toe..." /><button class="btn-icon remove" onclick="removeTask(this)">✕</button>`;
-    list.appendChild(row);
-    row.querySelector('input').focus();
-  }
-  function removeTask(btn) {
-    const list = document.getElementById('task-list');
-    if (list.querySelectorAll('.task-row').length > 1) btn.closest('.task-row').remove();
-  }
-
-  // ── NAVIGATION ──
-  function goTo(step) {
-    if (step > state.currentStep && !validateStep(state.currentStep)) return;
-    document.getElementById('s' + state.currentStep).style.display = 'none';
-    document.getElementById('s' + step).style.display = 'block';
-    for (let i = 1; i <= 5; i++) {
-      const el = document.getElementById('step-ind-' + i);
-      el.classList.remove('active', 'done');
-      if (i < step) el.classList.add('done');
-      if (i === step) el.classList.add('active');
-    }
-    state.currentStep = step;
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  function validateStep(step) {
-    if (step === 1) {
-      const title = document.getElementById('job-title').value.trim();
-      const field = document.getElementById('f-title');
-      if (!title) { field.classList.add('has-error'); return false; }
-      field.classList.remove('has-error');
-    }
-    if (step === 2) {
-      const tasks = [...document.querySelectorAll('#task-list input')].map(i => i.value.trim()).filter(Boolean);
-      const err = document.getElementById('task-error');
-      if (tasks.length < 3) { err.style.display = 'block'; return false; }
-      err.style.display = 'none';
-    }
+  // ── VALIDATE ──
+  function validate() {
+    const title = document.getElementById('job-title').value.trim();
+    const field = document.getElementById('f-title');
+    if (!title) { field.classList.add('has-error'); return false; }
+    field.classList.remove('has-error');
     return true;
   }
 
   // ── GENERATE ──
-  function generate() {
-    for (let i = 1; i <= 4; i++) document.getElementById('s' + i).style.display = 'none';
+  async function generate() {
+    if (!validate()) return;
+
+    const title = document.getElementById('job-title').value.trim();
+    const niveau = state.level;
+    const toon = state.tone;
+
+    const toonDesc = toon === 'formeel'
+      ? 'formeel en zakelijk, gebruik u/uw'
+      : toon === 'informeel'
+      ? 'informeel en persoonlijk, gebruik je/jij'
+      : 'professioneel maar warm, gebruik je/jij';
+
+    const brancheStr = state.branche || 'niet gespecificeerd';
+
+    const systemPrompt = `Je bent een senior copywriter met jarenlange ervaring in het schrijven van wervende vacatureteksten voor uiteenlopende sectoren. Je kent de arbeidsmarkt goed en weet wat kandidaten aanspreekt. Je schrijft altijd inclusief (nooit hij/zij), concreet, specifiek voor de branche en met een overtuigende toon. Je vult ontbrekende details intelligent in op basis van gangbare normen in de sector. Je levert altijd een complete, publiceerbare vacaturetekst.`;
+
+    const userPrompt = `Schrijf een volledige, rijke en overtuigende vacaturetekst in het Nederlands voor:
+
+Functietitel: \${title}
+Niveau: \${niveau}
+Branche: \${brancheStr}
+Toon: \${toonDesc}
+
+EISEN AAN DE INHOUD:
+- De intro is minimaal 4 zinnen: schets de organisatie en sector, de context van de rol, en waarom dit een aantrekkelijke kans is. Wees specifiek voor de branche, niet generiek.
+- De taken zijn volledige zinnen die de inhoud én het belang van de taak beschrijven — geen losse steekwoorden.
+- Het profiel beschrijft de ideale kandidaat in volledige zinnen: achtergrond, werkervaring, persoonlijkheid en motivatie.
+- De arbeidsvoorwaarden zijn concreet en realistisch voor de branche, met echte details (salarisrange, vakantiedagen, opleidingsbudget etc.).
+- De sollicitatie-alinea is warm, persoonlijk en uitnodigend.
+
+Gebruik precies deze structuur en koppen:
+
+\${title.toUpperCase()}
+
+[intro-alinea van minimaal 4 zinnen]
+
+WAT GA JE DOEN?
+
+• [volledige zin die taak én impact beschrijft]
+• [volledige zin]
+• [volledige zin]
+• [volledige zin]
+• [volledige zin]
+• [volledige zin]
+
+WIE BEN JIJ?
+
+• [volledige zin over achtergrond of opleiding]
+• [volledige zin over werkervaring]
+• [volledige zin over persoonlijkheid of werkstijl]
+• [volledige zin over een specifieke vaardigheid]
+• [volledige zin over wat je drijft of motiveert]
+
+WAT BIEDEN WIJ?
+
+• [concreet punt met details, passend bij de branche]
+• [concreet punt met details]
+• [concreet punt met details]
+• [concreet punt met details]
+• [concreet punt met details]
+
+SOLLICITEREN
+
+[Warme, persoonlijke alinea van 3 zinnen met een duidelijke call-to-action]
+
+Strikte regels: nooit hij/zij, gebruik de functietitel of 'jij'. Geen markdown, geen sterretjes, geen hashtags. Alleen platte tekst met de koppen exact zoals hierboven.`;
+
+    document.getElementById('s1').style.display = 'none';
     document.getElementById('progressWrap').style.display = 'none';
     document.getElementById('loadingScreen').classList.add('visible');
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
-    setTimeout(() => {
+    try {
+      const response = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'x-api-key': API_KEY,
+          'anthropic-version': '2023-06-01',
+          'content-type': 'application/json',
+          'anthropic-dangerous-direct-browser-access': 'true'
+        },
+        body: JSON.stringify({
+          model: 'claude-haiku-4-5-20251001',
+          max_tokens: 2048,
+          system: systemPrompt,
+          messages: [{ role: 'user', content: userPrompt }]
+        })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) throw new Error(data.error?.message || `API-fout (${response.status})`);
+
+      const text = data.content[0].text;
+
       document.getElementById('loadingScreen').classList.remove('visible');
       document.getElementById('resultScreen').classList.add('visible');
-      document.getElementById('resultText').textContent = buildVacatureText();
-      buildTags();
-      for (let i = 1; i <= 4; i++) {
-        const el = document.getElementById('step-ind-' + i);
-        el.classList.remove('active'); el.classList.add('done');
-      }
-      document.getElementById('step-ind-5').classList.add('active');
+      document.getElementById('resultText').textContent = text;
+      buildTags(title);
+      document.getElementById('step-ind-1').classList.remove('active');
+      document.getElementById('step-ind-1').classList.add('done');
+      document.getElementById('step-ind-2').classList.add('active');
       document.getElementById('progressWrap').style.display = 'block';
       window.scrollTo({ top: 0, behavior: 'smooth' });
-    }, 3200);
+
+    } catch (err) {
+      document.getElementById('loadingScreen').classList.remove('visible');
+      document.getElementById('s1').style.display = 'block';
+      document.getElementById('progressWrap').style.display = 'block';
+      showToast('Er ging iets mis: ' + err.message);
+    }
   }
 
-  // ── TEXT BUILDER ──
-  function buildVacatureText() {
-    const title    = document.getElementById('job-title').value.trim();
-    const dept     = document.getElementById('department').value || 'onze afdeling';
-    const contract = document.getElementById('contract').value || 'vast dienstverband';
-    const location = document.getElementById('location').value.trim() || 'Nederland';
-    const remote   = document.getElementById('remote').value || 'Hybride';
-    const hours    = document.getElementById('hours-range').value;
-    const level    = state.level || 'Medior';
-    const edu      = state.edu || 'HBO';
-    const lang     = state.lang || 'Nederlands (vloeiend)';
-    const org      = state.org || 'een middelgrote organisatie';
-    const tone     = state.tone;
-    const comps    = state.comps.length ? state.comps : ['Communicatief sterk', 'Proactieve houding'];
-    const values   = state.values.length ? state.values : ['samenwerking', 'integriteit'];
-    const extra    = document.getElementById('extra-info').value.trim();
-    const nth      = document.getElementById('nice-to-have').value.trim();
-    const tasks    = [...document.querySelectorAll('#task-list input')].map(i => i.value.trim()).filter(Boolean);
-
-    const je = tone === 'formeel' ? 'u' : 'je';
-    const jij = tone === 'formeel' ? 'U' : 'Jij';
-
-    const intro = tone === 'formeel'
-      ? `Wij zijn op zoek naar een gedreven ${title} die een waardevolle bijdrage levert aan ${dept}.`
-      : tone === 'informeel'
-      ? `Ben jij die enthousiaste ${title} die we zoeken? Dan willen we jou graag leren kennen!`
-      : `Voor ${dept} zijn wij op zoek naar een ervaren en betrokken ${title} die het verschil maakt.`;
-
-    const valueStr = values.length
-      ? values.map((v, i) => (i === values.length - 1 && values.length > 1 ? 'en ' + v : v)).join(values.length > 2 ? ', ' : ' ')
-      : 'samenwerking en professionaliteit';
-
-    const compStr = comps.map((c, i) => (i === comps.length - 1 && comps.length > 1 ? 'en ' + c.toLowerCase() : c.toLowerCase())).join(comps.length > 2 ? ', ' : ' ');
-
-    const taskLines = tasks.map(t => `• ${t}`).join('\n');
-
-    const extraBlock = extra
-      ? `\nWat wij bieden\n\n${extra.split(/[,\n]/).map(e => `• ${e.trim()}`).filter(Boolean).join('\n')}`
-      : `\nWat wij bieden\n\n• Een uitdagende functie binnen ${org}\n• Marktconform salaris passend bij ${je} ervaring\n• 25+ vakantiedagen per jaar\n• Ruimte voor persoonlijke ontwikkeling en opleiding\n• Flexibele werktijden en mogelijkheid tot thuiswerken\n• Een betrokken team met korte lijnen en directe impact`;
-
-    const nthBlock = nth
-      ? `\nPré\n\n• ${nth.split(/[,\n]/).map(s => s.trim()).filter(Boolean).join('\n• ')}`
-      : '';
-
-    const cta = tone === 'formeel'
-      ? `Interesse in deze functie? Wij ontvangen uw sollicitatie graag via onderstaand formulier. Voor vragen kunt u contact opnemen met onze HR-afdeling.`
-      : tone === 'informeel'
-      ? `Klinkt dit als iets voor jou? Reageer dan snel! Stuur je cv en een korte motivatie, dan nemen we zo snel mogelijk contact op.`
-      : `Herken jij jezelf in dit profiel? Dan ontvangen wij graag jouw sollicitatie. Upload jouw cv en motivatiebrief via onderstaand formulier. Heb je vragen? Neem gerust contact op.`;
-
-    return [
-      `${title.toUpperCase()}`,
-      `${'─'.repeat(Math.min(title.length + 4, 52))}`,
-      ``,
-      `📍 ${location}   ·   🕐 ${hours} uur/week   ·   📄 ${contract}   ·   🏠 ${remote}`,
-      ``,
-      ``,
-      `Over de functie`,
-      ``,
-      `${intro} Als ${title} maak je deel uit van ${org} en werk je in een omgeving die staat voor ${valueStr}. ${jij} werkt nauw samen met collega's en stakeholders en heeft een directe impact op de organisatie.`,
-      ``,
-      ``,
-      `Wat ga ${je} doen?`,
-      ``,
-      taskLines,
-      ``,
-      ``,
-      `Wie zoeken wij?`,
-      ``,
-      `${jij} bent de ideale kandidaat als ${je} beschikt over:`,
-      ``,
-      `• Een afgeronde opleiding op ${edu}-niveau, bij voorkeur in een relevante richting`,
-      `• Ervaring op ${level.toLowerCase()} niveau`,
-      `• Sterke ${compStr}`,
-      `• Uitstekende beheersing van het ${lang}`,
-      `• Een proactieve instelling en de drive om samen resultaten te boeken`,
-      nthBlock,
-      ``,
-      extraBlock,
-      ``,
-      ``,
-      `Solliciteren`,
-      ``,
-      cta,
-      ``,
-      ``,
-      `─────────────────────────────────────`,
-      `Gegenereerd door Kust & Kade Lab · AI Workshop Demo`,
-    ].join('\n');
-  }
-
-  function buildTags() {
-    const title    = document.getElementById('job-title').value.trim();
-    const contract = document.getElementById('contract').value;
-    const level    = state.level;
-    const location = document.getElementById('location').value.trim();
-    const tags = [title, contract, level, location, ...state.values].filter(Boolean).slice(0, 6);
+  function buildTags(title) {
+    const tags = [title, state.level, state.tone].filter(Boolean);
     document.getElementById('resultTags').innerHTML = tags.map(t => `<span class="result-tag">${t}</span>`).join('');
   }
 
