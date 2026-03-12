@@ -4,12 +4,25 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Vacaturetekst Generator · Kust & Kade Lab</title>
+  <meta name="description" content="Snel een inclusieve en professionele vacaturetekst schrijven? Gebruik de gratis AI Vacaturetekst Generator van Kust & Kade. Speciaal voor HR-professionals.">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%232E3128'/%3E%3Cpath d='M2 20 C6 14, 10 26, 14 20 C18 14, 22 26, 26 20 C28 17, 30 18, 30 20' stroke='%232C5F6E' stroke-width='2.5' stroke-linecap='round' fill='none'/%3E%3Cpath d='M2 24 C6 18, 10 30, 14 24 C18 18, 22 30, 26 24 C28 21, 30 22, 30 24' stroke='%233A7A8C' stroke-width='2' stroke-linecap='round' fill='none' opacity='0.7'/%3E%3C/svg%3E" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border-width: 0;
+    }
 
     :root {
       /* ── Kust & Kade brand tokens ── */
@@ -594,6 +607,38 @@
     @keyframes splitLineReveal {
       to { transform: translateY(0); }
     }
+
+    .seo-context-section {
+      padding: 4rem 2rem;
+      background: var(--bg-alt);
+      border-top: 1px solid var(--border);
+    }
+    .seo-context-inner {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+    .seo-context-inner h2 {
+      font-family: var(--serif);
+      font-size: 1.5rem;
+      color: var(--text);
+      margin-bottom: 1rem;
+      font-weight: 400;
+    }
+    .seo-context-inner p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.8;
+      margin-bottom: 1.5rem;
+    }
+    .seo-link {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px solid var(--accent);
+      transition: opacity 0.2s;
+    }
+    .seo-link:hover { opacity: 0.7; }
   </style>
 </head>
 <body>
@@ -618,7 +663,7 @@
 <!-- HERO -->
 <section class="hero">
   <span class="hero-label">Kust & Kade Lab · AI Tool #3</span>
-  <h1>Vacaturetekst Generator<br><em>op maat, in seconden</em></h1>
+  <h1><span class="sr-only">AI Vacaturetekst Generator voor HR: </span>Vacaturetekst Generator<br><em>op maat, in seconden</em></h1>
   <p>Beantwoord vier korte vragen en ontvang een professionele, inclusieve vacaturetekst, klaar voor publicatie.</p>
 </section>
 
@@ -925,6 +970,14 @@
   </div>
 
 </div><!-- /card -->
+
+<section class="seo-context-section">
+  <div class="seo-context-inner">
+    <h2>Waarom een vacaturetekst schrijven met AI?</h2>
+    <p>Je kent het wel: die knipperende cursor op een lege pagina. Het schrijven van een goede, inclusieve vacaturetekst kost vaak stiekem meer tijd dan je lief is. Met deze AI-generator haal je de drempel weg. Je hoeft zelf geen ingewikkelde opdrachten ('prompts') aan ChatGPT te geven. Je selecteert simpelweg de harde eisen en de tool doet het typewerk voor je.</p>
+    <a href="workshop-de-basis.html" class="seo-link">Zelf leren bouwen? Bekijk de HR & AI workshops →</a>
+  </div>
+</section>
 
 <!-- FOOTER -->
 <footer class="site-footer">

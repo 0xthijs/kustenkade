@@ -4,12 +4,25 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Onboarding Routekaart · Kust & Kade LAB</title>
+  <meta name="description" content="Genereer direct een persoonlijke 4-weken onboarding routekaart voor nieuwe medewerkers met de AI-tool van Kust & Kade. Praktisch en tijdbesparend voor HR.">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%232E3128'/%3E%3Cpath d='M2 20 C6 14, 10 26, 14 20 C18 14, 22 26, 26 20 C28 17, 30 18, 30 20' stroke='%232C5F6E' stroke-width='2.5' stroke-linecap='round' fill='none'/%3E%3Cpath d='M2 24 C6 18, 10 30, 14 24 C18 18, 22 30, 26 24 C28 21, 30 22, 30 24' stroke='%233A7A8C' stroke-width='2' stroke-linecap='round' fill='none' opacity='0.7'/%3E%3C/svg%3E" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border-width: 0;
+    }
 
     :root {
       --bg:           #F5F3EC;
@@ -394,6 +407,38 @@
       .phase-header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
       @page { margin: 1cm 1.5cm; size: A4 landscape; }
     }
+
+    .seo-context-section {
+      padding: 4rem 2rem;
+      background: var(--bg-alt);
+      border-top: 1px solid var(--border);
+    }
+    .seo-context-inner {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+    .seo-context-inner h2 {
+      font-family: var(--serif);
+      font-size: 1.5rem;
+      color: var(--text);
+      margin-bottom: 1rem;
+      font-weight: 400;
+    }
+    .seo-context-inner p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.8;
+      margin-bottom: 1.5rem;
+    }
+    .seo-link {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px solid var(--accent);
+      transition: opacity 0.2s;
+    }
+    .seo-link:hover { opacity: 0.7; }
   </style>
 </head>
 <body>
@@ -418,7 +463,7 @@
 <!-- HERO -->
 <section class="hero">
   <span class="hero-label">Kust & Kade Lab · AI Tool #2</span>
-  <h1>Onboarding <em>Routekaart</em></h1>
+  <h1><span class="sr-only">AI Onboarding Routekaart maken voor HR: </span>Onboarding <em>Routekaart</em></h1>
   <p>Geef een paar gegevens op en ontvang een persoonlijke 4-weken onboarding route, klaar om te delen met je nieuwe collega.</p>
 </section>
 
@@ -566,6 +611,14 @@
   </div>
 
 </div>
+
+<section class="seo-context-section">
+  <div class="seo-context-inner">
+    <h2>Snel een inwerkprogramma op maat maken met AI</h2>
+    <p>Een goede onboarding is de sleutel tot het behoud van talent, maar het uitdenken van een gestructureerd programma kost veel tijd. Deze AI-routekaart maakt het inwerken concreet en behapbaar door op basis van de rol en het niveau direct een programma voor de eerste vier weken te genereren voor HR, de manager en de buddy.</p>
+    <a href="workshop-de-basis.html" class="seo-link">Ontdek wat je nog meer kunt automatiseren →</a>
+  </div>
+</section>
 
 <!-- FOOTER -->
 <footer class="site-footer">
