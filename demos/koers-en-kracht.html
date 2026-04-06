@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#2E3128">
+  <title>Koers & Kracht · Kust & Kade Lab</title>
+  <meta name="description" content="Koers & Kracht: AI-gedreven vitaliteitswijzer die medewerkers navigeert door HR-regelingen, vitaliteitsbudgetten en de juiste HR-contacten. Een Kust & Kade Lab demo.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%232E3128'/%3E%3Cpath d='M2 20 C6 14, 10 26, 14 20 C18 14, 22 26, 26 20 C28 17, 30 18, 30 20' stroke='%232C5F6E' stroke-width='2.5' stroke-linecap='round' fill='none'/%3E%3Cpath d='M2 24 C6 18, 10 30, 14 24 C18 18, 22 30, 26 24 C28 21, 30 22, 30 24' stroke='%233A7A8C' stroke-width='2' stroke-linecap='round' fill='none' opacity='0.7'/%3E%3C/svg%3E" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    .sr-only {
+      position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border-width: 0;
+    }
+
+    :root {
+      --bg:           #F5F3EC;
+      --bg-alt:       #EDEAE2;
+      --bg-warm:      #F0EDE4;
+      --card-bg:      #FDFCF9;
+      --text:         #2E3128;
+      --text-muted:   #5C5F56;
+      --accent:       #2C5F6E;
+      --accent-light: #3A7A8C;
+      --accent-glow:  #4A9AAE;
+      --accent-deep:  #1E4552;
+      --accent-pale:  #E8F2F4;
+      --border:       #D4D0C8;
+      --border-dark:  #B8B3A8;
+      --dark:         #2E3128;
+      --sand:         #C8BFA8;
+      --sand-light:   #EDE8DC;
+      --radius-sm:    4px;
+      --radius-md:    8px;
+      --radius-lg:    14px;
+      --shadow-sm:    0 1px 4px rgba(46,49,40,0.07);
+      --shadow-md:    0 4px 18px rgba(46,49,40,0.10);
+      --shadow-lg:    0 10px 40px rgba(46,49,40,0.13);
+      --serif:        'Libre Baskerville', Georgia, serif;
+      --sans:         'DM Sans', system-ui, sans-serif;
+    }
+
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      font-weight: 300;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      pointer-events: none; z-index: 9999; opacity: 0.022;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 256px 256px;
+    }
+
+    /* ── HEADER ── */
+    .header {
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 100;
+      box-shadow: var(--shadow-sm);
+    }
+    .logo { display: flex; align-items: center; gap: 11px; text-decoration: none; }
+    .logo-icon {
+      height: 36px;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .logo-icon img { max-height: 100%; width: auto; }
+    .logo-text { display: flex; flex-direction: column; line-height: 1.15; }
+    .logo-main { font-family: var(--serif); font-size: 1rem; color: var(--text); letter-spacing: 0.01em; }
+    .logo-sub { font-size: 0.6rem; font-weight: 500; letter-spacing: 0.14em; color: var(--accent); text-transform: uppercase; }
+    .header-badge {
+      font-size: 0.7rem; font-weight: 500; color: var(--accent);
+      background: var(--accent-pale); border: 1px solid rgba(44,95,110,0.18);
+      padding: 4px 12px; border-radius: 2px; letter-spacing: 0.08em; text-transform: uppercase;
+    }
+
+    /* ── HERO BANNER with wave ── */
+    .hero-banner {
+      background: var(--dark);
+      padding: 2.5rem 2rem 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-banner::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(44,95,110,0.15) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    /* Decorative wave shapes behind text */
+    .hero-banner .hero-waves {
+      position: absolute; bottom: 0; left: 0; width: 100%; opacity: 0.07; z-index: 1;
+    }
+    .hero-banner-content {
+      position: relative; z-index: 2; padding-bottom: 2rem;
+    }
+    .hero-banner .hero-label {
+      display: inline-block; font-size: 0.68rem; font-weight: 500;
+      letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent-glow);
+      margin-bottom: 1rem;
+    }
+    .hero-banner h1 {
+      font-family: var(--serif); font-size: clamp(1.8rem, 4vw, 2.6rem);
+      color: var(--card-bg); line-height: 1.15; font-weight: 400;
+      margin-bottom: 0.5rem; letter-spacing: -0.02em;
+    }
+    .hero-banner h1 em { color: var(--accent-glow); font-style: italic; }
+    .hero-banner p {
+      font-size: 0.92rem; color: rgba(253,252,249,0.6); max-width: 480px;
+      margin: 0 auto; line-height: 1.65; font-weight: 300;
+    }
+    .hero-wave-divider {
+      display: block; width: calc(100% + 4rem); margin-left: -2rem;
+      position: relative; z-index: 3; margin-top: -2px;
+    }
+
+    /* ── MAIN CONTAINER ── */
+    .app-container {
+      min-height: calc(100vh - 64px - 80px - 220px);
+      display: flex; align-items: flex-start; justify-content: center;
+      padding: 2.5rem 1.25rem;
+    }
+
+    /* ── SCREENS ── */
+    .screen {
+      width: 100%;
+      max-width: 820px;
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      display: none;
+    }
+    .screen.active {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .screen.exit {
+      opacity: 0;
+      transform: translateY(-24px);
+    }
+
+    /* ── SCREEN 1: WELCOME ── */
+    .welcome-card {
+      max-width: 640px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+    }
+    .welcome-header {
+      background: var(--dark);
+      padding: 2rem 2.5rem 1.5rem;
+      color: var(--card-bg);
+      position: relative;
+    }
+    .welcome-header .tool-label {
+      font-size: 0.65rem; font-weight: 500; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--accent-glow); margin-bottom: 8px;
+    }
+    .welcome-header h1 {
+      font-family: var(--serif); font-size: clamp(1.5rem, 3.5vw, 2rem);
+      font-weight: 400; letter-spacing: -0.02em; line-height: 1.2;
+    }
+    .welcome-header h1 em { color: var(--accent-glow); font-style: italic; }
+    .welcome-header p {
+      font-size: 0.82rem; color: rgba(253,252,249,0.55); margin-top: 6px;
+      font-weight: 300; line-height: 1.6;
+    }
+    .welcome-wave {
+      display: block; width: 100%; margin-top: -1px;
+    }
+    .welcome-body {
+      padding: 2rem 2.5rem 1.5rem;
+    }
+    .welcome-body p {
+      font-size: 0.9rem; color: var(--text-muted); line-height: 1.8; margin-bottom: 1rem;
+    }
+    .welcome-body p:first-child {
+      font-size: 1.05rem; color: var(--text); font-weight: 400;
+    }
+    .privacy-block {
+      background: var(--sand-light);
+      border-radius: var(--radius-sm);
+      padding: 1rem 1.25rem;
+      margin: 1.25rem 0;
+      border-left: 3px solid var(--accent);
+    }
+    .privacy-block p {
+      font-size: 0.82rem !important; color: var(--text-muted) !important;
+      line-height: 1.7 !important; margin-bottom: 0 !important;
+    }
+    .welcome-footer {
+      background: var(--bg-alt);
+      padding: 1.25rem 2.5rem;
+      display: flex; justify-content: center;
+    }
+
+    /* ── BUTTONS ── */
+    .btn-primary {
+      font-family: var(--sans);
+      background: var(--accent); color: #fff;
+      border: 1.5px solid var(--accent); padding: 12px 28px; border-radius: var(--radius-sm);
+      font-size: 0.8rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
+      cursor: pointer; transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative; overflow: hidden; z-index: 1;
+    }
+    .btn-primary::before {
+      content: ''; position: absolute; top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.08) 50%, transparent 70%);
+      transition: left 0.55s cubic-bezier(0.16, 1, 0.3, 1); z-index: -1;
+    }
+    .btn-primary::after {
+      content: ''; position: absolute; left: 0; bottom: -4px; width: 200%; height: 40px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M0,40 C150,80 350,0 600,40 C850,80 1050,0 1200,40 L1200,120 L0,120 Z' fill='%235a9fb5'/%3E%3C/svg%3E");
+      background-size: 50% 100%; background-repeat: repeat-x;
+      opacity: 0; transform: translateY(12px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+      pointer-events: none; z-index: -1;
+    }
+    .btn-primary:hover {
+      background: var(--accent-light); border-color: var(--accent-light);
+      box-shadow: 0 8px 28px rgba(44,95,110,0.45), 0 2px 8px rgba(44,95,110,0.2);
+      transform: translateY(-1px);
+    }
+    .btn-primary:hover::before { left: 100%; }
+    .btn-primary:hover::after { opacity: 0.35; transform: translateY(0); animation: waveAction 5s infinite linear; }
+    .btn-primary:active { transform: translateY(0); box-shadow: 0 4px 12px rgba(44,95,110,0.3); }
+
+    .btn-ghost {
+      font-family: var(--sans);
+      background: transparent; color: var(--text-muted);
+      border: 1px solid var(--border); padding: 10px 20px; border-radius: var(--radius-sm);
+      font-size: 0.78rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase;
+      cursor: pointer; transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative; overflow: hidden; z-index: 1;
+    }
+    .btn-ghost::before {
+      content: ''; position: absolute; inset: 0;
+      background: var(--bg-alt);
+      transform: translateY(100%);
+      transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1); z-index: -1;
+    }
+    .btn-ghost:hover { border-color: var(--border-dark); color: var(--text); }
+    .btn-ghost:hover::before { transform: translateY(0); }
+
+    .btn-intranet {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-family: var(--sans);
+      background: transparent; color: var(--accent);
+      border: 1px solid var(--accent); padding: 7px 16px; border-radius: var(--radius-sm);
+      font-size: 0.72rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase;
+      cursor: pointer; transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1); margin-top: 0.75rem;
+      text-decoration: none; position: relative; overflow: hidden; z-index: 1;
+    }
+    .btn-intranet::before {
+      content: ''; position: absolute; inset: 0;
+      background: var(--accent);
+      transform: translateY(100%);
+      transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1); z-index: -1;
+    }
+    .btn-intranet:hover { color: #fff; }
+    .btn-intranet:hover::before { transform: translateY(0); }
+    .btn-intranet svg { transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+    .btn-intranet:hover svg { transform: translateX(3px); }
+
+    /* ── SCREEN 2: CATEGORY CARDS ── */
+    .choice-title {
+      text-align: center; margin-bottom: 2rem;
+    }
+    .choice-title .step-label {
+      font-size: 0.65rem; font-weight: 500; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 10px;
+      display: inline-block; border-bottom: 1px solid var(--accent); padding-bottom: 3px;
+    }
+    .choice-title h2 {
+      font-family: var(--serif); font-size: clamp(1.3rem, 3vw, 1.75rem);
+      font-weight: 400; letter-spacing: -0.02em; color: var(--text); margin-top: 12px;
+    }
+
+    .category-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+
+    /* ── CATEGORY CARDS — K&K fase-kaart stijl ── */
+    .category-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow: hidden;
+      text-align: center;
+      position: relative;
+    }
+    /* Golf-animatie aan de onderkant bij hover */
+    .category-card::after {
+      content: ''; position: absolute; left: 0; bottom: -10px; width: 200%; height: 40px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M0,40 C150,80 350,0 600,40 C850,80 1050,0 1200,40 L1200,120 L0,120 Z' fill='%232C5F6E'/%3E%3C/svg%3E");
+      background-size: 50% 100%; background-repeat: repeat-x;
+      opacity: 0; transform: translateY(20px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+      pointer-events: none; z-index: 0;
+    }
+    .category-card:hover {
+      box-shadow: 0 12px 32px rgba(44,95,110,0.22), inset 0 0 0 1px rgba(74,154,174,0.2);
+      transform: translateY(-5px);
+    }
+    .category-card:hover::after { opacity: 0.10; transform: translateY(0); animation: waveAction 5s infinite linear; }
+    .category-card.cat-mentaal:hover { border-color: var(--accent-deep); }
+    .category-card.cat-fysiek:hover  { border-color: var(--accent); }
+    .category-card.cat-balans:hover  { border-color: var(--accent-light); }
+
+    /* Donkere gekleurde header per categorie */
+    .category-card .card-top {
+      padding: 1.75rem 1.25rem 1.5rem;
+      position: relative; overflow: hidden;
+      display: flex; flex-direction: column; align-items: center;
+      transition: filter 0.4s ease;
+    }
+    .category-card:hover .card-top { filter: brightness(1.18); }
+    .category-card.cat-mentaal .card-top { background: var(--accent-deep); }
+    .category-card.cat-fysiek .card-top  { background: var(--accent); }
+    .category-card.cat-balans .card-top  { background: var(--accent-light); }
+
+    /* Golf-decoratie onderaan de header */
+    .category-card .card-top::after {
+      content: '';
+      position: absolute; bottom: -10px; left: -10%; width: 120%; height: 28px;
+      background: inherit;
+      clip-path: ellipse(50% 65% at 50% 35%);
+      opacity: 0.4;
+    }
+
+    /* Icoon op donkere achtergrond */
+    .category-card .card-icon {
+      width: 52px; height: 52px; margin: 0 auto 0.85rem;
+      border-radius: var(--radius-sm);
+      background: rgba(255,255,255,0.14);
+      display: flex; align-items: center; justify-content: center;
+      position: relative; z-index: 2;
+    }
+    .category-card .card-icon svg {
+      width: 26px; height: 26px;
+      stroke: rgba(253,252,249,0.92) !important;
+    }
+
+    /* Titel in donkere header */
+    .category-card h3 {
+      font-family: var(--serif); font-size: 1.05rem; font-weight: 400;
+      color: #FDFCF9; letter-spacing: -0.01em; line-height: 1.25;
+      position: relative; z-index: 2; margin: 0;
+    }
+
+    /* Lichte body met beschrijving */
+    .category-card .card-body {
+      padding: 1.25rem 1.25rem 1.5rem;
+      background: var(--card-bg);
+    }
+    .category-card p {
+      font-size: 0.82rem; color: var(--text-muted); line-height: 1.65; margin: 0;
+    }
+
+    /* ── SCREEN 3: DEEP DIVE ── */
+    .deepdive-card {
+      max-width: 640px; margin: 0 auto;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+    }
+    .deepdive-header {
+      background: var(--dark);
+      padding: 1.5rem 2rem;
+      color: var(--card-bg);
+    }
+    .deepdive-header .cat-badge {
+      display: inline-block; font-size: 0.62rem; font-weight: 500;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--accent-glow); background: rgba(74,154,174,0.15);
+      padding: 3px 10px; border-radius: 2px; margin-bottom: 8px;
+    }
+    .deepdive-header h2 {
+      font-family: var(--serif); font-size: 1.25rem; font-weight: 400;
+    }
+
+    .deepdive-body { padding: 2rem 2rem 1.5rem; }
+
+    .input-mode-tabs {
+      display: flex; gap: 0; margin-bottom: 1.25rem;
+      border: 1px solid var(--border); border-radius: var(--radius-sm);
+      overflow: hidden;
+    }
+    .mode-tab {
+      flex: 1; padding: 9px 12px; text-align: center;
+      font-family: var(--sans); font-size: 0.78rem; font-weight: 500;
+      letter-spacing: 0.04em; color: var(--text-muted);
+      background: var(--bg); border: none; cursor: pointer;
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative; overflow: hidden;
+    }
+    .mode-tab::after {
+      content: ''; position: absolute; bottom: 0; left: 0;
+      width: 0; height: 2px; background: var(--accent);
+      transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .mode-tab:first-child { border-right: 1px solid var(--border); }
+    .mode-tab.active {
+      background: var(--accent-pale); color: var(--accent-deep); font-weight: 600;
+    }
+    .mode-tab.active::after { width: 100%; }
+    .mode-tab:hover:not(.active) { background: var(--bg-alt); color: var(--text); }
+    .mode-tab:hover:not(.active)::after { width: 100%; opacity: 0.4; }
+
+    .input-panel { display: none; }
+    .input-panel.active { display: block; }
+
+    .quick-options { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+    .quick-option {
+      font-family: var(--sans);
+      background: var(--bg); color: var(--text);
+      border: 1px solid var(--border); border-radius: var(--radius-sm);
+      padding: 10px 16px; font-size: 0.82rem; font-weight: 400;
+      cursor: pointer; transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1); line-height: 1.4;
+    }
+    .quick-option:hover {
+      border-color: var(--accent); background: var(--accent-pale);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(44,95,110,0.12);
+    }
+    .quick-option.selected {
+      border-color: var(--accent); background: var(--accent-pale); color: var(--accent-deep);
+      font-weight: 500;
+    }
+
+    .text-input-group label {
+      display: block; font-size: 0.78rem; font-weight: 500;
+      color: var(--text-muted); margin-bottom: 6px; letter-spacing: 0.04em;
+    }
+    .text-input-group textarea {
+      width: 100%; min-height: 100px; padding: 12px 14px;
+      background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm);
+      font-family: var(--sans); font-size: 0.88rem; font-weight: 300;
+      color: var(--text); line-height: 1.6; resize: vertical;
+      transition: border-color 0.25s, box-shadow 0.25s, background 0.25s;
+    }
+    .text-input-group textarea:focus {
+      outline: none; border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-pale); background: var(--card-bg);
+    }
+    .text-input-group textarea::placeholder { color: var(--sand); font-weight: 300; }
+
+    .deepdive-footer {
+      background: var(--bg-alt); padding: 1.25rem 2rem;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+
+    /* ── LOADING ── */
+    .loading-overlay {
+      display: none;
+      position: fixed; inset: 0; z-index: 200;
+      background: rgba(245,243,236,0.92);
+      flex-direction: column; align-items: center; justify-content: center;
+    }
+    .loading-overlay.active { display: flex; }
+
+    .wave-loader { display: flex; gap: 5px; align-items: flex-end; height: 40px; margin-bottom: 1.5rem; }
+    .wave-bar {
+      width: 5px; background: var(--accent); border-radius: 2px;
+      animation: waveAnim 1.2s ease-in-out infinite;
+    }
+    .wave-bar:nth-child(1) { height: 12px; animation-delay: 0s; }
+    .wave-bar:nth-child(2) { height: 20px; animation-delay: 0.1s; }
+    .wave-bar:nth-child(3) { height: 28px; animation-delay: 0.2s; }
+    .wave-bar:nth-child(4) { height: 20px; animation-delay: 0.3s; }
+    .wave-bar:nth-child(5) { height: 12px; animation-delay: 0.4s; }
+
+    @keyframes waveAnim {
+      0%, 100% { transform: scaleY(0.5); opacity: 0.5; }
+      50% { transform: scaleY(1.3); opacity: 1; }
+    }
+    @keyframes waveAction { 0%{transform:translateX(0) translateY(0);} 50%{transform:translateX(-25%) translateY(4px);} 100%{transform:translateX(-50%) translateY(0);} }
+
+    .loading-text {
+      font-family: var(--serif); font-size: 1rem; color: var(--text);
+      letter-spacing: -0.01em; text-align: center;
+    }
+    .loading-sub {
+      font-size: 0.8rem; color: var(--text-muted); margin-top: 6px; font-weight: 300;
+    }
+
+    /* ── SCREEN 4: RESULTS ── */
+    .results-container { max-width: 720px; width: 100%; margin: 0 auto; }
+    .results-header { text-align: center; margin-bottom: 2rem; }
+    .results-header .step-label {
+      font-size: 0.65rem; font-weight: 500; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--accent); display: inline-block;
+      border-bottom: 1px solid var(--accent); padding-bottom: 3px; margin-bottom: 12px;
+    }
+    .results-header h2 {
+      font-family: var(--serif); font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+      font-weight: 400; color: var(--text); letter-spacing: -0.02em;
+    }
+    .results-header p {
+      font-size: 0.88rem; color: var(--text-muted); margin-top: 6px; font-weight: 300;
+    }
+    .results-echo {
+      display: inline-flex; align-items: baseline; gap: 0.5rem; flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 1rem; padding: 0.55rem 1rem;
+      background: var(--accent-pale); border: 1px solid rgba(44,95,110,0.18);
+      border-radius: var(--radius-sm);
+    }
+    .echo-label {
+      font-size: 0.68rem; font-weight: 500; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--accent);
+    }
+    .echo-text {
+      font-size: 0.85rem; color: var(--text); font-style: italic; font-weight: 300;
+    }
+
+    .action-cards { display: grid; gap: 1rem; margin-bottom: 2rem; }
+    .action-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      opacity: 0; transform: translateY(16px);
+      animation: cardIn 0.45s ease forwards;
+      position: relative;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease, border-color 0.4s ease;
+    }
+    /* Top-accentlijn op action-cards */
+    .action-card::before {
+      content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px;
+      background: linear-gradient(90deg, var(--accent-glow), var(--accent-light));
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1); z-index: 2;
+    }
+    .action-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(44,95,110,0.14); border-color: rgba(44,95,110,0.28); }
+    .action-card:hover::before { transform: scaleX(1); }
+    .action-card > * { position: relative; z-index: 1; }
+    .action-card:nth-child(1) {
+      animation-delay: 0.1s;
+      border-color: var(--accent-deep);
+      box-shadow: 0 4px 20px rgba(30,69,82,0.13);
+    }
+    .action-card:nth-child(2) { animation-delay: 0.25s; }
+    .action-card:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes cardIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .action-card-header {
+      padding: 1.1rem 1.5rem 0.85rem;
+      display: flex; flex-direction: column; gap: 6px;
+      border-bottom: 1px solid var(--border);
+    }
+    .action-card-header .action-type {
+      display: inline-block; align-self: flex-start;
+      font-size: 0.62rem; font-weight: 500; letter-spacing: 0.12em;
+      text-transform: uppercase; padding: 3px 9px; border-radius: 2px;
+    }
+    /* Pill kleuren per kaartpositie */
+    .action-card:nth-child(1) .action-type { background: var(--accent-deep); color: #FDFCF9; }
+    .action-card:nth-child(2) .action-type { background: var(--accent-pale); color: var(--accent-deep); border: 1px solid rgba(44,95,110,0.2); }
+    .action-card:nth-child(3) .action-type { background: var(--sand-light); color: var(--text-muted); border: 1px solid var(--border); }
+    .action-card-header h3 {
+      font-family: var(--serif); font-size: 1rem; font-weight: 400; color: var(--text);
+      letter-spacing: -0.01em;
+    }
+    .action-card-body { padding: 1rem 1.5rem 1.25rem; }
+    .action-card-body p {
+      font-size: 0.86rem; color: var(--text-muted); line-height: 1.7;
+    }
+    .action-card-body .regeling {
+      display: inline-block; margin-top: 0.6rem;
+      background: var(--accent-pale); color: var(--accent-deep);
+      font-size: 0.72rem; font-weight: 500; letter-spacing: 0.06em;
+      padding: 3px 10px; border-radius: 2px;
+      border: 1px solid rgba(44,95,110,0.15);
+    }
+
+    .results-footer {
+      text-align: center; padding-top: 0.5rem;
+    }
+    .results-note {
+      font-size: 0.76rem; color: var(--text-muted); font-weight: 300;
+      font-style: italic; margin-bottom: 1.25rem; line-height: 1.6;
+    }
+    .results-actions { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
+
+    /* ── DEMO MODAL ── */
+    .demo-modal-overlay {
+      display: none;
+      position: fixed; inset: 0; z-index: 300;
+      background: rgba(46,49,40,0.45);
+      align-items: center; justify-content: center;
+      padding: 1rem;
+    }
+    .demo-modal-overlay.active { display: flex; }
+    .demo-modal {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      max-width: 380px; width: 100%;
+      text-align: center;
+      padding: 2.5rem 2rem 2rem;
+      animation: modalIn 0.3s ease;
+    }
+    @keyframes modalIn {
+      from { opacity: 0; transform: scale(0.95) translateY(10px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .demo-modal .modal-icon {
+      width: 48px; height: 48px; margin: 0 auto 1rem;
+      background: var(--sand-light); border-radius: var(--radius-sm);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem;
+    }
+    .demo-modal h3 {
+      font-family: var(--serif); font-size: 1.1rem; font-weight: 400;
+      margin-bottom: 0.5rem;
+    }
+    .demo-modal p {
+      font-size: 0.84rem; color: var(--text-muted); line-height: 1.65;
+      margin-bottom: 1.25rem;
+    }
+
+    /* ── FOOTER ── */
+    .seo-context-section {
+      padding: 4rem 2rem;
+      background: var(--bg-alt);
+      border-top: 1px solid var(--border);
+    }
+    .seo-context-inner {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+    .seo-context-inner h2 {
+      font-family: var(--serif);
+      font-size: 1.5rem; font-weight: 400;
+      color: var(--text); margin-bottom: 1rem;
+    }
+    .seo-context-inner p {
+      font-size: 0.95rem; color: var(--text-muted);
+      line-height: 1.8; margin-bottom: 1.5rem;
+    }
+    .seo-link {
+      font-size: 0.85rem; font-weight: 600;
+      color: var(--accent); text-decoration: none;
+      border-bottom: 1px solid var(--accent);
+      transition: opacity 0.2s;
+    }
+    .seo-link:hover { opacity: 0.7; }
+
+    .site-footer {
+      text-align: center; padding: 2rem;
+      font-size: 0.72rem; color: var(--text-muted); font-weight: 300;
+      border-top: 1px solid var(--border); background: var(--bg-alt);
+    }
+    .site-footer strong { color: var(--accent); font-weight: 500; }
+    .site-footer .footer-sub {
+      font-size: 0.65rem; opacity: 0.55; margin-top: 4px;
+      display: block; letter-spacing: 0.06em; text-transform: uppercase;
+    }
+
+    /* ── PROGRESS BAR ── */
+    .progress-bar {
+      position: fixed; top: 64px; left: 0; width: 100%; height: 3px;
+      background: var(--border); z-index: 99;
+    }
+    .progress-fill {
+      height: 100%; background: var(--accent);
+      transition: width 0.5s ease; width: 0%;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .category-cards { grid-template-columns: 1fr; }
+      .category-card { text-align: left; }
+      .category-card .card-top { display: flex; gap: 1rem; align-items: flex-start; padding: 1.25rem; }
+      .category-card .card-icon { margin: 0; flex-shrink: 0; }
+      .category-card .card-body { padding: 0 1.25rem 1.25rem; }
+    }
+    @media (max-width: 600px) {
+      .header { padding: 0 1rem; }
+      .header-badge { display: none; }
+      .hero-banner { padding: 2rem 1.5rem 0; }
+      .hero-wave-divider { width: calc(100% + 3rem); margin-left: -1.5rem; }
+      .welcome-header, .welcome-body { padding-left: 1.5rem; padding-right: 1.5rem; }
+      .welcome-footer { padding: 1rem 1.5rem; }
+      .deepdive-header, .deepdive-body { padding-left: 1.5rem; padding-right: 1.5rem; }
+      .deepdive-footer { padding: 1rem 1.5rem; flex-direction: column; gap: 0.75rem; }
+      .deepdive-footer .btn-ghost { width: 100%; text-align: center; }
+      .deepdive-footer .btn-primary { width: 100%; }
+      .action-card-header { padding: 0.85rem 1.25rem 0.65rem; }
+      .action-card-body { padding: 0.85rem 1.25rem; }
+      .app-container { padding: 1.5rem 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <a href="#" class="logo" onclick="return false;">
+      <div class="logo-icon">
+        <img src="https://raw.githubusercontent.com/0xthijs/kustenkade/main/assets/footer-logo.png" alt="Kust & Kade Lab Logo">
+      </div>
+      <div class="logo-text">
+        <span class="logo-main">Kust &amp; Kade</span>
+        <span class="logo-sub">Lab &middot; AI Demo</span>
+      </div>
+    </a>
+    <div style="display:flex;align-items:center;gap:1rem;">
+      <a href="https://www.kustenkade.nl" style="font-size:0.7rem;font-weight:500;color:var(--text-muted);text-decoration:none;letter-spacing:0.05em;">&larr; Terug naar website</a>
+      <span class="header-badge">AI Tool #4</span>
+    </div>
+  </header>
+
+  <!-- PROGRESS BAR -->
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+  <!-- HERO BANNER with decorative waves -->
+  <section class="hero-banner" id="heroBanner">
+    <!-- Decorative wave shapes -->
+    <svg class="hero-waves" viewBox="0 0 1440 120" preserveAspectRatio="none">
+      <path d="M0 60 C 180 20, 360 100, 540 60 C 720 20, 900 100, 1080 60 C 1260 20, 1380 80, 1440 60 L1440 120 L0 120Z" fill="#4A9AAE"/>
+      <path d="M0 80 C 200 40, 400 110, 600 80 C 800 40, 1000 110, 1200 80 C 1320 60, 1400 90, 1440 80 L1440 120 L0 120Z" fill="#3A7A8C" opacity="0.6"/>
+    </svg>
+    <div class="hero-banner-content">
+      <span class="hero-label">Kust &amp; Kade Lab &middot; AI Tool #4</span>
+      <h1>Koers &amp; <em>Kracht</em></h1>
+      <p>AI-gedreven vitaliteitswijzer die je helpt navigeren door HR-regelingen, budgetten en de juiste personen.</p>
+    </div>
+    <!-- Wave divider to main bg -->
+    <svg class="hero-wave-divider" viewBox="0 0 1440 56" preserveAspectRatio="none" style="height:56px;">
+      <path d="M0 56 C 240 10, 480 56, 720 28 C 960 0, 1200 50, 1440 20 L1440 56 Z" fill="#F5F3EC"/>
+    </svg>
+  </section>
+
+  <!-- LOADING OVERLAY -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="wave-loader">
+      <div class="wave-bar"></div>
+      <div class="wave-bar"></div>
+      <div class="wave-bar"></div>
+      <div class="wave-bar"></div>
+      <div class="wave-bar"></div>
+    </div>
+    <div class="loading-text">Koers &amp; Kracht zoekt de juiste regelingen&hellip;</div>
+    <div class="loading-sub" id="loadingSubText">Even geduld, we matchen jouw situatie.</div>
+  </div>
+
+  <!-- DEMO MODAL -->
+  <div class="demo-modal-overlay" id="demoModal">
+    <div class="demo-modal">
+      <div class="modal-icon">&#9888;</div>
+      <h3>Niet beschikbaar in deze demo</h3>
+      <p>In de praktijk zou je nu worden doorgestuurd naar het intranet van jullie organisatie. Dit is een demonstratie van Kust &amp; Kade Lab.</p>
+      <button class="btn-primary" onclick="closeDemoModal()">Begrepen</button>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <main class="app-container">
+
+    <!-- ========== SCREEN 1: WELCOME ========== -->
+    <div class="screen active" id="screen1">
+      <div class="welcome-card">
+        <div class="welcome-header">
+          <div class="tool-label">Kust &amp; Kade Lab &middot; AI Tool #4</div>
+          <h1>Koers &amp; <em>Kracht</em></h1>
+          <p>AI-gedreven vitaliteitswijzer voor medewerkers</p>
+        </div>
+        <svg class="welcome-wave" viewBox="0 0 1440 56" preserveAspectRatio="none">
+          <path d="M0 56 C 240 10, 480 56, 720 28 C 960 0, 1200 50, 1440 20 L1440 56 Z" fill="#FDFCF9"/>
+        </svg>
+        <div class="welcome-body">
+          <p>Hoi. Goed dat je er bent.</p>
+          <p>Dit is een Kust &amp; Kade Lab-demo. Het HR-beleid op de achtergrond is fictief, maar het laat precies zien hoe je AI veilig in de praktijk inzet.</p>
+          <div class="privacy-block">
+            <p>Voordat we beginnen: we gaan het hebben over jouw vitaliteit. Dat is priv&eacute;. Daarom slaan we jouw antwoorden nergens op en delen we niets met je manager of HR. Zodra je dit scherm sluit, worden je gegevens vergeten.</p>
+          </div>
+        </div>
+        <div class="welcome-footer">
+          <button class="btn-primary" onclick="goToScreen(2)">Aan de slag</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== SCREEN 2: MAIN CHOICE ========== -->
+    <div class="screen" id="screen2">
+      <div class="choice-title">
+        <span class="step-label">Stap 1 van 3</span>
+        <h2>Waar wil je vandaag op inzoomen?</h2>
+      </div>
+      <div class="category-cards">
+        <!-- Mentaal -->
+        <div class="category-card cat-mentaal" onclick="selectCategory('mentaal')" role="button" tabindex="0">
+          <div class="card-top">
+            <div class="card-icon">
+              <!-- Lucide: Brain -->
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#1E4552" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 18V5"/><path d="M15 13a4.17 4.17 0 0 1-3-4 4.17 4.17 0 0 1-3 4"/>
+                <path d="M17.598 6.5A3 3 0 1 0 12 5a3 3 0 1 0-5.598 1.5"/>
+                <path d="M17.997 5.125a4 4 0 0 1 2.526 5.77"/><path d="M18 18a4 4 0 0 0 2-7.464"/>
+                <path d="M19.967 17.483A4 4 0 1 1 12 18a4 4 0 1 1-7.967-.517"/>
+                <path d="M6 18a4 4 0 0 1-2-7.464"/><path d="M6.003 5.125a4 4 0 0 0-2.526 5.77"/>
+              </svg>
+            </div>
+            <h3>Mentaal &amp; Stress</h3>
+          </div>
+          <div class="card-body">
+            <p>Voor als het even te hard waait. Stress, mentale ruimte, focus, of behoefte aan een klankbord.</p>
+          </div>
+        </div>
+        <!-- Fysiek -->
+        <div class="category-card cat-fysiek" onclick="selectCategory('fysiek')" role="button" tabindex="0">
+          <div class="card-top">
+            <div class="card-icon">
+              <!-- Lucide: Heart Pulse -->
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#2C5F6E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/>
+                <path d="M3.22 13H9.5l.5-1 2 4.5 2-7 1.5 3.5h5.27"/>
+              </svg>
+            </div>
+            <h3>Fysiek &amp; Fundament</h3>
+          </div>
+          <div class="card-body">
+            <p>Bouwen aan je fundament. Ergonomie, werkplek, fysieke klachten, of gewoon meer willen bewegen.</p>
+          </div>
+        </div>
+        <!-- Balans -->
+        <div class="category-card cat-balans" onclick="selectCategory('balans')" role="button" tabindex="0">
+          <div class="card-top">
+            <div class="card-icon">
+              <!-- Lucide: Scale -->
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#3A7A8C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 3v18"/><path d="m19 8 3 8a5 5 0 0 1-6 0zV7"/>
+                <path d="M3 7h1a17 17 0 0 0 8-2 17 17 0 0 0 8 2h1"/>
+                <path d="m5 8 3 8a5 5 0 0 1-6 0zV7"/><path d="M7 21h10"/>
+              </svg>
+            </div>
+            <h3>Werk &amp; Balans</h3>
+          </div>
+          <div class="card-body">
+            <p>De balans tussen geven en nemen. Verlof, hybride werken, ruimte voor herstel en ritme, mantelzorg of ouderschap.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== SCREEN 3: DEEP DIVE ========== -->
+    <div class="screen" id="screen3">
+      <div class="deepdive-card">
+        <div class="deepdive-header" id="deepdiveHeader">
+          <span class="step-label" style="color:rgba(253,252,249,0.55);">Stap 2 van 3</span>
+          <span class="cat-badge" id="deepdiveBadge">Mentaal &amp; Stress</span>
+          <h2>Wat is op dit moment je behoefte?</h2>
+        </div>
+        <div class="deepdive-body">
+          <div class="input-mode-tabs">
+            <button class="mode-tab active" id="tabQuick" onclick="switchInputMode('quick')">Kies een optie</button>
+            <button class="mode-tab" id="tabCustom" onclick="switchInputMode('custom')">Beschrijf het zelf</button>
+          </div>
+          <div class="input-panel active" id="panelQuick">
+            <div class="quick-options" id="quickOptions"></div>
+          </div>
+          <div class="input-panel" id="panelCustom">
+            <div class="text-input-group">
+              <label for="customInput">Beschrijf kort waar je naar op zoek bent</label>
+              <textarea id="customInput" placeholder="Bijv. ik wil graag weten hoe ik meer rust kan vinden naast mijn werk..."></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="deepdive-footer">
+          <button class="btn-ghost" onclick="goToScreen(2)">&larr; Terug</button>
+          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:0.35rem;">
+            <button class="btn-primary" id="generateBtn" onclick="generateAdvice()">Genereer advies</button>
+            <span class="validation-hint" id="validationHint" style="display:none;font-size:0.75rem;color:#B85C3A;font-weight:400;">Kies eerst een optie of beschrijf je situatie.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== SCREEN 4: RESULTS ========== -->
+    <div class="screen" id="screen4">
+      <div class="results-container">
+        <div class="results-header">
+          <span class="step-label">Jouw advies</span>
+          <h2 id="resultsTitle">Op basis van jouw input</h2>
+          <p id="resultsSummary"></p>
+          <div class="results-echo" id="resultsEcho" style="display:none;">
+            <span class="echo-label">Jouw vraag</span>
+            <span class="echo-text" id="resultsEchoText"></span>
+          </div>
+        </div>
+        <div class="action-cards" id="actionCards"></div>
+        <div class="results-footer">
+          <p class="results-note">Dit advies is gegenereerd door AI op basis van fictief HR-beleid. In de praktijk zou dit gekoppeld zijn aan jullie eigen cao en personeelsgids.</p>
+          <div class="results-actions">
+            <button class="btn-ghost" onclick="resetAll()">Opnieuw beginnen</button>
+            <button class="btn-ghost" onclick="goToScreen(2)">Ander onderwerp kiezen</button>
+            <button class="btn-primary" onclick="openDemoModal()">Neem contact op met HR</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- SEO CONTEXT -->
+  <section class="seo-context-section">
+    <div class="seo-context-inner">
+      <h2>Vitaliteit op de werkvloer: van beleid naar actie</h2>
+      <p>Veel medewerkers weten niet welke HR-regelingen voor hen beschikbaar zijn — of ze vinden de drempel te hoog om ernaar te vragen. Deze demo laat zien hoe een AI-vitaliteitswijzer die kloof overbrugt: de medewerker stelt anoniem zijn vraag, de tool matcht op intern beleid en geeft direct concrete stappen terug. Geen lange zoektochten op het intranet, geen onnodige drempel naar HR. Zo worden regelingen die er al zijn ook écht gebruikt.</p>
+      <a href="https://www.kustenkade.nl/#contact" class="seo-link">Benieuwd hoe dit werkt voor jouw organisatie? Plan een gesprek &rarr;</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <strong>Kust &amp; Kade Lab</strong> &middot; AI-tools voor moderne HR professionals
+    <span class="footer-sub">Demo &middot; Workshop Proof of Concept</span>
+  </footer>
+
+<script>
+/* ═══════════════════════════════════════════
+   Koers & Kracht — Vitaliteitswijzer
+   Kust & Kade Lab · AI Tool #4
+   ═══════════════════════════════════════════ */
+
+// ── STATE ──
+let currentScreen = 1;
+let selectedCategory = null;
+let selectedQuickOption = null;
+let activeInputMode = 'quick';
+
+// ── CATEGORY DATA (positive formulations) ──
+const categories = {
+  mentaal: {
+    label: 'Mentaal & Stress',
+    options: [
+      'Ik wil weer meer energie in mijn werkdag voelen',
+      'Ik wil makkelijker kunnen loskomen na werktijd',
+      'Ik zoek manieren om beter om te gaan met werkdruk',
+      'Ik wil graag met iemand in gesprek over hoe het gaat'
+    ]
+  },
+  fysiek: {
+    label: 'Fysiek & Fundament',
+    options: [
+      'Ik wil comfortabeler kunnen werken (rug, nek, schouders)',
+      'Ik wil mijn thuiswerkplek goed inrichten',
+      'Ik wil meer bewegen naast mijn werk',
+      'Ik wil weten welke ondersteuning er is bij fysieke klachten'
+    ]
+  },
+  balans: {
+    label: 'Werk & Balans',
+    options: [
+      'Ik wil werk en mantelzorg beter kunnen combineren',
+      'Ik wil meer flexibiliteit in waar en wanneer ik werk',
+      'Ik wil tijd vrijmaken voor persoonlijke groei en ontwikkeling',
+      'Ik wil weten welke verlofmogelijkheden er voor mij zijn'
+    ]
+  }
+};
+
+// ── MOCK RESULTS DATA ──
+const mockResults = {
+  mentaal: {
+    title: 'Je mentale veerkracht verdient aandacht',
+    summary: 'Op basis van jouw input hebben we drie concrete stappen gevonden die je direct kunt zetten.',
+    cards: [
+      {
+        type: 'Menselijk Contact', icon: '&#10035;', color: '#1E4552',
+        title: 'Plan een gesprek met de BMW',
+        description: 'De Bedrijfsmaatschappelijk werker (BMW) is er voor stress- en priv\u00e9situaties. Je kunt rechtstreeks een afspraak maken \u2014 je hoeft niet via je leidinggevende.',
+        regeling: 'Vertrouwelijk \u00b7 Geen terugkoppeling naar HR',
+        intranetLabel: 'Bekijk op intranet'
+      },
+      {
+        type: 'Directe Actie', icon: '&#9672;', color: '#2C5F6E',
+        title: '3 gratis coachsessies activeren',
+        description: 'Via de regeling \u201cMentale Fitheid\u201d heb je recht op 3 gratis sessies met een externe coach. Dat kan al deze week ingepland worden.',
+        regeling: 'Regeling: Mentaal Fit \u00b7 3 sessies per jaar',
+        intranetLabel: 'Aanvragen via intranet'
+      },
+      {
+        type: 'Zelf Regelen', icon: '&#9829;', color: '#3A7A8C',
+        title: 'Mentaal Fit Budget inzetten',
+        description: 'Je hebt een persoonlijk budget van \u20ac250 per jaar voor alles wat jouw mentale fitheid ondersteunt. Denk aan mindfulness, een cursus, of een app-abonnement.',
+        regeling: 'Budget: \u20ac250 per jaar \u00b7 Vrij besteedbaar',
+        intranetLabel: 'Budget aanvragen'
+      }
+    ]
+  },
+  fysiek: {
+    title: 'Een goed fundament begint bij jouw werkplek',
+    summary: 'We hebben drie regelingen gevonden die direct aansluiten bij jouw fysieke situatie.',
+    cards: [
+      {
+        type: 'Directe Actie', icon: '&#10035;', color: '#1E4552',
+        title: 'Vraag een werkplekonderzoek aan',
+        description: 'Een ergonomisch werkplekonderzoek (WPO) wordt gratis aangeboden. Een specialist komt langs (of belt voor thuiswerk) en stelt je werkplek optimaal in.',
+        regeling: 'Regeling: Ergonomisch WPO \u00b7 Gratis',
+        intranetLabel: 'WPO aanvragen'
+      },
+      {
+        type: 'Zelf Regelen', icon: '&#9672;', color: '#2C5F6E',
+        title: 'Thuiswerkplek budget aanvragen',
+        description: 'Je hebt recht op \u20ac750 voor het inrichten van je thuiswerkplek. Denk aan een goed bureau, stoel, of monitor. De aanvraag loopt via HR Advies.',
+        regeling: 'Budget: \u20ac750 eenmalig \u00b7 Via HR Advies',
+        intranetLabel: 'Budget aanvragen'
+      },
+      {
+        type: 'Arbeidsvoorwaarde', icon: '&#9829;', color: '#3A7A8C',
+        title: 'Fietsplan activeren',
+        description: 'Via het Fietsplan kun je belastingvrij een fiets leasen. Goed voor je gezondheid \u00e9n je portemonnee. Het gaat via een bruto-netto regeling.',
+        regeling: 'Regeling: Fietsplan \u00b7 Fiscaal voordeel',
+        intranetLabel: 'Fietsplan bekijken'
+      }
+    ]
+  },
+  balans: {
+    title: 'Balans vinden is geen luxe, het is noodzaak',
+    summary: 'Er zijn meerdere regelingen die jou ruimte geven. Hier zijn de drie meest relevante.',
+    cards: [
+      {
+        type: 'Directe Actie', icon: '&#10035;', color: '#1E4552',
+        title: 'Hybride werken bespreken',
+        description: 'De richtlijn is 50/50 (kantoor/thuis), maar er is ruimte voor maatwerkafspraken. Plan een kort gesprek met je leidinggevende om de mogelijkheden te bespreken.',
+        regeling: 'Richtlijn: 50/50 Hybride \u00b7 Maatwerk mogelijk',
+        intranetLabel: 'Richtlijn bekijken'
+      },
+      {
+        type: 'Zelf Regelen', icon: '&#9672;', color: '#2C5F6E',
+        title: 'Koers-budget gebruiken',
+        description: 'Je hebt maandelijks 4 uur \u201cKoers-budget\u201d voor persoonlijke ontwikkeling. Dat mag je zelf invullen: een cursus, een boek, een conferentie, of reflectietijd.',
+        regeling: 'Regeling: Koers-budget \u00b7 4 uur per maand',
+        intranetLabel: 'Koers-budget activeren'
+      },
+      {
+        type: 'Menselijk Contact', icon: '&#9829;', color: '#3A7A8C',
+        title: 'Mantelzorg en ouderschap regelen',
+        description: 'Voor mantelzorgers en nieuwe ouders zijn er specifieke verlof- en ontzieregels. HR Advies bekijkt samen met jou welke ruimte er is en hoe je dit inricht.',
+        regeling: 'Regeling: Mantelzorg- & Ouderschapsverlof \u00b7 Via HR Advies',
+        intranetLabel: 'Verlofmogelijkheden bekijken'
+      }
+    ]
+  }
+};
+
+// ── PROGRESS ──
+const progressSteps = { 1: 0, 2: 33, 3: 66, 4: 100 };
+function updateProgress(screen) {
+  document.getElementById('progressFill').style.width = progressSteps[screen] + '%';
+}
+
+// ── HERO VISIBILITY ──
+function updateHero(screen) {
+  const hero = document.getElementById('heroBanner');
+  hero.style.display = screen === 1 ? 'none' : 'block';
+}
+
+// ── SCREEN TRANSITIONS ──
+function goToScreen(num) {
+  const current = document.getElementById('screen' + currentScreen);
+  const next = document.getElementById('screen' + num);
+  current.classList.add('exit');
+  setTimeout(() => {
+    current.classList.remove('active', 'exit');
+    current.style.display = 'none';
+    next.style.display = 'block';
+    void next.offsetHeight;
+    next.classList.add('active');
+    currentScreen = num;
+    updateProgress(num);
+    updateHero(num);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, 350);
+}
+
+// ── INPUT MODE SWITCHING ──
+function switchInputMode(mode) {
+  activeInputMode = mode;
+  document.getElementById('tabQuick').classList.toggle('active', mode === 'quick');
+  document.getElementById('tabCustom').classList.toggle('active', mode === 'custom');
+  document.getElementById('panelQuick').classList.toggle('active', mode === 'quick');
+  document.getElementById('panelCustom').classList.toggle('active', mode === 'custom');
+  if (mode === 'custom') {
+    selectedQuickOption = null;
+    document.querySelectorAll('.quick-option').forEach(b => b.classList.remove('selected'));
+  } else {
+    document.getElementById('customInput').value = '';
+  }
+}
+
+// ── CATEGORY SELECTION ──
+function selectCategory(cat) {
+  selectedCategory = cat;
+  selectedQuickOption = null;
+  activeInputMode = 'quick';
+  const data = categories[cat];
+  document.getElementById('deepdiveBadge').textContent = data.label;
+  document.getElementById('tabQuick').classList.add('active');
+  document.getElementById('tabCustom').classList.remove('active');
+  document.getElementById('panelQuick').classList.add('active');
+  document.getElementById('panelCustom').classList.remove('active');
+  const container = document.getElementById('quickOptions');
+  container.innerHTML = '';
+  data.options.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'quick-option';
+    btn.textContent = opt;
+    btn.onclick = function() {
+      document.querySelectorAll('.quick-option').forEach(b => b.classList.remove('selected'));
+      this.classList.add('selected');
+      selectedQuickOption = opt;
+    };
+    container.appendChild(btn);
+  });
+  document.getElementById('customInput').value = '';
+  // Kleur deepdive header mee met geselecteerde categorie
+  const catColors = { mentaal: '#1E4552', fysiek: '#2C5F6E', balans: '#3A7A8C' };
+  document.getElementById('deepdiveHeader').style.background = catColors[cat] || 'var(--dark)';
+  goToScreen(3);
+}
+
+// Keyboard support
+document.querySelectorAll('.category-card').forEach(card => {
+  card.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); card.click(); }
+  });
+});
+
+// ── DEMO MODAL ──
+function openDemoModal() {
+  document.getElementById('demoModal').classList.add('active');
+}
+function closeDemoModal() {
+  document.getElementById('demoModal').classList.remove('active');
+}
+document.getElementById('demoModal').addEventListener('click', function(e) {
+  if (e.target === this) closeDemoModal();
+});
+
+// ── PLACEHOLDER: LLM API ──
+/**
+ * fetchAIAdvice — Placeholder function for LLM integration.
+ * Replace with a real API call to Claude, Gemini, or another LLM.
+ *
+ * @param {string} userInput - The user's selected option or custom text
+ * @param {string} category  - 'mentaal', 'fysiek', or 'balans'
+ * @returns {Promise<Object>}
+ */
+async function fetchAIAdvice(userInput, category) {
+  return new Promise(resolve => {
+    const loadingSub = document.getElementById('loadingSubText');
+    const steps = [
+      'Even geduld, we matchen jouw situatie.',
+      'Regelingen en contactpersonen worden opgezocht...',
+      'Bijna klaar \u2014 advies wordt samengesteld.'
+    ];
+    let step = 0;
+    const stepInterval = setInterval(() => {
+      step++;
+      if (step < steps.length) loadingSub.textContent = steps[step];
+    }, 700);
+    setTimeout(() => {
+      clearInterval(stepInterval);
+      loadingSub.textContent = steps[0];
+      resolve(mockResults[category]);
+    }, 2200);
+  });
+}
+
+// ── GENERATE ADVICE ──
+async function generateAdvice() {
+  let userInput;
+  if (activeInputMode === 'custom') {
+    userInput = document.getElementById('customInput').value.trim();
+    if (!userInput) {
+      const ta = document.getElementById('customInput');
+      ta.style.borderColor = 'var(--accent)';
+      ta.focus();
+      setTimeout(() => { ta.style.borderColor = ''; }, 2000);
+      const hint = document.getElementById('validationHint');
+      hint.style.display = 'block';
+      setTimeout(() => { hint.style.display = 'none'; }, 3000);
+      return;
+    }
+  } else {
+    userInput = selectedQuickOption;
+    if (!userInput) {
+      const hint = document.getElementById('validationHint');
+      hint.style.display = 'block';
+      setTimeout(() => { hint.style.display = 'none'; }, 3000);
+      return;
+    }
+  }
+  const overlay = document.getElementById('loadingOverlay');
+  overlay.classList.add('active');
+  try {
+    const result = await fetchAIAdvice(userInput, selectedCategory);
+    overlay.classList.remove('active');
+    renderResults(result);
+    goToScreen(4);
+  } catch (err) {
+    overlay.classList.remove('active');
+    console.error('AI advice error:', err);
+  }
+}
+
+// ── RENDER RESULTS ──
+function renderResults(data) {
+  document.getElementById('resultsTitle').textContent = data.title;
+  document.getElementById('resultsSummary').textContent = data.summary;
+  // Personalisatie-echo: toon de vraag die de gebruiker heeft ingevoerd
+  const echoBlock = document.getElementById('resultsEcho');
+  const echoText = document.getElementById('resultsEchoText');
+  const userInput = activeInputMode === 'custom'
+    ? document.getElementById('customInput').value.trim()
+    : selectedQuickOption;
+  if (userInput) {
+    echoText.textContent = '\u201c' + userInput + '\u201d';
+    echoBlock.style.display = 'inline-flex';
+  } else {
+    echoBlock.style.display = 'none';
+  }
+  const container = document.getElementById('actionCards');
+  container.innerHTML = '';
+  data.cards.forEach(card => {
+    const el = document.createElement('div');
+    el.className = 'action-card';
+    el.innerHTML = `
+      <div class="action-card-header">
+        <span class="action-type">${card.type}</span>
+        <h3>${card.title}</h3>
+      </div>
+      <div class="action-card-body">
+        <p>${card.description}</p>
+        <span class="regeling">${card.regeling}</span>
+        <br>
+        <a href="#" class="btn-intranet" onclick="event.preventDefault(); openDemoModal();">
+          ${card.intranetLabel} &rarr;
+        </a>
+      </div>
+    `;
+    container.appendChild(el);
+  });
+}
+
+// ── RESET ──
+function resetAll() {
+  selectedCategory = null;
+  selectedQuickOption = null;
+  activeInputMode = 'quick';
+  document.getElementById('customInput').value = '';
+  document.querySelectorAll('.quick-option').forEach(b => b.classList.remove('selected'));
+  goToScreen(1);
+}
+
+// ── INIT ──
+updateProgress(1);
+updateHero(1);
+</script>
+
+</body>
+</html>
