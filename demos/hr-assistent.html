@@ -142,42 +142,51 @@
       max-width: 1000px;
       width: 100%;
       margin: 0 auto;
-      padding: 2.5rem 1.5rem 2rem;
+      padding: 1.5rem 1.5rem 2rem;
       gap: 1.5rem;
     }
 
+
     /* ── Hero ── */
-    .hero { text-align: center; padding-bottom: 0.5rem; }
-
-    .tool-label {
-      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.16em;
-      text-transform: uppercase; color: var(--accent);
-      border-bottom: 1px solid var(--accent);
-      display: inline-block; padding-bottom: 2px; margin-bottom: 1rem;
-    }
-
-    .hero h1 {
-      font-family: var(--serif); font-size: clamp(1.75rem, 5vw, 2.2rem); font-weight: 400;
-      color: var(--text); letter-spacing: -0.02em; margin-bottom: 0.5rem;
-    }
-    .hero h1 em { font-style: italic; }
-
-    .hero p {
-      color: var(--text-muted); font-size: 0.92rem;
-      max-width: 500px; margin: 0 auto;
-    }
-
-    /* ── Info strip ── */
-    .info-strip {
-      background: var(--sand-light);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      padding: 0.7rem 1.1rem;
-      font-size: 0.82rem;
-      color: var(--text-muted);
+    /* ── Hero banner ── */
+    .hero-banner {
+      background: var(--dark);
+      padding: 2.5rem 2rem 0;
       text-align: center;
+      position: relative;
+      overflow: hidden;
     }
-    .info-strip strong { color: var(--accent); font-weight: 500; }
+    .hero-banner::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(44,95,110,0.15) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .hero-banner .hero-waves {
+      position: absolute; bottom: 0; left: 0; width: 100%; opacity: 0.07; z-index: 1;
+    }
+    .hero-banner-content {
+      position: relative; z-index: 2; padding-bottom: 2rem;
+    }
+    .hero-banner .hero-label {
+      display: inline-block; font-size: 0.68rem; font-weight: 500;
+      letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent-glow);
+      margin-bottom: 1rem;
+    }
+    .hero-banner h1 {
+      font-family: var(--serif); font-size: clamp(1.8rem, 4vw, 2.6rem);
+      color: var(--card-bg); line-height: 1.15; font-weight: 400;
+      margin-bottom: 0.5rem; letter-spacing: -0.02em;
+    }
+    .hero-banner h1 em { color: var(--accent-glow); font-style: italic; }
+    .hero-banner p {
+      font-size: 0.92rem; color: rgba(253,252,249,0.6); max-width: 480px;
+      margin: 0 auto; line-height: 1.65; font-weight: 300;
+    }
+    .hero-wave-divider {
+      display: block; width: calc(100% + 4rem); margin-left: -2rem;
+      position: relative; z-index: 3; margin-top: -2px;
+    }
 
     /* ── Chat card ── */
     .chat-card {
@@ -425,9 +434,8 @@
         max-width: 100%;
       }
 
-      /* Hero + info strip hidden on mobile */
-      .hero,
-      .info-strip { display: none; }
+      /* Hero banner hidden on mobile */
+      .hero-banner { display: none; }
 
       /* Chat card: edge-to-edge, fills remaining height */
       .chat-card {
@@ -565,20 +573,24 @@
   </div>
 </header>
 
+<!-- ── Hero banner (full-bleed, buiten main) ── -->
+<section class="hero-banner">
+  <svg class="hero-waves" viewBox="0 0 1440 120" preserveAspectRatio="none">
+    <path d="M0 60 C 180 20, 360 100, 540 60 C 720 20, 900 100, 1080 60 C 1260 20, 1380 80, 1440 60 L1440 120 L0 120Z" fill="#4A9AAE"/>
+    <path d="M0 80 C 200 40, 400 110, 600 80 C 800 40, 1000 110, 1200 80 C 1320 60, 1400 90, 1440 80 L1440 120 L0 120Z" fill="#3A7A8C" opacity="0.6"/>
+  </svg>
+  <div class="hero-banner-content">
+    <span class="hero-label">Kust &amp; Kade Lab &middot; AI Tool #1</span>
+    <h1><span class="sr-only">AI HR Assistent voor cao en beleid: </span>HR <em>Assistent</em></h1>
+    <p>Stel je HR-vragen over verlof, de CAO of bedrijfsbeleid, en ervaar hoe AI jouw HR-afdeling 24/7 bereikbaar maakt.</p>
+  </div>
+  <svg class="hero-wave-divider" viewBox="0 0 1440 56" preserveAspectRatio="none" style="height:56px;">
+    <path d="M0 56 C 240 10, 480 56, 720 28 C 960 0, 1200 50, 1440 20 L1440 56 Z" fill="#F5F3EC"/>
+  </svg>
+</section>
+
 <!-- ── Main ── -->
 <main>
-
-  <!-- Hero -->
-  <section class="hero">
-    <div class="tool-label">⚓ AI Tool #1</div>
-    <h1><span class="sr-only">AI HR Assistent voor cao en verlof: </span>HR <em>Assistent</em></h1>
-    <p>Stel je HR-vragen over verlof, de CAO of bedrijfsbeleid, en ervaar hoe AI jouw HR-afdeling 24/7 bereikbaar maakt.</p>
-  </section>
-
-  <!-- Info strip -->
-  <div class="info-strip">
-    <strong>Demo:</strong> Fictief bedrijfsbeleid &amp; CAO van Kust &amp; Kade LAB, voor illustratieve doeleinden.
-  </div>
 
   <!-- Chat card -->
   <div class="chat-card">
@@ -598,12 +610,13 @@
     <!-- Suggestion chips -->
     <div class="chips-area" id="chipsArea">
       <div class="chips-label">Veelgestelde vragen &mdash; klik om te starten</div>
-      <button class="chip" onclick="sendChip(this)">Hoeveel vakantiedagen heb ik?</button>
       <button class="chip" onclick="sendChip(this)">Hoe vraag ik verlof aan?</button>
       <button class="chip" onclick="sendChip(this)">Wat zegt de CAO over overwerk?</button>
-      <button class="chip" onclick="sendChip(this)">Wat is de procedure bij ziekte?</button>
-      <button class="chip" onclick="sendChip(this)">Mag ik thuiswerken?</button>
-      <button class="chip" onclick="sendChip(this)">Hoe declareer ik onkosten?</button>
+      <button class="chip" onclick="sendChip(this)">Hoe meld ik mij ziek?</button>
+      <button class="chip" onclick="sendChip(this)">Wat is ons vitaliteitsbeleid?</button>
+      <button class="chip" onclick="sendChip(this)">Hoe verloopt de beoordelingscyclus?</button>
+      <button class="chip" onclick="sendChip(this)">Wat staat er in de gedragscode?</button>
+      <button class="chip" onclick="sendChip(this)">Wat zijn de mogelijkheden voor loopbaanontwikkeling?</button>
     </div>
 
     <!-- Input -->
@@ -654,11 +667,9 @@
   const SYSTEM_PROMPT = `Je bent Sophie, de vriendelijke en deskundige HR Assistent van Kust & Kade LAB. Je helpt medewerkers snel en helder met al hun HR-vragen.
 
 BELANGRIJK VOOR DEZE DEMO:
-Speel het spel altijd mee! Dit is een test/demo-omgeving.
-1. **Persoonlijke informatie:** Als de gebruiker vragen stelt in de ik-vorm over zijn/haar persoonlijke situatie (bijvoorbeeld: "Hoeveel vakantiedagen heb ik nog?" of "Mag ik al thuiswerken?"), dan **verzin jij zelfstandig** een kloppend profiel voor de gebruiker zodat je direct antwoord kunt geven. Verzin een fictief openstaand verlofsaldo, indiensttredingsdatum en functie, alsof Kust & Kade LAB direct gekoppeld is met hun medewerkersdossier in AFAS.
-2. **Ontbrekend beleid (Belangrijk!):** Als de gebruiker vraagt naar regelingen die niet in deze prompt staan (zoals een fitnessbudget, fietsenplan, leaseauto, opleidingen, etc.), mag je NOOIT zeggen dat je het niet weet of dat het niet in je data staat. **Verzin ter plekke** een realistisch, genereus "Kust & Kade"-beleid voor dat onderwerp en beantwoord de vraag alsof dit altijd al de officiële regel was.
-
-Zeg NOOIT dat je geen toegang hebt tot systemen, persoonlijke gegevens, of bepaald beleid. Geef altijd direct de benodigde gegevens.
+1. **Beleidsvragen:** Beantwoord vragen altijd op basis van het beleid en de CAO-informatie in deze prompt. Dit is een kennisassistent — geen systeem met toegang tot persoonlijke gegevens of HR-systemen.
+2. **Persoonlijke vragen (saldo, salaris, verlofdagen):** Als iemand vraagt naar zijn/haar persoonlijke situatie, geef dan vriendelijk aan dat je werkt op basis van beleid en CAO en dat persoonlijke gegevens via de leidinggevende of HR Manager (Emma Zeeman) op te vragen zijn. Geef wel direct het relevante beleid mee (bv. het standaard aantal vakantiedagen per jaar).
+3. **Ontbrekend beleid:** Als de gebruiker vraagt naar iets wat niet in deze prompt staat, geef dan aan dat je het antwoord niet paraat hebt en verwijs naar Emma Zeeman (HR Manager) voor verdere informatie.
 
 OVER KUST & KADE LAB:
 Kust & Kade LAB is een fictief consultancybureau in Nederland, ca. 80 medewerkers, verdeeld over HR & People, IT & Data, Sales & BD, Marketing, Finance, Operations en Juridisch.
@@ -669,6 +680,9 @@ JOUW STIJL:
 - Geen onnodige uitweiding, bondig maar volledig
 - Bij complexe juridische vragen doorverwijzen naar HR Manager (Emma Zeeman) of Legal Counsel (Nathalie Kok)
 - Gebruik geen opsommingen tenzij het de leesbaarheid echt verbetert
+
+MEDEWERKER-EMPOWERMENT (toepassen waar relevant):
+Bij onderwerpen zoals vitaliteitsbeleid, de beoordelingscyclus en loopbaanontwikkeling begin je niet meteen met een opsomming van alle regelingen. Stel eerst kort wat de medewerker zelf al kan doen of initiëren — zonder op de HR-afdeling te hoeven wachten. Denk aan: een gesprek aanvragen, zelf een doel formuleren, gebruik maken van het vitaliteitsbudget. Noem de formele regels daarna als aanvulling, niet als startpunt. Dit geldt niet bij procesmatige of compliance-vragen (ziekte, gedragscode, ontslag) — daar is volledigheid en duidelijkheid juist het belangrijkst.
 
 ────────────────────────────────────────
 VERLOFBELEID KUST & KADE LAB
@@ -737,7 +751,55 @@ Als een medewerker verlof wil aanvragen, doorloop je deze stappen:
 3. Bereken het aantal werkdagen (reken weekends niet mee)
 4. Ga ervan uit dat er voldoende saldo is (tenzij meer dan 25 aaneengesloten werkdagen)
 5. Geef een duidelijke samenvatting van de aanvraag
-6. Sluit af met: "Je aanvraag is ingediend in AFAS en ter goedkeuring doorgestuurd naar je leidinggevende. Je ontvangt een bevestiging per e-mail zodra hij/zij heeft goedgekeurd."
+6. Sluit af met een duidelijke samenvatting van de aanvraag en de volgende stap: "Dien je aanvraag in via het HR-systeem van jouw organisatie en stuur deze ter goedkeuring door naar je leidinggevende. Bewaar een bevestiging zodra de aanvraag is goedgekeurd."
+
+────────────────────────────────────────
+VITALITEITSBELEID KUST & KADE LAB
+────────────────────────────────────────
+Kust & Kade LAB investeert actief in de gezondheid en duurzame inzetbaarheid van medewerkers.
+• Vitaliteitsbudget: € 400 per medewerker per jaar, vrij te besteden aan sport, mindfulness, voeding of andere welzijnsactiviteiten (declareren via HR)
+• Bewegingspauzes: medewerkers worden gestimuleerd minimaal 2x per dag een korte looppauze te nemen; leidinggevenden geven hierin het goede voorbeeld
+• Periodiek medisch onderzoek (PMO): elk jaar aangeboden via de arbodienst, deelname vrijwillig maar sterk aanbevolen
+• Arbeidsomstandighedenspreekuur: maandelijks inloopspreekuur met de bedrijfsarts (anoniem, laagdrempelig)
+• Re-integratiebeleid: bij dreigend uitval wordt actief ingezet op vroegtijdige begeleiding, in samenwerking met leidinggevende en HR
+• Werkdruksignalering: leidinggevenden voeren minimaal 1x per kwartaal een kort check-in gesprek over werkdruk en werkplezier
+Doel van het vitaliteitsbeleid: verzuim voorkomen, werkplezier verhogen en medewerkers duurzaam inzetbaar houden.
+
+────────────────────────────────────────
+BEOORDELINGSCYCLUS KUST & KADE LAB
+────────────────────────────────────────
+De beoordelingscyclus bestaat uit drie vaste gespreksmomenten per jaar:
+1. **Planningsgesprek (januari):** leidinggevende en medewerker stellen samen doelen en ontwikkelafspraken op voor het komende jaar. Vastgelegd in het HR-systeem.
+2. **Voortgangsgesprek (juni/juli):** tussentijdse evaluatie van de voortgang op doelen. Bijsturen waar nodig. Geen formele beoordeling, wel gedocumenteerd.
+3. **Beoordelingsgesprek (november/december):** formele beoordeling op een schaal van 1–5. De uitkomst is bepalend voor eventuele salarisverhoging (bij score 3 of hoger) en doorgroeimogelijkheden.
+• Leidinggevenden zijn verantwoordelijk voor tijdige uitvoering van alle drie gesprekken
+• HR bewaakt de planning en herinnert leidinggevenden tijdig
+• Bij een onvoldoende beoordeling (score 1 of 2) wordt een verbeterplan opgesteld met concrete doelen en een termijn van 3 maanden
+• Medewerkers kunnen bezwaar aantekenen bij HR Manager binnen 10 werkdagen na het beoordelingsgesprek
+
+────────────────────────────────────────
+GEDRAGSCODE KUST & KADE LAB
+────────────────────────────────────────
+Kust & Kade LAB hanteert een gedragscode die voor alle medewerkers geldt, vanaf de eerste werkdag.
+• **Integriteit:** medewerkers handelen eerlijk, transparant en in het belang van de organisatie en haar klanten. Belangenverstrengeling dient gemeld te worden bij de leidinggevende.
+• **Vertrouwelijkheid:** bedrijfsgevoelige informatie, klantgegevens en personeelsinformatie worden strikt vertrouwelijk behandeld, ook na uitdiensttreding.
+• **Respectvolle omgang:** discriminatie, intimidatie, pesten of ander grensoverschrijdend gedrag wordt niet getolereerd. Meldingen kunnen bij de vertrouwenspersoon (Nathalie Kok) of HR worden gedaan.
+• **Social media:** medewerkers mogen niet namens Kust & Kade LAB publiceren zonder toestemming van Marketing. Persoonlijke uitingen mogen de reputatie van de organisatie niet schaden.
+• **Nevenwerkzaamheden:** nevenwerkzaamheden moeten vooraf gemeld worden bij de leidinggevende. Goedkeuring wordt onthouden als er sprake is van concurrentie, belangenconflict of te grote belasting.
+• **Meldplicht misstanden:** medewerkers die een misstand signaleren, kunnen dit melden via de vertrouwenspersoon of anoniem via de klokkenluidersregeling. Repercussies zijn uitdrukkelijk verboden.
+• Overtredingen van de gedragscode kunnen leiden tot disciplinaire maatregelen, waaronder ontslag.
+
+────────────────────────────────────────
+LOOPBAANONTWIKKELING KUST & KADE LAB
+────────────────────────────────────────
+Kust & Kade LAB investeert in de groei van medewerkers en stimuleert eigenaarschap over de eigen loopbaan.
+• **Opleidingsbudget:** € 1.500 per medewerker per jaar, vrij in te zetten voor trainingen, cursussen of certificeringen die aansluiten bij de functie of gewenste ontwikkeling. Aan te vragen via HR.
+• **Eigen initiatief:** medewerkers hoeven niet te wachten op hun leidinggevende — iedereen kan zelf een ontwikkelgesprek aanvragen bij HR of de leidinggevende. Dit wordt actief aangemoedigd.
+• **Interne mobiliteit:** open vacatures worden eerst intern gedeeld (minimaal 1 week). Medewerkers kunnen solliciteren na 1 jaar in hun huidige functie.
+• **Mentorprogramma:** medewerkers kunnen zich aanmelden als mentor of mentee via HR. Koppeling vindt plaats op basis van leervraag en beschikbaarheid.
+• **Persoonlijk Ontwikkelplan (POP):** tijdens het planningsgesprek (januari) stellen medewerker en leidinggevende samen een POP op. Voortgang wordt besproken in het voortgangsgesprek.
+• **Studiebeding:** bij opleidingen boven € 1.000 geldt een terugbetalingsregeling bij vertrek binnen 2 jaar (glijdende schaal: 100% bij vertrek binnen 1 jaar, 50% in het tweede jaar).
+Kust & Kade LAB hanteert het principe: de medewerker is eigenaar van zijn loopbaan, de organisatie faciliteert.
 
 ────────────────────────────────────────
 TEAM (voor doorverwijzingen)
@@ -761,7 +823,7 @@ TEAM (voor doorverwijzingen)
      INIT
   ───────────────────────────────────────────── */
   window.addEventListener('DOMContentLoaded', () => {
-    appendMessage('bot', 'Hoi! Ik ben **Sophie**, jouw HR assistent bij Kust & Kade. 👋\n\nIk help je graag met vragen over verlof, de CAO, thuiswerken, ziekteverzuim of onkostendeclaraties. Klik hieronder op een veelgestelde vraag of stel direct je eigen vraag.');
+    appendMessage('bot', 'Hoi! Ik ben **Sophie**, jouw HR assistent bij Kust & Kade. 👋\n\nIk help je graag met vragen over verlof, de CAO, ziekteverzuim, vitaliteitsbeleid, de beoordelingscyclus, de gedragscode of loopbaanontwikkeling. Klik hieronder op een veelgestelde vraag of stel direct je eigen vraag.');
     document.getElementById('chatInput').focus();
   });
 
