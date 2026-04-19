@@ -760,6 +760,75 @@
     .card-advies .service-card-meta { color: var(--accent-glow); opacity: 1; }
     .card-advies::before { background: linear-gradient(90deg, #C8BFA8, #2C5F6E); }
 
+    /* ── Services Progression Track ── */
+    .services-track {
+      display: none;
+      margin: 1.75rem 0 2.25rem;
+    }
+    @media (min-width: 768px) { .services-track { display: block; } }
+
+    .services-track-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      position: relative;
+    }
+
+    .services-track-inner::before {
+      content: '';
+      position: absolute;
+      left: 16.666%;
+      right: 16.666%;
+      top: 34px;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(74,154,174,0.35) 0%, rgba(44,95,110,0.18) 100%);
+    }
+
+    .track-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 33.333%;
+      gap: 0;
+    }
+
+    .track-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 3px;
+      height: 22px;
+      margin-bottom: 6px;
+    }
+
+    .track-bar {
+      width: 5px;
+      border-radius: 2px 2px 1px 1px;
+      background: rgba(255,255,255,0.07);
+    }
+    .track-bar:nth-child(1) { height: 7px; }
+    .track-bar:nth-child(2) { height: 13px; }
+    .track-bar:nth-child(3) { height: 21px; }
+    .track-bar.active { background: var(--accent-glow); }
+
+    .track-node {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(74,154,174,0.5);
+      background: #2E3128;
+      position: relative; z-index: 1;
+      flex-shrink: 0;
+      margin-bottom: 8px;
+    }
+
+    .track-label {
+      font-size: 0.6rem;
+      font-weight: 600;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: rgba(245,243,236,0.38);
+      text-align: center;
+    }
+
     /* ═══ INLINE TESTIMONIALS ═══ */
 
     /* Quote 1 — in About sectie */
@@ -1457,13 +1526,50 @@
   <section class="services services-dark" id="diensten">
     <div class="reveal">
       <span class="section-label">Aanbod</span>
-      <h2 class="section-title"><span class="sr-only">HR & AI Workshops: </span>Kies wat past.</h2>
+      <h2 class="section-title"><span class="sr-only">HR & AI Workshops: </span>Kies wat past uit onze diensten.</h2>
       <div class="section-divider">
         <svg viewBox="0 0 50 16" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M0 8 C8 -4, 16 20, 25 8 C34 -4, 42 20, 50 8" stroke="var(--accent-glow)" stroke-width="2.5" stroke-linecap="round" fill="none"/>
         </svg>
       </div>
     </div>
+    <!-- Progressie-track: visuele trap zonder nummers -->
+    <div class="services-track reveal">
+      <div class="services-track-inner">
+
+        <div class="track-step">
+          <div class="track-bars">
+            <span class="track-bar active"></span>
+            <span class="track-bar"></span>
+            <span class="track-bar"></span>
+          </div>
+          <div class="track-node"></div>
+          <span class="track-label">Basis</span>
+        </div>
+
+        <div class="track-step">
+          <div class="track-bars">
+            <span class="track-bar active"></span>
+            <span class="track-bar active"></span>
+            <span class="track-bar"></span>
+          </div>
+          <div class="track-node"></div>
+          <span class="track-label">Verdieping</span>
+        </div>
+
+        <div class="track-step">
+          <div class="track-bars">
+            <span class="track-bar active"></span>
+            <span class="track-bar active"></span>
+            <span class="track-bar active"></span>
+          </div>
+          <div class="track-node"></div>
+          <span class="track-label">Maatwerk</span>
+        </div>
+
+      </div>
+    </div>
+
     <div class="services-grid reveal-stagger">
 
       <!-- 1. De Basis -->
@@ -1477,7 +1583,7 @@
           </svg>
         </div>
         <h3>Workshop: De basis</h3>
-        <p class="service-card-meta">Halve dag · Elk niveau · Max. 10 pers.</p>
+        <p class="service-card-meta">Halve dag · Elk niveau</p>
         <p>Voor HR-professionals die willen begrijpen wat AI is, wat het kan en waar de grenzen liggen. We gaan in op ethiek en beleid, oefenen met prompten en bouwen samen iets concreets. Je gaat naar huis met werkende prototypes.</p>
         <a href="workshop-de-basis.html" class="service-cta">
           Bekijk de workshop
@@ -1501,7 +1607,7 @@
           </svg>
         </div>
         <h3>Workshop: Van idee naar werkende tool</h3>
-        <p class="service-card-meta">Volledige dag · Verdieping · Max. 8 pers.</p>
+        <p class="service-card-meta">Volledige dag · Verdieping</p>
         <p>Voor HR-professionals die al weten wat AI kan en nu iets willen maken. Je brengt een concreet vraagstuk mee en gaat naar huis met een werkend idee.</p>
         <a href="https://kustenkade.nl/workshop-van-idee-naar-werkende-tool.html" class="service-cta">
           Bekijk de workshop
