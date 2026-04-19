@@ -49,8 +49,9 @@
       {
         "@type": "Course",
         "name": "Workshop: Van idee naar werkende tool",
-        "description": "Voor HR-professionals die al weten wat AI kan en nu iets willen bouwen. Breng een concreet probleem mee, ga naar huis met een werkend prototype.",
+        "description": "Voor HR-professionals die al weten wat AI kan en nu iets willen bouwen. Breng een concreet vraagstuk mee en ga naar huis met een werkend idee.",
         "provider": { "@type": "Organization", "name": "Kust & Kade" },
+        "url": "https://www.kustenkade.nl/workshop-van-idee-naar-werkende-tool.html",
         "inLanguage": "nl"
       },
       {
@@ -733,6 +734,31 @@
     .service-cta:hover { background: rgba(44,95,110,0.45); border-top-color: transparent; letter-spacing: 0.1em; }
     .service-cta svg { width: 14px; height: 14px; transition: transform 0.4s cubic-bezier(0.16,1,0.3,1); flex-shrink: 0; }
     .service-cta:hover svg { transform: translateX(5px); }
+
+    /* ── Card kleurvarianten ── */
+    /* Card 1: De Basis — meest zichtbare zandtint */
+    .card-basis { background: rgba(200,191,168,0.11); border-color: rgba(200,191,168,0.22); }
+    .card-basis:hover { background: rgba(200,191,168,0.16); box-shadow: 0 16px 40px rgba(200,191,168,0.1), inset 0 0 0 1px rgba(200,191,168,0.3); }
+    .card-basis .service-icon-wrap { background: rgba(74,154,174,0.15); }
+    .card-basis .service-icon { color: #4A9AAE; }
+    .card-basis .service-card-meta { color: var(--accent-glow); opacity: 1; }
+    .card-basis::before { background: linear-gradient(90deg, #C8BFA8, #4A9AAE); }
+
+    /* Card 2: Van idee naar werkende tool — iets subtieler */
+    .card-verdieping { background: rgba(200,191,168,0.06); border-color: rgba(200,191,168,0.15); }
+    .card-verdieping:hover { background: rgba(200,191,168,0.10); box-shadow: 0 16px 40px rgba(200,191,168,0.08), inset 0 0 0 1px rgba(200,191,168,0.22); }
+    .card-verdieping .service-icon-wrap { background: rgba(74,154,174,0.15); }
+    .card-verdieping .service-icon { color: #4A9AAE; }
+    .card-verdieping .service-card-meta { color: var(--accent-glow); opacity: 1; }
+    .card-verdieping::before { background: linear-gradient(90deg, #C8BFA8, #3A7A8C); }
+
+    /* Card 3: Advies & maatwerk — meest teruggetrokken, donkerste sfeer */
+    .card-advies { background: rgba(200,191,168,0.025); border-color: rgba(200,191,168,0.09); }
+    .card-advies:hover { background: rgba(200,191,168,0.06); box-shadow: 0 16px 40px rgba(200,191,168,0.06), inset 0 0 0 1px rgba(200,191,168,0.16); }
+    .card-advies .service-icon-wrap { background: rgba(74,154,174,0.15); }
+    .card-advies .service-icon { color: #4A9AAE; }
+    .card-advies .service-card-meta { color: var(--accent-glow); opacity: 1; }
+    .card-advies::before { background: linear-gradient(90deg, #C8BFA8, #2C5F6E); }
 
     /* ═══ INLINE TESTIMONIALS ═══ */
 
@@ -1439,7 +1465,9 @@
       </div>
     </div>
     <div class="services-grid reveal-stagger">
-      <div class="service-card reveal">
+
+      <!-- 1. De Basis -->
+      <div class="service-card card-basis reveal">
         <div class="service-icon-wrap">
           <svg class="service-icon" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="128" cy="64" r="24"/><line x1="128" y1="88" x2="128" y2="224"/>
@@ -1456,7 +1484,33 @@
           <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
         </a>
       </div>
-      <div class="service-card reveal">
+
+      <!-- 2. Van idee naar werkende tool -->
+      <div class="service-card card-verdieping reveal">
+        <div class="service-icon-wrap">
+          <svg class="service-icon" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
+            <!-- mast -->
+            <line x1="108" y1="24" x2="108" y2="196"/>
+            <!-- groot hoofdzeil: breed naar links -->
+            <path d="M108 32 L28 188 L108 188 Z"/>
+            <!-- fok: smaller naar rechts -->
+            <path d="M108 72 L184 168 L108 168 Z"/>
+            <!-- romp -->
+            <path d="M24 196 L232 196"/>
+            <path d="M24 196 Q128 228 232 196"/>
+          </svg>
+        </div>
+        <h3>Workshop: Van idee naar werkende tool</h3>
+        <p class="service-card-meta">Volledige dag · Verdieping · Max. 8 pers.</p>
+        <p>Voor HR-professionals die al weten wat AI kan en nu iets willen maken. Je brengt een concreet vraagstuk mee en gaat naar huis met een werkend idee.</p>
+        <a href="https://kustenkade.nl/workshop-van-idee-naar-werkende-tool.html" class="service-cta">
+          Bekijk de workshop
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+        </a>
+      </div>
+
+      <!-- 3. Advies & maatwerk -->
+      <div class="service-card card-advies reveal">
         <div class="service-icon-wrap">
           <svg class="service-icon" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
             <line x1="40" y1="232" x2="216" y2="232"/>
@@ -1476,28 +1530,7 @@
           <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
         </a>
       </div>
-      <div class="service-card reveal">
-        <div class="service-icon-wrap">
-          <svg class="service-icon" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
-            <!-- mast -->
-            <line x1="108" y1="24" x2="108" y2="196"/>
-            <!-- groot hoofdzeil: breed naar links -->
-            <path d="M108 32 L28 188 L108 188 Z"/>
-            <!-- fok: smaller naar rechts -->
-            <path d="M108 72 L184 168 L108 168 Z"/>
-            <!-- romp -->
-            <path d="M24 196 L232 196"/>
-            <path d="M24 196 Q128 228 232 196"/>
-          </svg>
-        </div>
-        <h3>Workshop: Van idee naar werkende tool</h3>
-        <p class="service-card-meta">Volledige dag · Verdieping · Max. 8 pers.</p>
-        <p>Voor HR-professionals die al weten wat AI kan en nu iets willen maken. Je brengt een concreet probleem mee en gaat naar huis met een werkend prototype: gebouwd, getest en klaar om te gebruiken.</p>
-        <div class="service-cta" style="cursor: default; opacity: 0.5;">
-          Coming soon
-          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 3a5 5 0 1 1 0 10A5 5 0 0 1 8 3M8 7v2M8 11h.01"/></svg>
-        </div>
-      </div>
+
     </div>
     <div class="services-lab-cta reveal">
       <a href="#lab" class="services-lab-link">
