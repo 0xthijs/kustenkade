@@ -903,15 +903,56 @@
        MOBILE OPTIMALISATIES (≤640px)
     ══════════════════════════════════════════ */
 
-    /* ── Landing pop-up: fix overflow zodat de knop bereikbaar is ── */
+    /* ── Landing pop-up: fix overflow + zwevende knop op mobiel ── */
     @media (max-width: 640px) {
       .landing-card {
         max-height: 88vh;
         overflow-y: auto;
         overflow-x: hidden;
         -webkit-overflow-scrolling: touch;
-        /* Overschrijft de base overflow:hidden die later in het stylesheet staat */
+        /* padding-bottom zodat content niet achter de zwevende knop verdwijnt */
+        padding-bottom: 5rem;
       }
+      /* Verberg de footer-knop in de kaart op mobiel */
+      .landing-footer { display: none; }
+    }
+
+    /* Zwevende "Bekijk de radar"-knop (alleen mobiel, alleen als overlay open) */
+    .landing-float-btn {
+      display: none;
+      position: fixed;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 9100;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 28px;
+      padding: 0 28px;
+      height: 50px;
+      font-family: var(--sans);
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      cursor: pointer;
+      box-shadow: 0 6px 24px rgba(44,95,110,0.5);
+      align-items: center;
+      gap: 8px;
+      animation: floatPulse 2.4s ease-in-out infinite;
+    }
+    .landing-float-btn:hover {
+      background: var(--accent-light);
+      box-shadow: 0 8px 30px rgba(44,95,110,0.6);
+    }
+    @keyframes floatPulse {
+      0%, 100% { box-shadow: 0 6px 24px rgba(44,95,110,0.5); }
+      50%       { box-shadow: 0 8px 32px rgba(44,95,110,0.7); }
+    }
+    @media (max-width: 640px) {
+      .landing-float-btn { display: flex; }
     }
 
     /* ── Modal: compacter op mobiel ── */
@@ -1090,6 +1131,11 @@
   </div>
 </div>
 
+<!-- Zwevende knop voor landing pop-up (mobiel) -->
+<button class="landing-float-btn" id="landing-float-btn" onclick="sluitLanding()">
+  Bekijk de radar &rarr;
+</button>
+
 <header>
   <a href="#" class="logo-link" onclick="return false;">
     <div class="logo-icon">
@@ -1229,8 +1275,10 @@
 //  LANDING OVERLAY
 // ══════════════════════════════════════════
 function sluitLanding() {
-  const overlay = document.getElementById('landingOverlay');
+  const overlay   = document.getElementById('landingOverlay');
+  const floatBtn  = document.getElementById('landing-float-btn');
   overlay.classList.add('hidden');
+  if (floatBtn) floatBtn.style.display = 'none';
   setTimeout(() => overlay.style.display = 'none', 300);
 }
 
