@@ -103,7 +103,7 @@
     .hero {
       background: var(--dark);
       color: #F5F3EC;
-      padding: 3.5rem 2rem 0;
+      padding: 2.25rem 2rem 0;
       text-align: center;
       position: relative;
     }
@@ -132,7 +132,7 @@
       font-size: 0.95rem;
       color: rgba(245,243,236,0.72);
       max-width: 560px;
-      margin: 0 auto 2.5rem;
+      margin: 0 auto 1.75rem;
       font-weight: 300;
     }
     .hero-wave {
@@ -193,18 +193,33 @@
       .header-back { display: none; }
 
       /* Hero */
-      .hero { padding: 2rem 1.25rem 0; }
+      .hero { padding: 1.5rem 1.25rem 0; }
+      .hero h1 { font-size: 1.8rem; margin-bottom: 0.6rem; }
+      .hero-subtitle { font-size: 0.95rem; }
+      .hero p { margin-bottom: 1.25rem; }
 
       /* Filters: horizontaal scrollbaar op kleine schermen */
-      .filters-wrap { padding: 1.25rem 0 1rem; }
+      .filters-wrap {
+        padding: 1.25rem 0 1rem;
+        position: relative;
+      }
+      .filters-wrap::after {
+        content: '';
+        position: absolute; right: 0; top: 0; bottom: 0;
+        width: 48px;
+        background: linear-gradient(to right, transparent, var(--bg));
+        pointer-events: none; z-index: 2;
+      }
       .filters {
         flex-wrap: nowrap;
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
         padding-bottom: 4px;
+        padding-right: 48px;
         scrollbar-width: none;
       }
       .filters::-webkit-scrollbar { display: none; }
+
 
       /* SEO & footer */
       .seo-context-section { padding: 2.5rem 1.25rem; }
@@ -250,10 +265,10 @@
     /* ── Kaart-header: categoriekleur + golf hover ── */
     .card-header {
       background: var(--cc, var(--accent));
-      padding: 1.2rem 1.25rem 1rem;
+      padding: 1.35rem 1.4rem 1.2rem;
       display: flex;
       align-items: flex-start;
-      gap: 0.75rem;
+      gap: 0.85rem;
       position: relative;
       overflow: hidden;
     }
@@ -271,8 +286,8 @@
     }
     .use-card:hover .card-header::after { transform: translateY(0); }
     .card-icon {
-      font-size: 1.5rem; line-height: 1; flex-shrink: 0;
-      margin-top: 2px; position: relative; z-index: 1;
+      font-size: 1.8rem; line-height: 1; flex-shrink: 0;
+      margin-top: 1px; position: relative; z-index: 1;
     }
     .card-title {
       font-family: var(--serif);
@@ -290,26 +305,24 @@
       flex-direction: column;
       gap: 0.75rem;
     }
-    .card-tagline {
-      font-size: 0.82rem;
-      color: var(--text-muted);
-      line-height: 1.6;
-      font-weight: 300;
-      flex: 1;
-    }
+
     .card-stoplicht {
       display: flex;
       align-items: center;
       gap: 7px;
     }
     .card-stoplicht-dot {
-      width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0;
+      width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0;
+      box-shadow: 0 0 0 2px rgba(0,0,0,0.06);
     }
     .card-stoplicht-label {
-      font-size: 0.65rem;
+      font-size: 0.67rem;
       font-weight: 600;
       letter-spacing: 0.07em;
       text-transform: uppercase;
+    }
+    .card-stoplicht-icon {
+      font-size: 0.65rem; font-style: normal; opacity: 0.7;
     }
 
     .card-footer {
@@ -324,7 +337,8 @@
     .card-cat {
       font-size: 0.6rem; font-weight: 600; letter-spacing: 0.09em;
       text-transform: uppercase;
-      color: var(--text-muted);
+      color: var(--cc, var(--accent));
+      opacity: 0.85;
     }
     .card-arrow {
       font-size: 0.72rem;
@@ -595,20 +609,6 @@
     }
     .leverancier-note strong { font-weight: 600; }
 
-    /* ── Contact CTA in modal ── */
-    .modal-contact-bar {
-      background: var(--bg-alt);
-      border-top: 1px solid var(--border);
-      padding: 1.25rem 2rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-    .modal-contact-bar p { font-size: 0.84rem; color: var(--text-muted); }
-    .modal-contact-bar strong { color: var(--text); font-weight: 500; }
-
     .btn-primary {
       display: inline-flex;
       align-items: center;
@@ -640,92 +640,6 @@
     }
     .btn-primary:hover { box-shadow: 0 6px 24px rgba(44,95,110,0.35); transform: translateY(-1px); }
     .btn-primary:hover::after { transform: scaleX(1) skewX(-8deg); }
-
-    /* ── Contact section (page) ── */
-    .contact-section {
-      background: var(--dark);
-      padding: 3rem 2rem;
-      color: #F5F3EC;
-      text-align: center;
-    }
-    .contact-section h2 {
-      font-family: var(--serif);
-      font-size: 1.6rem;
-      font-weight: 400;
-      margin-bottom: 0.75rem;
-    }
-    .contact-section p {
-      font-size: 0.9rem;
-      color: rgba(245,243,236,0.68);
-      max-width: 480px;
-      margin: 0 auto 2rem;
-    }
-
-    /* ── Contact modal ── */
-    .contact-modal-box {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      box-shadow: 0 24px 80px rgba(46,49,40,0.22);
-      width: 100%;
-      max-width: 520px;
-      overflow: hidden;
-      position: relative;
-      margin: auto;
-    }
-    .contact-modal-top {
-      background: var(--dark);
-      padding: 1.75rem 2rem;
-      color: #F5F3EC;
-    }
-    .contact-modal-top h3 {
-      font-family: var(--serif);
-      font-size: 1.2rem;
-      font-weight: 400;
-    }
-    .contact-modal-top p {
-      font-size: 0.83rem;
-      color: rgba(245,243,236,0.68);
-      margin-top: 0.4rem;
-    }
-    .contact-form { padding: 1.5rem 2rem 2rem; }
-    .form-group { margin-bottom: 1rem; }
-    .form-label {
-      display: block;
-      font-size: 0.75rem;
-      font-weight: 500;
-      letter-spacing: 0.07em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      margin-bottom: 0.4rem;
-    }
-    .form-input, .form-textarea, .form-select {
-      width: 100%;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      padding: 9px 12px;
-      font-family: var(--sans);
-      font-size: 0.88rem;
-      font-weight: 300;
-      color: var(--text);
-      transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
-      outline: none;
-    }
-    .form-input:focus, .form-textarea:focus, .form-select:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px var(--accent-pale);
-      background: var(--card-bg);
-    }
-    .form-textarea { resize: vertical; min-height: 90px; }
-    .form-success {
-      display: none;
-      text-align: center;
-      padding: 2rem 1.5rem;
-    }
-    .form-success-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
-    .form-success h4 { font-family: var(--serif); font-size: 1.1rem; font-weight: 400; margin-bottom: 0.5rem; }
-    .form-success p { font-size: 0.84rem; color: var(--text-muted); }
 
     /* ── Landingsoverlay ── */
     .landing-overlay {
@@ -836,6 +750,113 @@
       transition: opacity 0.2s;
     }
     .seo-link:hover { opacity: 0.7; }
+
+    /* ── Zoekbalk ── */
+    .search-wrap {
+      max-width: 480px;
+      margin: 0 auto 1rem;
+      position: relative;
+    }
+    .search-input {
+      width: 100%;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 10px 16px 10px 40px;
+      font-family: var(--sans);
+      font-size: 0.88rem;
+      font-weight: 300;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .search-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-pale); }
+    .search-input::placeholder { color: var(--text-muted); }
+    .search-icon {
+      position: absolute; left: 13px; top: 50%; transform: translateY(-50%);
+      color: var(--text-muted); font-size: 0.9rem; pointer-events: none;
+    }
+    .search-clear {
+      position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+      background: none; border: none; cursor: pointer; color: var(--text-muted);
+      font-size: 1rem; padding: 2px 6px; display: none; line-height: 1;
+    }
+    .search-clear:hover { color: var(--text); }
+
+
+    /* ── Nieuw badge ── */
+    .card-new-badge {
+      position: absolute; top: 8px; right: 8px;
+      background: var(--green); color: #fff;
+      font-size: 0.56rem; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      padding: 3px 9px; border-radius: 20px;
+      box-shadow: 0 2px 6px rgba(58,107,82,0.35);
+      z-index: 2;
+    }
+
+    /* ── Afdrukken knop in modal ── */
+    .modal-print-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: none; border: 1px solid var(--border);
+      border-radius: var(--radius-sm); padding: 6px 14px;
+      font-family: var(--sans); font-size: 0.75rem; font-weight: 500;
+      color: var(--text-muted); cursor: pointer;
+      letter-spacing: 0.05em; transition: border-color 0.15s, color 0.15s;
+      margin-top: 1.5rem;
+    }
+    .modal-print-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ── Landing how-to steps ── */
+    .landing-steps {
+      display: flex; flex-direction: column; gap: 0.6rem;
+      margin: 1rem 0;
+    }
+    .landing-step {
+      display: flex; align-items: flex-start; gap: 10px;
+    }
+    .landing-step-num {
+      width: 22px; height: 22px; border-radius: 50%;
+      background: var(--accent); color: #fff;
+      font-size: 0.7rem; font-weight: 600;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 1px;
+    }
+    .landing-step-text { font-size: 0.88rem; color: var(--text); line-height: 1.5; }
+
+    /* ── Print stijl ── */
+    @media print {
+      body > *:not(#print-area) { display: none !important; }
+      #print-area {
+        display: block !important;
+        padding: 2rem;
+        font-family: Georgia, serif;
+      }
+      #print-area h2 { font-size: 1.4rem; margin-bottom: 0.5rem; }
+      #print-area .print-section { margin-top: 1.2rem; }
+      #print-area .print-section-title { font-weight: bold; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.4rem; }
+      #print-area ul { padding-left: 1.2rem; }
+      #print-area li { margin-bottom: 0.25rem; font-size: 0.88rem; }
+      #print-area .print-footer { margin-top: 2rem; font-size: 0.72rem; color: #666; border-top: 1px solid #ccc; padding-top: 0.75rem; }
+    }
+    #print-area { display: none; }
+
+    /* ── CTA banner ── */
+    .cta-banner {
+      background: var(--dark);
+      padding: 2rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+    .cta-banner-text {
+      font-family: var(--serif);
+      font-size: 1.05rem;
+      color: #F5F3EC;
+      margin: 0;
+    }
 
     /* ── Footer ── */
     footer {
@@ -969,13 +990,6 @@
       .modal-body { padding: 1rem; }
       .modal-title { font-size: 1.15rem; }
       .modal-close { top: 0.75rem; right: 0.75rem; }
-      .modal-contact-bar {
-        flex-direction: column;
-        align-items: stretch;
-        padding: 1rem;
-        gap: 0.75rem;
-      }
-      .modal-contact-bar .btn-primary { justify-content: center; }
     }
 
     /* ── Dimension-header: voorkom badge-overlap op mobiel ── */
@@ -1039,7 +1053,8 @@
       display: none;
       position: fixed;
       bottom: 1.5rem;
-      right: 1.25rem;
+      left: 50%;
+      transform: translateX(-50%);
       z-index: 600;
       background: var(--dark);
       color: #F5F3EC;
@@ -1060,7 +1075,7 @@
       pointer-events: none;
       transition: opacity 0.2s, transform 0.15s, background 0.15s;
     }
-    .modal-float-close:hover { background: var(--accent); transform: translateY(-1px); }
+    .modal-float-close:hover { background: var(--accent); transform: translateX(-50%) translateY(-1px); }
     @media (max-width: 640px) {
       .modal-float-close { display: flex; }
       .modal-float-close.visible { opacity: 1; pointer-events: all; }
@@ -1119,10 +1134,26 @@
       <path d="M0 56 C 240 10, 480 56, 720 28 C 960 0, 1200 48, 1440 56 L1440 56 Z" fill="#FDFCF9"/>
     </svg>
     <div class="landing-body">
-      <p>Welkom bij de HR AI Radar.</p>
-      <p>Deze tool laat per HR-taak zien of AI veilig en verantwoord inzetbaar is, getoetst aan de EU&nbsp;AI&nbsp;Act, AVG, diversiteit &amp; inclusie en de dagelijkse HR-praktijk. Van cv-screening tot verzuimanalyse: in één oogopslag het stoplicht per use case.</p>
-      <div class="landing-disclaimer">
-        <p><strong>Let op: dit is een fictieve demo.</strong> De use cases, risico-inschattingen en adviezen zijn illustratief en bedoeld als gespreksstarter. Ze zijn niet juridisch bindend en kunnen fouten of onvolledigheid bevatten. Raadpleeg altijd een jurist of privacy-officer voor definitieve beslissingen over AI-inzet.</p>
+      <p>Welkom bij de HR AI Radar. Kies een HR-taak en ontdek direct of je AI veilig mag inzetten.</p>
+
+      <p style="font-size:0.8rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--accent);margin:1.25rem 0 0.5rem;">Hoe gebruik je dit?</p>
+      <div class="landing-steps">
+        <div class="landing-step">
+          <div class="landing-step-num">1</div>
+          <div class="landing-step-text">Kies een HR-taak die je wil toetsen</div>
+        </div>
+        <div class="landing-step">
+          <div class="landing-step-num">2</div>
+          <div class="landing-step-text">Bekijk het stoplicht: <strong style="color:var(--green)">groen</strong> = veilig · <strong style="color:var(--orange)">oranje</strong> = voorzichtig · <strong style="color:var(--red)">rood</strong> = hoog risico</div>
+        </div>
+        <div class="landing-step">
+          <div class="landing-step-num">3</div>
+          <div class="landing-step-text">Open de kaart voor tips, risico's en welke AI-tool je kunt gebruiken</div>
+        </div>
+      </div>
+
+      <div class="landing-disclaimer" style="margin-top:1.25rem;">
+        <p><strong>⚠️ Dit is een demo — geen juridisch advies.</strong> Gebruik de radar als gespreksstarter. Raadpleeg altijd een jurist of privacy-officer bij definitieve beslissingen over AI.</p>
       </div>
     </div>
     <div class="landing-footer">
@@ -1157,7 +1188,7 @@
   <span class="hero-label">Kust &amp; Kade Lab &middot; AI Tool #5</span>
   <h1>HR AI <em>Radar</em></h1>
   <p class="hero-subtitle">Kan ik AI hier voor gebruiken?</p>
-  <p>Check per HR-taak of AI veilig en verantwoord inzetbaar is, getoetst aan de EU AI Act, AVG, diversiteit &amp; inclusie, en de dagelijkse HR-praktijk.</p>
+  <p>Klik op een HR-taak en zie meteen wat mag, wat je moet weten en wat de risico's zijn.</p>
   <svg class="hero-wave" viewBox="0 0 1440 56" preserveAspectRatio="none">
     <path d="M0 56 C 240 10, 480 56, 720 28 C 960 0, 1200 48, 1440 56 L1440 56 Z" fill="#F5F3EC"/>
   </svg>
@@ -1166,6 +1197,13 @@
 <!-- ══════════ MAIN ══════════ -->
 <main>
   <div class="container">
+
+    <!-- Zoekbalk -->
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input class="search-input" id="search-input" type="search" placeholder="Zoek een HR-taak..." autocomplete="off" aria-label="Zoek een HR-taak">
+      <button class="search-clear" id="search-clear" aria-label="Zoekopdracht wissen">✕</button>
+    </div>
 
     <!-- Filters -->
     <div class="filters-wrap">
@@ -1179,19 +1217,13 @@
       </div>
     </div>
 
-    <p class="results-meta" id="results-meta"><span id="count">17</span> use cases gevonden</p>
+    <p class="results-meta" id="results-meta"><span id="count">19</span> use cases gevonden</p>
 
     <!-- Card grid -->
     <div class="card-grid" id="card-grid"></div>
 
   </div><!-- /container -->
 
-  <!-- Contact banner -->
-  <section class="contact-section">
-    <h2>Sparren over AI in jouw HR-praktijk?</h2>
-    <p>Wij helpen HR-teams om verantwoord met AI aan de slag te gaan,van strategie tot implementatie.</p>
-    <button class="btn-primary" onclick="openContactModal()">Neem contact op →</button>
-  </section>
 </main>
 
 <!-- ══════════ DETAIL MODAL ══════════ -->
@@ -1200,10 +1232,6 @@
     <button class="modal-close" onclick="closeDetailModal()" aria-label="Sluiten">×</button>
     <div class="modal-top" id="modal-top"></div>
     <div class="modal-body" id="modal-body"></div>
-    <div class="modal-contact-bar">
-      <p><strong>Meer weten over dit onderwerp?</strong><br>We sparren graag mee over jouw situatie.</p>
-      <button class="btn-primary" onclick="closeDetailModal(); openContactModal();">Neem contact op →</button>
-    </div>
   </div>
 </div>
 
@@ -1217,51 +1245,25 @@
   <span class="modal-scroll-hint-arrow" aria-hidden="true">↓</span> scroll voor meer
 </div>
 
-<!-- ══════════ CONTACT MODAL ══════════ -->
-<div class="modal-overlay" id="contact-modal" role="dialog" aria-modal="true">
-  <div class="contact-modal-box">
-    <button class="modal-close" onclick="closeContactModal()" aria-label="Sluiten">×</button>
-    <div class="contact-modal-top">
-      <h3>Laten we kennismaken</h3>
-      <p>Vertel ons waarmee je bezig bent,we nemen binnen 2 werkdagen contact op.</p>
-    </div>
-    <div class="contact-form">
-      <div id="form-fields">
-        <div class="form-group">
-          <label class="form-label" for="f-naam">Naam</label>
-          <input class="form-input" type="text" id="f-naam" placeholder="Jouw naam">
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="f-org">Organisatie</label>
-          <input class="form-input" type="text" id="f-org" placeholder="Naam van je organisatie">
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="f-email">E-mailadres</label>
-          <input class="form-input" type="email" id="f-email" placeholder="jouw@email.nl">
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="f-onderwerp">Waar ben je mee bezig?</label>
-          <textarea class="form-textarea" id="f-onderwerp" placeholder="Beschrijf kort je situatie of vraag…"></textarea>
-        </div>
-        <button class="btn-primary" style="width:100%;justify-content:center;" onclick="submitForm()">Verstuur bericht →</button>
-      </div>
-      <div class="form-success" id="form-success">
-        <div class="form-success-icon">✓</div>
-        <h4>Bericht ontvangen!</h4>
-        <p>We nemen binnen 2 werkdagen contact met je op. Tot snel.</p>
-      </div>
-    </div>
-  </div>
-</div>
+<!-- ══════════ PRINT AREA ══════════ -->
+<div id="print-area"></div>
 
 <!-- ══════════ SEO CONTEXT ══════════ -->
 <section class="seo-context-section">
   <div class="seo-context-inner">
-    <h2>AI in HR: verantwoord inzetten begint bij de juiste vragen</h2>
-    <p>HR-professionals staan voor een groeiende vraag: welke AI-toepassingen zijn toegestaan, en welke niet? De EU AI Act en AVG stellen steeds hogere eisen aan het gebruik van algoritmes in werving, beoordeling en verzuim. Tegelijk biedt AI echte kansen om HR-werk slimmer en inclusiever te maken. De HR AI Radar helpt je per use case het gesprek te voeren: wat mag, wat werkt, en waar zitten de risico&rsquo;s.</p>
-    <p>Dit is een Kust &amp; Kade Lab-demo: een fictief, illustratief voorbeeld van hoe zo&rsquo;n radar eruit kan zien in jouw organisatie. De inhoud is niet juridisch bindend en kan fouten bevatten.</p>
-    <a href="https://www.kustenkade.nl/#contact" class="seo-link">Benieuwd hoe dit werkt voor jouw organisatie? Plan een gesprek &rarr;</a>
+    <h2>AI in HR: wat mag en wat niet?</h2>
+    <p>Steeds meer HR-professionals gebruiken AI. Maar wat is eigenlijk toegestaan? De EU AI Act en de AVG stellen regels aan AI in werving, beoordeling en verzuim. De HR AI Radar laat per taak zien wat mag, wat risicovol is en waar je op moet letten.</p>
+    <p>Dit is een Kust &amp; Kade Lab-demo. De inhoud is bedoeld als voorbeeld en geen juridisch advies.</p>
+    <a href="https://www.kustenkade.nl/#contact" class="seo-link">Wil je dit voor jouw organisatie? Plan een gesprek &rarr;</a>
   </div>
+</section>
+
+<!-- ══════════ CTA BANNER ══════════ -->
+<section class="cta-banner">
+  <p class="cta-banner-text">Wil je dit voor jouw organisatie of team?</p>
+  <a href="https://www.kustenkade.nl/#contact" target="_blank" rel="noopener" class="btn-primary">
+    Gratis kennismakingsgesprek →
+  </a>
 </section>
 
 <!-- ══════════ FOOTER ══════════ -->
@@ -1333,24 +1335,22 @@ const useCases = [
     category: 'werving',
     icon: '📄',
     stoplicht: 'rood',
-    tagline: 'Reproduceert historische bias op grote schaal',
-    samenvatting: 'AI kan patronen herkennen in CV\'s, maar leert van historische aannames. Wie eerder werd aangenomen, bepaalt wie nu wordt geselecteerd,inclusief alle ongelijkheid die daarin zit.',
+    tagline: 'AI kijkt niet eerlijk naar CV\'s',
+    samenvatting: 'AI leert van oude keuzes. Wie eerder werd aangenomen, bepaalt wie nu een kans krijgt. Dat is niet eerlijk.',
     watGoedKan: [
-      'Eerste grove filtering op harde eisen (diploma, certificaten, jaren ervaring)',
-      'Inconsistenties en omissies in CV-inhoud signaleren',
-      'Bulk-verwerking van honderden sollicitaties in korte tijd'
+      'Snel controleren of iemand aan harde eisen voldoet',
+      'Heel veel CV\'s tegelijk bekijken',
+      'Ontbrekende informatie signaleren'
     ],
     watLetjeOp: [
-      'AI reproduceert en versterkt historische bias,op naam, schrijfstijl, cv-gap en culturele context',
-      'Kandidaten met een niet-westerse naam worden gemiddeld 24% lager gescoord (Tweede Kamer, 2023)',
-      'Jij blijft juridisch verantwoordelijk, ook als een externe tool "objectief" lijkt',
-      'Kandidaten hebben recht op menselijke uitleg bij geautomatiseerde beslissingen'
+      'AI benadelt mensen met een niet-westerse naam',
+      'Jij bent verantwoordelijk, ook als de tool "objectief" lijkt',
+      'Kandidaten hebben recht op uitleg bij een afwijzing'
     ],
     tips: [
-      'Gebruik AI alleen voor harde criteria (heeft kandidaat het vereiste diploma?)',
-      'Audit het systeem minimaal jaarlijks op bias-patronen per doelgroep',
-      'Zorg altijd voor een menselijke eindcheck vóór elke afwijzing',
-      'Documenteer elk selectiecriterium en elke stap in het proces'
+      'Gebruik AI alleen voor harde eisen (heeft iemand het diploma?)',
+      'Laat altijd een mens de eindcheck doen',
+      'Schrijf op welke criteria je gebruikt hebt'
     ],
     dimensions: {
       aiact: {
@@ -1358,32 +1358,32 @@ const useCases = [
         label: 'Hoog-risico AI',
         sublabel: 'EU AI Act',
         icon: '⚖️',
-        tooltip: 'CV-screening valt expliciet onder Bijlage III van de EU AI Act als hoog-risico systeem.',
-        detail: 'De EU AI Act (Bijlage III, punt 4) classificeert AI-systemen voor werving en selectie als hoog-risico. Als deployer (degene die de tool inzet) ben jij mede-verantwoordelijk voor naleving,ook als de tool van een externe leverancier komt. Verplichtingen: risicobeheersysteem, technische documentatie, menselijk toezicht en registratie in de EU-database van hoog-risico AI.'
+        tooltip: 'CV-screening is officieel hoog-risico AI.',
+        detail: 'De wet zegt: AI voor werving en selectie is hoog-risico. Je moet dit registreren en controleren. Ook als je een tool van een ander bedrijf gebruikt, ben jij verantwoordelijk.'
       },
       avg: {
         level: 'hoog',
-        label: 'Bijzondere persoonsdata',
+        label: 'Persoonsgegevens',
         sublabel: 'AVG',
         icon: '🔒',
-        tooltip: 'CV\'s bevatten persoonsgegevens. Geautomatiseerde beslissingen vereisen expliciete grondslag (AVG art. 22).',
-        detail: 'Vrijwel elk CV bevat persoonsgegevens (naam, werkhistorie, opleiding). Sommige CV\'s bevatten onbedoeld bijzondere data: foto\'s waaruit afkomst blijkt, vermeldingen van gezondheid of religie. AVG artikel 22 verbiedt volledig geautomatiseerde beslissingen met significante gevolgen, tenzij er expliciete toestemming is of een wettelijke grondslag,altijd met recht op menselijke tussenkomst en uitleg.'
+        tooltip: 'Een CV bevat persoonlijke informatie. De AVG stelt strenge regels.',
+        detail: 'CV\'s bevatten naam, werkhistorie en soms ook gevoelige info zoals een foto of gezondheid. Een volledig automatische beslissing mag niet. Er moet altijd een mens meekijken.'
       },
       di: {
         level: 'hoog',
-        label: 'Hoog D&I-risico',
+        label: 'Hoog risico op ongelijkheid',
         sublabel: 'Diversiteit & Inclusie',
         icon: '🌍',
-        tooltip: 'Aantoonbare discriminatie op naam, geslacht en culturele achtergrond in AI-CV-screening.',
-        detail: 'CV-screening AI leert van historische aannames. Gedocumenteerde risico\'s: genderbias (vrouwen lager gescoord bij technische functies), naam-discriminatie (niet-westerse namen), leeftijdsdiscriminatie, en bias tegen CV-gaps (mantelzorgers, chronische aandoeningen). Amazon staakte zijn systeem in 2018 na aantoonbare discriminatie van vrouwen. Risico is extra groot bij neurodivergente kandidaten die anders schrijven.'
+        tooltip: 'AI benadelt aantoonbaar mensen met een niet-westerse naam.',
+        detail: 'AI leert van het verleden. Als vroeger vooral witte mannen werden aangenomen, kiest AI dat opnieuw. Mensen met een andere naam of schrijfstijl maken minder kans — ook als ze even goed zijn.'
       },
       praktijk: {
         level: 'voorzichtig',
         label: 'Hoog juridisch risico',
         sublabel: 'Praktijkcheck',
         icon: '🧭',
-        tooltip: 'Klinkt efficiënt, maar leidt in de praktijk tot juridische en reputatierisico\'s.',
-        detail: 'Recruiters vertrouwen in de praktijk op de AI-score zonder door te vragen, audits worden uitgesteld, en bias wordt pas zichtbaar als er een klacht ligt. Gebruik AI hier maximaal als hulpmiddel voor harde, aantoonbare criteria,nooit voor zachte criteria als "culture fit" of "teamfit".'
+        tooltip: 'Klinkt efficiënt, maar geeft snel juridische problemen.',
+        detail: 'In de praktijk vertrouwen mensen te snel op de AI-score. Gebruik AI hier alleen voor duidelijke, aantoonbare criteria. Nooit voor "past bij het team" of soortgelijke zachte criteria.'
       }
     }
   },
@@ -1393,22 +1393,22 @@ const useCases = [
     category: 'werving',
     icon: '✍️',
     stoplicht: 'groen',
-    tagline: 'Veilig toepasbaar,let op taalpatronen',
-    samenvatting: 'AI helpt snel een professionele vacaturetekst opstellen. Grootste risico: onbewuste gender-coded language die bepaalde groepen afschrikt zonder dat je het ziet.',
+    tagline: 'Veilig, let op taalgebruik',
+    samenvatting: 'AI helpt snel een goede vacaturetekst schrijven. Let er op dat de tekst niet onbewust mannen aanspreekt en vrouwen afschrikt.',
     watGoedKan: [
-      'Snel een eerste professionele opzet genereren',
-      'Toon en stijl consistent maken met andere vacatures',
-      'Verschillende versies maken voor verschillende kanalen'
+      'Snel een eerste versie schrijven',
+      'Tekst consistent houden met andere vacatures',
+      'Meerdere versies maken voor verschillende kanalen'
     ],
     watLetjeOp: [
-      'AI reproduceert masculiene taalpatronen uit bestaande vacatures ("resultaatgericht", "daadkrachtig")',
-      'Vrouwen solliciteren 20% minder op vacatures met gender-coded language (LinkedIn, 2019)',
-      'Controleer altijd handmatig op exclusieve taal voor doelgroepen'
+      'AI gebruikt vaak mannelijke woorden ("daadkrachtig", "dominant")',
+      'Vrouwen reageren minder op vacatures met dit soort taal',
+      'Check altijd of de tekst iedereen aanspreekt'
     ],
     tips: [
-      'Gebruik tools als Gender Decoder of Textio als extra check',
-      'Laat de AI meerdere toonvarianten genereren en kies bewust',
-      'Voeg altijd expliciet inclusiviteitsformulering toe ("we verwelkomen iedereen")'
+      'Vraag AI om meerdere versies en kies bewust',
+      'Voeg toe: "we verwelkomen iedereen"',
+      'Gebruik een checker zoals Gender Decoder'
     ],
     dimensions: {
       aiact: {
@@ -1416,32 +1416,32 @@ const useCases = [
         label: 'Laag risico',
         sublabel: 'EU AI Act',
         icon: '⚖️',
-        tooltip: 'Vacatureteksten schrijven valt niet onder de hoog-risico categorie van de EU AI Act.',
-        detail: 'Het schrijven van vacatureteksten valt buiten de hoog-risico classificatie van de EU AI Act. Er is geen sprake van geautomatiseerde besluitvorming over personen. De transparantieverplichting (bijlage V) kan van toepassing zijn als kandidaten weten dat teksten AI-gegenereerd zijn.'
+        tooltip: 'Vacatureteksten schrijven is geen hoog-risico toepassing.',
+        detail: 'Je neemt geen beslissingen over mensen. Dat maakt dit laag-risico. Geen zware regels van toepassing.'
       },
       avg: {
         level: 'laag',
-        label: 'Geen persoonsdata',
+        label: 'Geen persoonsgegevens',
         sublabel: 'AVG',
         icon: '🔒',
-        tooltip: 'Vacatureteksten bevatten geen persoonsgegevens. AVG is hier nauwelijks relevant.',
-        detail: 'Bij het schrijven van vacatureteksten worden geen persoonsgegevens verwerkt. De AVG is hier niet of nauwelijks van toepassing. Let wel op als je bestaande vacatureteksten van specifieke medewerkers als input gebruikt.'
+        tooltip: 'Een vacaturetekst bevat geen persoonsgegevens.',
+        detail: 'Je werkt niet met informatie over personen. De privacywet (AVG) is hier nauwelijks van toepassing.'
       },
       di: {
         level: 'gemiddeld',
-        label: 'Taalpatroon-risico',
+        label: 'Let op taalpatronen',
         sublabel: 'Diversiteit & Inclusie',
         icon: '🌍',
-        tooltip: 'Masculiene taalpatronen in AI-vacatureteksten schrikken vrouwen en diverse doelgroepen af.',
-        detail: 'AI-taalmodellen zijn getraind op grote hoeveelheden bestaande teksten, die historisch masculien gekleurd zijn. Woorden als "dominant", "competitief" of "ambitieus" worden door vrouwen als afschrikwekkend ervaren. Onderzoek (Gaucher et al., 2011) toont aan dat gender-coded language de sollicitantenpool significant minder divers maakt.'
+        tooltip: 'AI schrijft vaak mannelijke taal die vrouwen afschrikt.',
+        detail: 'AI leert van bestaande teksten. Die zijn vaak mannelijk geschreven. Woorden als "dominant" of "competitief" schrikken veel vrouwen af. Check dit altijd.'
       },
       praktijk: {
         level: 'positief',
-        label: 'Breed toepasbaar',
+        label: 'Sterk aanbevolen',
         sublabel: 'Praktijkcheck',
         icon: '🧭',
-        tooltip: 'In de praktijk een van de veiligste en meest waardevolle HR-toepassingen van AI.',
-        detail: 'Vacatureteksten schrijven is in de HR-praktijk een van de meest succesvolle en minst risicovolle AI-toepassingen. De tijdsbesparing is groot, de kwaliteitswinst merkbaar,zolang een HR-professional de eindcheck doet op inclusieve taal en functievereisten.'
+        tooltip: 'Een van de veiligste en nuttigste HR-toepassingen van AI.',
+        detail: 'Snel een goede vacaturetekst schrijven met AI werkt goed. Laat een HR-medewerker de tekst checken op toon en inclusiviteit.'
       }
     }
   },
@@ -1451,21 +1451,21 @@ const useCases = [
     category: 'werving',
     icon: '🏆',
     stoplicht: 'rood',
-    tagline: 'Automatische ranking = automatische discriminatie',
-    samenvatting: 'AI die kandidaten automatisch rangschikt op "geschiktheid" neemt feitelijk selectiebeslissingen. Dit is hoog-risico onder de EU AI Act en een directe discriminatiegrondslag.',
+    tagline: 'Automatisch rangschikken = automatisch discrimineren',
+    samenvatting: 'Als AI bepaalt wie bovenaan staat, neemt AI de selectiebeslissing. Dat is hoog-risico en mag niet zonder menselijk toezicht.',
     watGoedKan: [
-      'Overzicht bewaken bij grote aantallen sollicitaties',
-      'Harde knock-out criteria snel verifiëren'
+      'Overzicht bewaren bij veel sollicitaties',
+      'Snel harde knock-outcriteria controleren'
     ],
     watLetjeOp: [
-      'Een ranking is een selectiebeslissing,en die mag niet geautomatiseerd worden zonder menselijk toezicht',
-      'De AI-score wordt in de praktijk zelden kritisch bevraagd',
-      'Elk rankingmodel weerspiegelt de waarden van de trainingsdata, niet objectieve kwaliteit'
+      'Een ranking is een beslissing — die mag niet volledig automatisch',
+      'Mensen vertrouwen de score zonder te vragen waarom',
+      'De AI kiest wie eerder succesvol was, niet wie het beste is'
     ],
     tips: [
-      'Gebruik ranking uitsluitend als hulpmiddel, nooit als eindoordeel',
-      'Laat meerdere recruiters onafhankelijk beoordelen vóór vergelijking',
-      'Leg vast op basis van welke criteria de ranking is opgesteld'
+      'Gebruik ranking alleen als hulpmiddel, nooit als eindoordeel',
+      'Laat meerdere mensen onafhankelijk beoordelen',
+      'Schrijf op welke criteria je gebruikte'
     ],
     dimensions: {
       aiact: {
@@ -1473,32 +1473,32 @@ const useCases = [
         label: 'Hoog-risico AI',
         sublabel: 'EU AI Act',
         icon: '⚖️',
-        tooltip: 'Kandidaat-ranking valt direct onder Bijlage III (punt 4) als hoog-risico AI-systeem.',
-        detail: 'Geautomatiseerde rangschikking van kandidaten valt expliciet onder Bijlage III, punt 4 van de EU AI Act. Als deployer ben je verplicht tot: risicoanalyse, technische documentatie, menselijk toezicht, en transparantie naar kandidaten. Gebruik je een externe HR-tool voor ranking? Dan ben jij als organisatie alsnog mede-verantwoordelijk.'
+        tooltip: 'Kandidaten rangschikken is officieel hoog-risico AI.',
+        detail: 'De wet noemt kandidaat-ranking expliciet als hoog-risico. Je bent verplicht tot toezicht, documentatie en transparantie. Dit geldt ook als je een externe tool gebruikt.'
       },
       avg: {
         level: 'hoog',
-        label: 'Geautomatiseerde beslissing',
+        label: 'Automatische beslissing',
         sublabel: 'AVG',
         icon: '🔒',
-        tooltip: 'AVG art. 22 verbiedt geautomatiseerde beslissingen met significante gevolgen zonder menselijk toezicht.',
-        detail: 'Ranking heeft significante gevolgen voor kandidaten (wel of geen kans op een baan). AVG artikel 22 verbiedt volledig geautomatiseerde beslissingen tenzij: uitdrukkelijke toestemming, noodzakelijk voor overeenkomst, of wettelijke grondslag. Altijd met recht op menselijke herbeoordeling en uitleg van de gebruikte logica.'
+        tooltip: 'Een volledig automatische ranking mag niet zonder menselijk toezicht.',
+        detail: 'Een ranking heeft grote gevolgen: wel of geen kans op een baan. De AVG verbiedt dit volledig te automatiseren. Er moet altijd een mens meekijken en uitleg kunnen geven.'
       },
       di: {
         level: 'hoog',
-        label: 'Hoog D&I-risico',
+        label: 'Hoog risico op ongelijkheid',
         sublabel: 'Diversiteit & Inclusie',
         icon: '🌍',
-        tooltip: 'Rankingmodellen benadeligen structureel ondervertegenwoordigde groepen.',
-        detail: 'Rankingmodellen leren van wie eerder succesvol was in de organisatie. Als de organisatie historisch weinig divers is, zoekt de AI naar kandidaten die lijken op de huidige medewerkers. Dit benadeelt vrouwen, mensen met een migratieachtergrond, mensen met een beperking en ouderen systematisch,zonder dat de recruiter dit ziet.'
+        tooltip: 'Rankingmodellen benadelen vrouwen, mensen van kleur en ouderen.',
+        detail: 'Het model leert van wie eerder succesvol was. Als de organisatie weinig divers was, zoekt AI naar mensen die lijken op de huidige medewerkers. Dat is systematische uitsluiting.'
       },
       praktijk: {
         level: 'voorzichtig',
-        label: 'Hoog risico in de praktijk',
+        label: 'Hoog risico',
         sublabel: 'Praktijkcheck',
         icon: '🧭',
-        tooltip: 'In de praktijk wordt een AI-ranking zelden kritisch bevraagd, wat het risico vergroot.',
-        detail: 'Recruiters die tijdsdruk ervaren gebruiken AI-rankings als eindoordeel in plaats van als hulpmiddel. Dit vergroot het risico op onterechte afwijzingen. De schijnobjectiviteit van een score of percentage geeft een vals gevoel van zekerheid.'
+        tooltip: 'Mensen volgen de AI-score te snel zonder vragen te stellen.',
+        detail: 'Onder tijdsdruk wordt de AI-ranking snel het eindoordeel. Een score lijkt objectief, maar is dat niet. Dit geeft een vals gevoel van zekerheid.'
       }
     }
   },
@@ -1508,55 +1508,54 @@ const useCases = [
     category: 'werving',
     icon: '🎥',
     stoplicht: 'rood',
-    tagline: 'Gezichtsanalyse en stemtoon = extreem hoog risico',
-    samenvatting: 'AI-tools die gezichtsuitdrukkingen, stemtoon of woordkeuze in video-interviews analyseren zijn onder de EU AI Act vrijwel altijd hoog-risico en soms verboden.',
+    tagline: 'Gezichts- en stemanalyse zijn vrijwel altijd verboden',
+    samenvatting: 'AI die gezichten, stemmen of gedrag in video analyseert is hoog-risico en soms verboden. Gebruik AI hier alleen voor het uitschrijven van het gesprek.',
     watGoedKan: [
-      'Automatisch transcriberen van gesprekken voor eigen notities',
-      'Tijdstempels en zoekbare samenvatting genereren'
+      'Gesprek automatisch uitschrijven (transcriptie)',
+      'Samenvatting en tijdstempels genereren'
     ],
     watLetjeOp: [
-      'Gezichtsanalyse discrimineert aantoonbaar op etniciteit en neurodivergentie',
-      'Biometrische data (stem, gezicht) = bijzondere persoonsgegevens onder AVG',
-      'Kandidaten moeten expliciet en vooraf geïnformeerd worden',
-      'Sommige vormen van real-time biometrische analyse zijn verboden onder de EU AI Act'
+      'Gezichtsanalyse discrimineert op huidskleur en neurodiversiteit',
+      'Stem- en gezichtsdata zijn bijzondere persoonsgegevens',
+      'Kandidaten moeten vooraf precies weten wat AI doet'
     ],
     tips: [
-      'Gebruik video-AI uitsluitend voor transcriptie,niet voor gedragsanalyse',
-      'Informeer kandidaten altijd vooraf welke AI-analyse plaatsvindt',
-      'Vraag juridisch advies vóór implementatie van gedragsanalytische tools'
+      'Gebruik AI alleen voor uitschrijven, niet voor gedragsanalyse',
+      'Vertel kandidaten altijd welke AI er wordt gebruikt',
+      'Vraag een jurist om advies voordat je dit inzet'
     ],
     dimensions: {
       aiact: {
         level: 'hoog',
-        label: 'Potentieel verboden',
+        label: 'Mogelijk verboden',
         sublabel: 'EU AI Act',
         icon: '⚖️',
-        tooltip: 'Real-time biometrische identificatie en emotieherkenning zijn verboden of hoog-risico onder de EU AI Act.',
-        detail: 'De EU AI Act verbiedt real-time biometrische identificatiesystemen in de openbare ruimte en stelt zware eisen aan emotieherkenningssystemen. Video-interview analyse die gezichtsuitdrukkingen of stemtoon beoordeelt valt in de hoog-risico categorie (Bijlage III). Emotieherkenning op de werkplek is onder strikte voorwaarden beperkt en vereist expliciete toestemming.'
+        tooltip: 'Gezichts- en emotieanalyse zijn verboden of hoog-risico.',
+        detail: 'De wet verbiedt sommige vormen van gezichtsherkenning en emotieanalyse. Video-analyse van sollicitanten is altijd hoog-risico en vereist zware maatregelen.'
       },
       avg: {
         level: 'hoog',
-        label: 'Biometrische data',
+        label: 'Bijzondere persoonsgegevens',
         sublabel: 'AVG',
         icon: '🔒',
-        tooltip: 'Stem en gezichtsdata zijn bijzondere persoonsgegevens. Verwerking vereist expliciete toestemming.',
-        detail: 'Stem- en gezichtsdata zijn biometrische persoonsgegevens en vallen onder de bijzondere categorieën van de AVG (artikel 9). Verwerking is alleen toegestaan met uitdrukkelijke toestemming van de kandidaat. Toestemming moet vrij gegeven zijn,in een sollicitatierelatie is dit juridisch kwetsbaar omdat de machtsverhouding ongelijk is.'
+        tooltip: 'Stem en gezicht zijn bijzondere persoonsgegevens.',
+        detail: 'Stem- en gezichtsdata zijn gevoelig en zwaar beschermd. Je hebt expliciete toestemming nodig. In een sollicitatie is dat lastig: de kandidaat voelt druk om ja te zeggen.'
       },
       di: {
         level: 'hoog',
-        label: 'Extreem hoog D&I-risico',
+        label: 'Extreem hoog risico',
         sublabel: 'Diversiteit & Inclusie',
         icon: '🌍',
-        tooltip: 'Gezichtsherkenning presteert aantoonbaar slechter voor donkere huidskleur en neurodivergente personen.',
-        detail: 'Onderzoek (MIT Media Lab, Joy Buolamwini) toont aan dat gezichtsherkenningssystemen een foutmarge hebben van 34,7% bij donkere vrouwen versus 0,8% bij lichte mannen. Stemanalyse discrimineert op accent en taalvaardigheid. Neurodivergente kandidaten (autisme, ADHD) vertonen ander non-verbaal gedrag dat als "negatief" wordt gescoord. Dit zijn directe discriminatiegronden.'
+        tooltip: 'Gezichtsherkenning presteert veel slechter bij mensen met een donkere huidskleur.',
+        detail: 'Onderzoek toont aan: foutmarge is 35% bij donkere vrouwen, versus 1% bij lichte mannen. Ook mensen met autisme of ADHD worden onterecht laag gescoord. Dit is directe discriminatie.'
       },
       praktijk: {
         level: 'voorzichtig',
         label: 'Niet aanbevolen',
         sublabel: 'Praktijkcheck',
         icon: '🧭',
-        tooltip: 'In de praktijk worden de risico\'s sterk onderschat. Reputatieschade bij blootstelling is groot.',
-        detail: 'Tools als HireVue worden commercieel aangeboden als "objectief". In de praktijk zijn de wetenschappelijke grondslagen van gedragsanalyse in sollicitatiegesprekken omstreden. Meerdere grote bedrijven hebben dergelijke tools na kritiek stopgezet. De reputatieschade bij een incident is substantieel.'
+        tooltip: 'De risico\'s worden sterk onderschat. Reputatieschade is groot.',
+        detail: 'Meerdere grote bedrijven zijn gestopt met dit soort tools na kritiek. De wetenschappelijke basis voor gedragsanalyse in sollicitaties is zwak. Doe het niet.'
       }
     }
   },
@@ -1566,21 +1565,21 @@ const useCases = [
     category: 'werving',
     icon: '📱',
     stoplicht: 'rood',
-    tagline: 'Juridisch mijnenveld,ook zonder AI',
-    samenvatting: 'Social media screening,met of zonder AI,is juridisch risicovol. AI maakt het probleem groter door het te automatiseren en bijzondere persoonsgegevens onbedoeld te verwerken.',
+    tagline: 'Juridisch gevaarlijk, ook zonder AI',
+    samenvatting: 'Social media bekijken van kandidaten is al risicovol. Met AI wordt het erger: je ziet onbedoeld gevoelige informatie die je niet mag gebruiken.',
     watGoedKan: [
-      'Publiek beschikbare professionele informatie (LinkedIn) raadplegen',
-      'Consistentie met CV verifiëren op professionele netwerken'
+      'Openbare professionele info op LinkedIn raadplegen',
+      'Controleren of CV en LinkedIn overeenkomen'
     ],
     watLetjeOp: [
-      'Je ziet onbedoeld beschermde kenmerken: religie, politiek, zwangerschap, relatiestatus',
-      'AI kan dit niet onderscheiden,het verwerkt alles wat het ziet',
-      'Enkel professioneel relevante informatie mag een rol spelen in selectie'
+      'Je ziet onbedoeld religie, politiek, zwangerschap of ziekte',
+      'AI kan dit niet negeren — het verwerkt alles',
+      'Alleen professioneel relevante info mag een rol spelen'
     ],
     tips: [
-      'Beperk social media check strikt tot LinkedIn en professionele context',
-      'Doe dit nooit geautomatiseerd,altijd handmatig en na eerste selectieronde',
-      'Leg vast welke informatie je hebt bekeken en waarom'
+      'Beperk je tot LinkedIn en alleen professionele context',
+      'Doe dit nooit automatisch, altijd handmatig',
+      'Schrijf op wat je hebt bekeken en waarom'
     ],
     dimensions: {
       aiact: {
@@ -1588,32 +1587,32 @@ const useCases = [
         label: 'Hoog-risico AI',
         sublabel: 'EU AI Act',
         icon: '⚖️',
-        tooltip: 'Geautomatiseerde social media screening voor selectie valt onder hoog-risico AI (Bijlage III).',
-        detail: 'Als AI wordt ingezet om social media profielen systematisch te scannen en te beoordelen voor selectiedoeleinden, valt dit onder Bijlage III van de EU AI Act. Scraping van sociale netwerken is bovendien vaak in strijd met de gebruiksvoorwaarden van die platforms.'
+        tooltip: 'Geautomatiseerde social media screening voor selectie is hoog-risico.',
+        detail: 'Als AI social media scant voor selectie, valt dit onder hoog-risico AI. Automatisch scrapen van social media is bovendien vaak verboden door de platforms zelf.'
       },
       avg: {
         level: 'hoog',
-        label: 'Onbedoelde bijzondere data',
+        label: 'Gevoelige info onvermijdelijk',
         sublabel: 'AVG',
         icon: '🔒',
-        tooltip: 'Social media bevat onbedoeld bijzondere persoonsgegevens: geloof, politiek, gezondheid, relaties.',
-        detail: 'Social media profielen bevatten vrijwel altijd bijzondere persoonsgegevens: religie (kerklidmaatschap), politieke voorkeur (gelikete partijen), gezondheid (ziektemeldingen), seksuele geaardheid (relatiestatus). AI verwerkt dit alles zonder onderscheid. Verwerking van bijzondere data zonder expliciete grondslag is verboden onder AVG artikel 9.'
+        tooltip: 'Social media bevat altijd gevoelige persoonsgegevens.',
+        detail: 'Profielen bevatten bijna altijd gevoelige info: religie, politiek, gezondheid, relaties. AI verwerkt dit allemaal. Dat mag niet zonder toestemming.'
       },
       di: {
         level: 'hoog',
-        label: 'Hoog D&I-risico',
+        label: 'Hoog risico op ongelijkheid',
         sublabel: 'Diversiteit & Inclusie',
         icon: '🌍',
-        tooltip: 'Social media-gebruik verschilt sterk per generatie, cultuur en sociaaleconomische achtergrond.',
-        detail: 'Social media-gebruik is niet gelijkmatig verdeeld. Oudere kandidaten zijn minder actief, mensen met lagere inkomens hebben minder professionele online presentatie, en mensen met bepaalde culturele achtergronden gebruiken andere platforms. Dit leidt tot structurele benadeliging van specifieke groepen die minder "zichtbaar" zijn online.'
+        tooltip: 'Niet iedereen is even actief online.',
+        detail: 'Oudere kandidaten en mensen met lagere inkomens zijn minder zichtbaar online. Dit benadeelt hen structureel, ook als ze prima geschikt zijn.'
       },
       praktijk: {
         level: 'voorzichtig',
         label: 'Niet aanbevolen',
         sublabel: 'Praktijkcheck',
         icon: '🧭',
-        tooltip: 'Wijdverspreid in de praktijk, maar juridisch en ethisch sterk af te raden.',
-        detail: 'Onderzoek toont dat 70% van de recruiters social media checkt, maar de meesten doen dit zonder juridisch kader. Met AI wordt het probleem groter: het gaat sneller, is minder transparant en verwerkt meer data. Bij een juridische procedure is dit moeilijk te verdedigen.'
+        tooltip: 'Veel gebruikt, maar juridisch en ethisch sterk af te raden.',
+        detail: 'Veel recruiters doen dit nog, maar zonder juridisch kader. Met AI wordt het probleem groter en moeilijker te verdedigen.'
       }
     }
   },
@@ -1625,22 +1624,22 @@ const useCases = [
     category: 'communicatie',
     icon: '📩',
     stoplicht: 'groen',
-    tagline: 'Veilig toepasbaar,menselijke eindcheck vereist',
-    samenvatting: 'AI helpt snel professionele afwijzingsbrieven schrijven. Juridisch aandachtspunt: als de selectie deels AI-gestuurd was, moet je dit kunnen verantwoorden aan de kandidaat.',
+    tagline: 'Veilig, laat een mens de check doen',
+    samenvatting: 'AI schrijft snel een nette afwijzingsbrief. Voeg altijd een persoonlijk element toe — en als AI ook de selectie deed, leg dat dan ook uit.',
     watGoedKan: [
-      'Snel een respectvolle, professionele brief opstellen',
-      'Consistente toon bewaken over alle afwijzingen',
-      'Meerdere varianten genereren voor verschillende situaties'
+      'Snel een respectvolle brief schrijven',
+      'Toon consistent houden over alle brieven',
+      'Meerdere versies maken voor verschillende situaties'
     ],
     watLetjeOp: [
-      'AI-brieven zijn generiek,te generieke afwijzingen schaden kandidaatervaring',
-      'Als selectie AI-gestuurd was, moet je de grondslag van afwijzing kunnen uitleggen (AVG art. 22)',
-      'Zorg dat de brief nooit een impliciete discriminatiegrond bevat'
+      'Te generieke brieven schaden de kandidaatervaring',
+      'Als AI ook selecteerde, moet je dat kunnen uitleggen',
+      'De brief mag geen discriminerende taal bevatten'
     ],
     tips: [
-      'Personaliseer altijd minimaal één element van de brief',
-      'Geef indien mogelijk constructieve feedback,dat waardeert de kandidaat',
-      'Sla de correspondentie op conform je bewaartermijnenbeleid'
+      'Voeg altijd minimaal één persoonlijk element toe',
+      'Geef als het kan ook een tip mee',
+      'Sla de brief op zolang dat verplicht is (max 4 weken)'
     ],
     dimensions: {
       aiact: {
@@ -1648,32 +1647,32 @@ const useCases = [
         label: 'Laag risico',
         sublabel: 'EU AI Act',
         icon: '⚖️',
-        tooltip: 'Het schrijven van afwijzingsbrieven is geen hoog-risico AI-toepassing.',
-        detail: 'Het genereren van communicatie-teksten valt niet onder de hoog-risico classificatie van de EU AI Act. Zolang AI alleen de brief schrijft (en niet de selectiebeslissing neemt), zijn er geen zware verplichtingen van toepassing.'
+        tooltip: 'Een brief schrijven is geen hoog-risico toepassing.',
+        detail: 'Je neemt geen beslissing over een persoon — je schrijft alleen de brief. Dat is laag-risico.'
       },
       avg: {
         level: 'gemiddeld',
-        label: 'Persoonsdata verwerken',
+        label: 'Persoonsgegevens',
         sublabel: 'AVG',
         icon: '🔒',
-        tooltip: 'Je verwerkt naam en context van de kandidaat. Zorg voor een geldige grondslag en bewaarbeleid.',
-        detail: 'Bij het opstellen van afwijzingsbrieven verwerk je persoonsgegevens van de kandidaat. Zorg voor een geldige verwerkingsgrondslag (doorgaans: uitvoering sollicitatieprocedure), houd je bewaartermijnen aan (max 4 weken na afwijzing, tenzij kandidaat toestemming geeft voor langer), en voer nooit kandidaatgegevens in bij een externe AI-tool zonder verwerkersovereenkomst.'
+        tooltip: 'Je gebruikt naam en context van de kandidaat.',
+        detail: 'Zorg voor een reden om de gegevens te verwerken (de sollicitatieprocedure). Sla de brief max 4 weken op. Voer naam en details niet in bij een externe AI-tool zonder overeenkomst.'
       },
       di: {
         level: 'laag',
-        label: 'Laag D&I-risico',
+        label: 'Laag risico',
         sublabel: 'Diversiteit & Inclusie',
         icon: '🌍',
-        tooltip: 'Afwijzingsbrieven hebben weinig D&I-risico, mits de selectiebeslissing zelf verantwoord is genomen.',
-        detail: 'De brief zelf heeft weinig D&I-risico. Zorg wel dat de toon respectvol en neutraal is voor alle doelgroepen, en dat je geen onbewuste aannames over de kandidaat verwerkt in de brief.'
+        tooltip: 'Weinig D&I-risico, zolang de brief neutraal is.',
+        detail: 'Zorg dat de toon respectvol en neutraal is voor iedereen. Verwerk geen aannames over de kandidaat in de brief.'
       },
       praktijk: {
         level: 'positief',
-        label: 'Breed toepasbaar',
+        label: 'Sterk aanbevolen',
         sublabel: 'Praktijkcheck',
         icon: '🧭',
-        tooltip: 'Een van de meest gebruikte en meest waardevolle HR-toepassingen van AI in de praktijk.',
-        detail: 'Recruiters besparen significant tijd op het schrijven van afwijzingsbrieven. Kandidaatervaring verbetert als de brieven persoonlijker en respectvoller zijn dan de standaard template. Grootste valkuil in de praktijk: te generieke brieven die geen enkele menselijke betrokkenheid uitstralen.'
+        tooltip: 'Een van de nuttigste HR-toepassingen van AI.',
+        detail: 'HR besparen veel tijd. Kandidaten zijn blij met een nettere brief. Valkuil: te generieke teksten die onpersoonlijk aanvoelen.'
       }
     }
   },
@@ -1683,22 +1682,22 @@ const useCases = [
     category: 'communicatie',
     icon: '📜',
     stoplicht: 'oranje',
-    tagline: 'Bruikbaar als eerste concept,altijd juridische controle',
-    samenvatting: 'AI kan een eerste concept van een arbeidscontract genereren, maar juridische validatie is essentieel. AI-modellen hebben geen actuele kennis van specifieke cao\'s of lokale regelgeving.',
+    tagline: 'Goed als eerste opzet, niet als eindversie',
+    samenvatting: 'AI kan een eerste versie van een arbeidscontract schrijven. Maar AI kent jouw cao niet — laat altijd een jurist de eindversie controleren.',
     watGoedKan: [
-      'Eerste concept van standaard arbeidscontract genereren',
-      'Checklist van te behandelen onderwerpen opstellen',
-      'Bestaande contracten samenvatten of vergelijken'
+      'Snel een eerste concept maken',
+      'Checklist van onderwerpen opstellen',
+      'Bestaande contracten samenvatten'
     ],
     watLetjeOp: [
-      'AI heeft geen actuele kennis van jouw cao of specifieke bedrijfsafspraken',
-      'Juridische fouten in een contract kunnen grote financiële gevolgen hebben',
-      'Laat elk door AI gegenereerd contract altijd controleren door een jurist of HR-adviseur'
+      'AI kent jouw cao of lokale afspraken niet',
+      'Fouten in een contract kunnen grote gevolgen hebben',
+      'Laat altijd een jurist of HR-adviseur de check doen'
     ],
     tips: [
       'Gebruik AI als startpunt, nooit als eindproduct',
-      'Koppel altijd terug aan je actuele cao en arbeidsrecht',
-      'Laat een arbeidsrechtjurist periodiek je AI-templates valideren'
+      'Controleer altijd op basis van jouw actuele cao',
+      'Laat een jurist periodiek je templates nakijken'
     ],
     dimensions: {
       aiact: {
@@ -1706,32 +1705,32 @@ const useCases = [
         label: 'Laag risico',
         sublabel: 'EU AI Act',
         icon: '⚖️',
-        tooltip: 'Contractgeneratie valt niet onder hoog-risico AI, maar juridische nauwkeurigheid is cruciaal.',
-        detail: 'Het genereren van contractteksten valt buiten de hoog-risico classificatie van de EU AI Act. Maar let op: als een AI-systeem wordt gebruikt om arbeidsvoorwaarden te bepalen (niet alleen op te schrijven), kan dit onder hoog-risico vallen.'
+        tooltip: 'Contracten schrijven is geen hoog-risico toepassing.',
+        detail: 'Tekst schrijven is laag-risico. Wordt AI ook gebruikt om arbeidsvoorwaarden te bepalen? Dan kan het wél hoog-risico worden.'
       },
       avg: {
         level: 'gemiddeld',
-        label: 'Persoonsdata in contract',
+        label: 'Persoonsgegevens in contract',
         sublabel: 'AVG',
         icon: '🔒',
-        tooltip: 'Arbeidscontracten bevatten persoonsgegevens. Voer deze niet in bij externe AI-tools zonder verwerkersovereenkomst.',
-        detail: 'Arbeidscontracten bevatten persoonsgegevens van de medewerker. Voer deze nooit in bij een externe AI-tool (zoals ChatGPT) zonder verwerkersovereenkomst. Gebruik bij voorkeur een interne of gecertificeerde tool met een geldige DPA.'
+        tooltip: 'Voer nooit naam en persoonsdata in bij een externe AI-tool.',
+        detail: 'Een arbeidscontract bevat persoonsgegevens. Gebruik nooit een publieke AI-tool zonder privacyovereenkomst om een ingevuld contract te maken.'
       },
       di: {
         level: 'laag',
-        label: 'Laag D&I-risico',
+        label: 'Laag risico',
         sublabel: 'Diversiteit & Inclusie',
         icon: '🌍',
-        tooltip: 'Contractteksten hebben beperkt D&I-risico, mits je werkt met inclusieve standaardformuleringen.',
-        detail: 'D&I-risico bij contractgeneratie is beperkt. Let wel op: zorg dat standaardrollen niet onbewust gegenderd zijn (bijv. altijd "hij" als pronomen gebruiken), en dat vereisten niet onnodig beperkend zijn voor bepaalde doelgroepen.'
+        tooltip: 'Weinig D&I-risico bij standaardcontracten.',
+        detail: 'Let op: gebruik geen geslachtsspecifieke woorden zoals altijd "hij". Schrijf inclusief.'
       },
       praktijk: {
         level: 'gemengd',
-        label: 'Gemengd nut',
+        label: 'Nuttig, maar pas op',
         sublabel: 'Praktijkcheck',
         icon: '🧭',
-        tooltip: 'Nuttig als tijdsbesparing, maar het risico van juridische fouten is reëel zonder controle.',
-        detail: 'HR-professionals besparen tijd met AI-contractconcepten. Maar in de praktijk worden AI-gegenereerde teksten soms klakkeloos overgenomen zonder juridische check. Fouten in arbeidscontracten kunnen leiden tot loondoorbetalingsverplichtingen, geschillen of schadeclaims.'
+        tooltip: 'Handig als tijdsbesparing, maar fouten worden snel overgenomen.',
+        detail: 'AI-contracten worden soms zonder check overgenomen. Fouten in arbeidscontracten kunnen leiden tot conflicten of extra kosten. Bouw altijd een juridische check in.'
       }
     }
   },
@@ -1741,22 +1740,22 @@ const useCases = [
     category: 'communicatie',
     icon: '📢',
     stoplicht: 'groen',
-    tagline: 'Breed inzetbaar met minimale risico\'s',
-    samenvatting: 'AI voor interne berichten, nieuwsbrieven, aankondigingen en algemene HR-communicatie is een van de veiligste toepassingsgebieden,mits je geen gevoelige persoonsinformatie invoert.',
+    tagline: 'Veilig en breed inzetbaar',
+    samenvatting: 'AI voor interne berichten, nieuwsbrieven en aankondigingen is veilig. Voer geen namen of persoonlijke informatie in bij een externe tool.',
     watGoedKan: [
-      'Snel professionele berichten opstellen in de juiste tone of voice',
+      'Snel een professioneel bericht schrijven',
       'Lange informatie samenvatten voor medewerkers',
-      'Vertalingen en toegankelijke versies van beleidsteksten maken'
+      'Teksten vertalen of makkelijker maken'
     ],
     watLetjeOp: [
-      'Voer nooit persoonsgegevens van individuele medewerkers in bij externe tools',
-      'Controleer feitelijke informatie (data, percentages, regelgeving) altijd handmatig',
-      'Houd je organisatietoon consistent,AI schrijft generiek'
+      'Voer nooit persoonsgegevens in bij een externe tool',
+      'Check altijd feiten, cijfers en data handmatig',
+      'AI schrijft generiek — voeg altijd jouw organisatietoon toe'
     ],
     tips: [
-      'Gebruik AI voor eerste concept, voeg altijd menselijke toets toe',
-      'Maak berichten toegankelijk voor medewerkers met lager taalniveau',
-      'Sla geen gevoelige HR-informatie op in externe AI-systemen'
+      'Gebruik AI voor een eerste versie, laat een mens de check doen',
+      'Maak teksten begrijpelijk voor alle medewerkers',
+      'Sla geen gevoelige HR-info op in externe AI-systemen'
     ],
     dimensions: {
       aiact: {
@@ -1764,32 +1763,151 @@ const useCases = [
         label: 'Laag risico',
         sublabel: 'EU AI Act',
         icon: '⚖️',
-        tooltip: 'Interne communicatie schrijven is een lage-risico toepassing van AI.',
-        detail: 'Interne communicatie genereren valt niet onder de hoog-risico classificatie van de EU AI Act. Er is geen sprake van geautomatiseerde besluitvorming over personen. Transparantieverplichtingen (bijlage V) zijn van toepassing als de ontvangers niet weten dat teksten AI-gegenereerd zijn,maar intern is dit doorgaans geen issue.'
+        tooltip: 'Interne communicatie schrijven is laag-risico.',
+        detail: 'Je neemt geen beslissingen over personen. Geen zware regels van toepassing.'
       },
       avg: {
         level: 'laag',
-        label: 'Minimale persoonsdata',
+        label: 'Weinig persoonsgegevens',
         sublabel: 'AVG',
         icon: '🔒',
-        tooltip: 'Zolang je geen persoonsgegevens invoert bij een externe tool, zijn er nauwelijks AVG-risico\'s.',
-        detail: 'Als je alleen generieke teksten laat schrijven zonder persoonsgegevens, zijn er weinig AVG-aandachtspunten. Zorg wel dat je organisatie een verwerkersovereenkomst heeft met eventuele externe AI-tools die je gebruikt.'
+        tooltip: 'Weinig privacyrisico als je geen namen invoert.',
+        detail: 'Zolang je geen namen of persoonlijke info invoert, zijn er nauwelijks privacyrisico\'s. Zorg wel voor een privacyovereenkomst met externe AI-tools die je gebruikt.'
       },
       di: {
         level: 'laag',
-        label: 'Laag D&I-risico',
+        label: 'Kans voor inclusiviteit',
         sublabel: 'Diversiteit & Inclusie',
         icon: '🌍',
-        tooltip: 'Gebruik AI juist om communicatie inclusiever te maken voor diverse medewerkers.',
-        detail: 'AI kan hier juist positief bijdragen aan D&I: teksten toegankelijker maken voor medewerkers met een lagere taalvaardigheid, vertalen naar andere talen, of jargon vermijden. Let wel op dat je organisatiecultuur en waarden correct worden weerspiegeld.'
+        tooltip: 'Gebruik AI juist om teksten inclusiever te maken.',
+        detail: 'AI kan helpen om berichten begrijpelijker te maken voor medewerkers met een ander taalniveau. Dat is een pluspunt.'
       },
       praktijk: {
         level: 'positief',
         label: 'Sterk aanbevolen',
         sublabel: 'Praktijkcheck',
         icon: '🧭',
-        tooltip: 'Een van de meest waardevolle en minst risicovolle toepassingen in de HR-praktijk.',
-        detail: 'HR-teams besparen aanzienlijk tijd op het schrijven van nieuwsbrieven, aankondigingen en beleidsteksten. Kwaliteit en consistentie verbeteren. Grootste praktijkrisico: feitelijke fouten die niet worden gecheckt,controleer altijd data, namen en beleidsverwijzingen handmatig.'
+        tooltip: 'Veel tijdswinst, weinig risico.',
+        detail: 'HR-teams besparen veel tijd. Kwaliteit en consistentie verbeteren. Check altijd feiten en namen handmatig.'
+      }
+    }
+  },
+
+  {
+    id: 'onboarding-materiaal',
+    title: 'Onboarding materiaal maken',
+    category: 'communicatie',
+    icon: '🎉',
+    nieuw: true,
+    stoplicht: 'groen',
+    tagline: 'Veilig en veel tijdswinst',
+    samenvatting: 'AI helpt je snel een welkomstgids, checklist of introductieplan te maken. Er is geen persoonsdata nodig. Dit is een van de veiligste toepassingen van AI in HR.',
+    watGoedKan: [
+      'Welkomstgids schrijven voor nieuwe medewerkers',
+      'Checklist maken voor de eerste werkweek',
+      'Uitleg over regels, systemen en cultuur op papier zetten'
+    ],
+    watLetjeOp: [
+      'Voer geen namen of persoonsgegevens in bij een externe tool',
+      'Check feiten zoals werktijden, cao-regels en tools handmatig',
+      'Pas de tekst aan op jouw organisatie — AI schrijft generiek'
+    ],
+    tips: [
+      'Maak een losse prompt per onderdeel, bijv. "week 1" of "IT-systemen"',
+      'Vraag AI om de tekst simpel en vriendelijk te houden',
+      'Laat nieuwe medewerkers feedback geven op de gids'
+    ],
+    dimensions: {
+      aiact: {
+        level: 'laag',
+        label: 'Geen risico',
+        sublabel: 'EU AI Act',
+        icon: '⚖️',
+        tooltip: 'Geen beslissingen over personen, geen hoog-risico AI.',
+        detail: 'Je maakt alleen tekst zonder persoonsgegevens. Dit valt ver buiten de hoog-risico categorie van de EU AI Act.'
+      },
+      avg: {
+        level: 'laag',
+        label: 'Geen persoonsdata nodig',
+        sublabel: 'AVG',
+        icon: '🔒',
+        tooltip: 'Geen privacyrisico zolang je geen namen invoert.',
+        detail: 'Onboarding documenten bevatten geen persoonsgegevens. Geen AVG-risico als je de tool alleen voor tekst gebruikt.'
+      },
+      di: {
+        level: 'laag',
+        label: 'Kans voor inclusiviteit',
+        sublabel: 'Diversiteit & Inclusie',
+        icon: '🌍',
+        tooltip: 'Gebruik AI om de onboarding toegankelijker te maken.',
+        detail: 'AI kan helpen om de tekst begrijpelijker te maken voor medewerkers met een ander taalniveau of culturele achtergrond. Dat is een pluspunt.'
+      },
+      praktijk: {
+        level: 'positief',
+        label: 'Sterk aanbevolen',
+        sublabel: 'Praktijkcheck',
+        icon: '🧭',
+        tooltip: 'Bespaart veel tijd en verhoogt de kwaliteit.',
+        detail: 'HR-teams besparen uren werk. Een goede onboarding gids verhoogt de betrokkenheid van nieuwe medewerkers. Check altijd inhoud op feiten vóór gebruik.'
+      }
+    }
+  },
+  {
+    id: 'faq-medewerkers',
+    title: "FAQ voor medewerkers schrijven",
+    category: 'communicatie',
+    icon: '❓',
+    nieuw: true,
+    stoplicht: 'groen',
+    tagline: 'Veel tijdswinst, nul privacyrisico',
+    samenvatting: 'AI helpt je snel antwoorden te schrijven op veelgestelde HR-vragen. Denk aan vragen over verlof, salaris of arbeidsvoorwaarden. Er is geen persoonsdata nodig.',
+    watGoedKan: [
+      'Antwoorden schrijven op veelgestelde vragen over verlof en cao',
+      'Uitleg geven over arbeidsvoorwaarden en HR-processen',
+      'Een duidelijke en vriendelijke schrijfstijl aanhouden'
+    ],
+    watLetjeOp: [
+      'Voer geen persoonsgegevens in bij een externe tool',
+      'Check cao-regels en wettelijke info altijd handmatig',
+      'Laat een jurist meekijken bij juridische antwoorden'
+    ],
+    tips: [
+      'Begin met de 10 meest gestelde vragen in jouw organisatie',
+      'Vraag AI om de antwoorden kort en begrijpelijk te houden',
+      'Update de FAQ elk jaar op wijzigingen in cao of wetgeving'
+    ],
+    dimensions: {
+      aiact: {
+        level: 'laag',
+        label: 'Geen risico',
+        sublabel: 'EU AI Act',
+        icon: '⚖️',
+        tooltip: 'Geen beslissingen over personen, geen hoog-risico AI.',
+        detail: 'Een FAQ schrijven is generieke tekst. Geen persoonsgegevens, geen geautomatiseerde beslissingen. De EU AI Act is hier niet van toepassing.'
+      },
+      avg: {
+        level: 'laag',
+        label: 'Geen persoonsdata nodig',
+        sublabel: 'AVG',
+        icon: '🔒',
+        tooltip: 'Geen privacyrisico zolang je geen namen invoert.',
+        detail: 'FAQ-teksten bevatten geen persoonsgegevens. Zolang je geen namen of situaties van medewerkers invoert, is er geen AVG-risico.'
+      },
+      di: {
+        level: 'laag',
+        label: 'Kans voor duidelijkheid',
+        sublabel: 'Diversiteit & Inclusie',
+        icon: '🌍',
+        tooltip: 'Schrijf antwoorden die voor iedereen begrijpelijk zijn.',
+        detail: 'AI helpt om antwoorden eenvoudiger en inclusiever te schrijven. Vraag expliciet om B1-niveau taal zodat alle medewerkers de antwoorden begrijpen.'
+      },
+      praktijk: {
+        level: 'positief',
+        label: 'Sterk aanbevolen',
+        sublabel: 'Praktijkcheck',
+        icon: '🧭',
+        tooltip: 'Snel, veilig en direct bruikbaar.',
+        detail: 'HR-teams besparen veel tijd bij het schrijven van FAQ\'s. Het resultaat is consistenter en professioneler dan handmatig schrijven. Controleer feiten altijd zelf.'
       }
     }
   },
@@ -1801,55 +1919,55 @@ const useCases = [
     category: 'beoordeling',
     icon: '🎙️',
     stoplicht: 'oranje',
-    tagline: 'Nuttig als geheugensteun,niet als input voor beslissingen',
-    samenvatting: 'AI kan gespreksnotities of opnames samenvatten. Risico ontstaat als de samenvatting input wordt voor beoordelingen of HR-beslissingen,dan valt het onder hoog-risico AI.',
+    tagline: 'Handig als geheugensteun, niet als beoordelingsbasis',
+    samenvatting: 'AI kan gespreksnotities samenvatten. Wordt de samenvatting gebruikt voor een beoordeling? Dan zijn er strengere regels van toepassing.',
     watGoedKan: [
-      'Gespreksnotities snel structureren en samenvatten',
-      'Actiepunten en afspraken gestructureerd vastleggen',
-      'Terugkijken op eerdere gesprekken vergemakkelijken'
+      'Notities snel structureren en samenvatten',
+      'Afspraken en actiepunten vastleggen',
+      'Eerdere gesprekken makkelijk terugvinden'
     ],
     watLetjeOp: [
-      'Een samenvatting die input wordt voor een beoordeling = hoog-risico AI-toepassing',
-      'Gespreksdata kan gevoelige informatie bevatten (gezondheid, privéomstandigheden)',
-      'Voer opnames of transcripties nooit in bij externe AI-tools zonder verwerkersovereenkomst'
+      'Gebruikt voor een beoordeling? Dan is het hoog-risico AI',
+      'Gesprekken kunnen gevoelige info bevatten (gezondheid, privé)',
+      'Voer opnames niet in bij een externe AI-tool'
     ],
     tips: [
-      'Gebruik AI als geheugensteun voor de manager, niet als officieel beoordelingsdocument',
-      'Laat medewerkers altijd de samenvatting lezen en corrigeren',
-      'Gebruik een intern systeem met duidelijke data-governance'
+      'Gebruik alleen als geheugensteun, niet als officieel document',
+      'Laat de medewerker de samenvatting lezen en aanpassen',
+      'Gebruik een intern systeem met duidelijke regels'
     ],
     dimensions: {
       aiact: {
         level: 'gemiddeld',
-        label: 'Context-afhankelijk',
+        label: 'Hangt af van het gebruik',
         sublabel: 'EU AI Act',
         icon: '⚖️',
-        tooltip: 'Als de samenvatting input wordt voor HR-beslissingen, valt het onder hoog-risico (Bijlage III).',
-        detail: 'Puur samenvatten voor eigen geheugensteun valt buiten hoog-risico. Maar zodra de AI-samenvatting input wordt voor een beoordelingsbeslissing, promotie, of ontslagprocedure, valt het onder Bijlage III van de EU AI Act als hoog-risico systeem. De grens is dunner dan het lijkt.'
+        tooltip: 'Alleen samenvatten: laag risico. Als input voor beoordeling: hoog-risico.',
+        detail: 'Wordt de samenvatting gebruikt voor een promotie, salaris of ontslag? Dan valt het onder hoog-risico AI en gelden strenge regels.'
       },
       avg: {
         level: 'hoog',
-        label: 'Gevoelige persoonsdata',
+        label: 'Gevoelige persoonsgegevens',
         sublabel: 'AVG',
         icon: '🔒',
-        tooltip: 'Gespreksinhoud bevat persoonsgegevens en mogelijk bijzondere data (gezondheid, privé).',
-        detail: 'Functioneringsgesprekken bevatten persoonsgegevens van de medewerker en kunnen onbedoeld bijzondere persoonsgegevens bevatten (gezondheidsklachten, mantelzorgsituatie, geloofsovertuigingen). Verwerk nooit opnames of transcripties via externe AI-tools zonder verwerkersovereenkomst. Informeer medewerkers als AI-tools worden ingezet.'
+        tooltip: 'Gesprekken bevatten gevoelige info over de medewerker.',
+        detail: 'Gesprekken kunnen gaan over gezondheid, privéomstandigheden of geloof. Gebruik nooit een externe AI-tool voor opnames of transcripties zonder privacyovereenkomst.'
       },
       di: {
         level: 'gemiddeld',
-        label: 'Taalpatroon-risico',
+        label: 'Let op ongelijke beoordelingstaal',
         sublabel: 'Diversiteit & Inclusie',
         icon: '🌍',
-        tooltip: 'Beoordelingstaal is aantoonbaar gegenderd. AI versterkt deze patronen in samenvattingen.',
-        detail: 'Onderzoek toont aan dat managers vrouwen in beoordelingen vaker beoordelen op persoonlijkheid ("moet assertiever zijn") en mannen op prestaties ("sterke analytische vaardigheden"). AI leert van en herproduceert deze patronen. Samenvattingen kunnen daardoor structureel ongelijke beelden versterken.'
+        tooltip: 'Managers beoordelen vrouwen en mannen anders. AI versterkt dit.',
+        detail: 'Onderzoek toont dat managers vrouwen vaker beoordelen op gedrag ("moet assertiever zijn") en mannen op prestaties. AI leert van deze patronen en versterkt ze.'
       },
       praktijk: {
         level: 'gemengd',
-        label: 'Gemengd',
+        label: 'Handig, maar wees duidelijk',
         sublabel: 'Praktijkcheck',
         icon: '🧭',
-        tooltip: 'Waardevol als praktisch hulpmiddel, maar grenzen zijn in de praktijk onduidelijk.',
-        detail: 'In de praktijk is de grens tussen "geheugensteun" en "beoordelingsinput" vaag. Managers gebruiken samenvattingen in hun voorbereiding op beoordelingsgesprekken, wat ze de facto tot input voor beslissingen maakt. Wees hierover transparant in je beleid.'
+        tooltip: 'De grens tussen "notitie" en "beoordelingsinput" is in de praktijk vaag.',
+        detail: 'Managers gebruiken de samenvatting snel als basis voor het beoordelingsgesprek. Dan is het geen notitie meer, maar input. Wees hier duidelijk over in je beleid.'
       }
     }
   },
@@ -1859,55 +1977,55 @@ const useCases = [
     category: 'beoordeling',
     icon: '📊',
     stoplicht: 'oranje',
-    tagline: 'Ondersteuning ja,leidend oordeel nee',
-    samenvatting: 'AI kan helpen bij het structureren van prestatiebeoordelingen. Maar zodra AI een inhoudelijk oordeel geeft over iemands functioneren, valt het onder hoog-risico en is menselijk toezicht verplicht.',
+    tagline: 'Structuur ja, inhoudelijk oordeel nee',
+    samenvatting: 'AI kan helpen met de opbouw en formulering van beoordelingen. Maar het inhoudelijke oordeel moet altijd van de manager komen — nooit van de AI.',
     watGoedKan: [
-      'Structuur en format van beoordelingsformulieren opstellen',
-      'Concrete feedbackzinnen formuleren op basis van door manager aangeleverde input',
-      'Consistentie in taal tussen verschillende beoordelingen bewaken'
+      'Structuur en format van beoordelingsformulieren',
+      'Feedbackzinnen formuleren op basis van input van de manager',
+      'Toon consistent houden tussen beoordelingen'
     ],
     watLetjeOp: [
-      'AI die zelf een oordeel velt over functioneren = hoog-risico AI',
-      'Beoordelingstaal is structureel ongelijk voor vrouwen, mensen van kleur en neurodivergente medewerkers',
-      'Medewerkers hebben recht op menselijke uitleg bij negatieve beoordelingen'
+      'AI die zelf een oordeel geeft over functioneren is hoog-risico',
+      'Beoordelingstaal is structureel ongelijk voor vrouwen en mensen van kleur',
+      'Medewerkers hebben recht op uitleg bij een negatieve beoordeling'
     ],
     tips: [
-      'Gebruik AI alleen voor de vorm, nooit voor de inhoud van het oordeel',
-      'Train managers bewust op inclusieve en gedragsgerichte beoordelingstaal',
-      'Implementeer een D&I-check als vast onderdeel van het beoordelingsproces'
+      'Gebruik AI alleen voor de vorm, nooit voor het oordeel',
+      'Train managers op eerlijke en concrete taal',
+      'Doe een D&I-check als vast onderdeel van het proces'
     ],
     dimensions: {
       aiact: {
         level: 'gemiddeld',
-        label: 'Context-afhankelijk',
+        label: 'Hangt af van het gebruik',
         sublabel: 'EU AI Act',
         icon: '⚖️',
-        tooltip: 'Formatteren: laag risico. Inhoudelijk oordeel genereren: hoog-risico (Bijlage III).',
-        detail: 'Als AI alleen helpt bij opmaak en structuur, valt het buiten hoog-risico. Zodra AI een inhoudelijk functioneringsoordeel genereert dat input wordt voor promotie, salaris of ontslag, valt het onder Bijlage III punt 4 van de EU AI Act,met alle bijbehorende verplichtingen.'
+        tooltip: 'Format maken: laag risico. AI-oordeel over functioneren: hoog-risico.',
+        detail: 'Geeft AI een inhoudelijk oordeel dat gebruikt wordt voor promotie, salaris of ontslag? Dan is het hoog-risico AI met strenge verplichtingen.'
       },
       avg: {
         level: 'hoog',
-        label: 'Bijzondere persoonsdata mogelijk',
+        label: 'Gevoelige persoonsgegevens',
         sublabel: 'AVG',
         icon: '🔒',
-        tooltip: 'Beoordelingsdata is gevoelig. Verwerk nooit individuele data bij externe AI-tools.',
-        detail: 'Prestatiebeoordelingen bevatten gevoelige persoonsgegevens. Als de beoordeling wordt ingevoerd in een externe AI-tool, is een verwerkersovereenkomst verplicht. Medewerkers hebben inzagerecht in hun beoordelingsgegevens en recht op correctie.'
+        tooltip: 'Beoordelingsdata is gevoelig. Gebruik geen externe tools.',
+        detail: 'Beoordelingen bevatten gevoelige info. Medewerkers hebben recht om hun gegevens in te zien en te corrigeren.'
       },
       di: {
         level: 'hoog',
-        label: 'Structurele taalongelijkheid',
+        label: 'Ongelijke taal',
         sublabel: 'Diversiteit & Inclusie',
         icon: '🌍',
-        tooltip: 'AI versterkt bewezen ongelijkheid in beoordelingstaal op basis van gender en achtergrond.',
-        detail: 'Stanford-onderzoek (Correll et al.) toont aan dat vrouwen in beoordelingen 2x zo vaak vage en subjectieve feedback krijgen als mannen. AI dat leert van historische beoordelingen versterkt dit patroon. Laat AI-gegenereerde beoordelingsteksten altijd screenen op bias-patronen vóór gebruik.'
+        tooltip: 'AI versterkt bewezen ongelijkheid in beoordelingstaal.',
+        detail: 'Onderzoek toont dat vrouwen vager en subjectiever worden beoordeeld dan mannen. AI dat hiervan leert, versterkt dit patroon. Laat AI-teksten altijd controleren op bias.'
       },
       praktijk: {
         level: 'gemengd',
-        label: 'Nuttig met grenzen',
+        label: 'Nuttig met duidelijke grenzen',
         sublabel: 'Praktijkcheck',
         icon: '🧭',
-        tooltip: 'AI bespaart tijd bij format en structuur, maar de inhoud moet altijd van de manager komen.',
-        detail: 'Managers waarderen ondersteuning bij het formuleren van feedback. Grootste risico in de praktijk: managers geven AI te weinig input en accepteren het AI-oordeel als eigen oordeel, zonder kritische reflectie op de inhoud.'
+        tooltip: 'AI helpt bij de vorm, maar inhoud moet altijd van de manager komen.',
+        detail: 'Managers geven AI soms te weinig input en nemen het oordeel zonder nadenken over. Dat is het grootste risico.'
       }
     }
   },
@@ -1917,21 +2035,21 @@ const useCases = [
     category: 'beoordeling',
     icon: '🚀',
     stoplicht: 'rood',
-    tagline: 'Hoog-risico,menselijk oordeel is altijd verplicht',
-    samenvatting: 'AI die input levert voor promotie- of doorstroombeslissingen valt direct onder hoog-risico AI. De beslissing heeft significante gevolgen voor de medewerker en mag nooit geautomatiseerd worden.',
+    tagline: 'Hoog-risico — een mens beslist altijd',
+    samenvatting: 'AI mag input geven voor een promotie, maar de beslissing zelf moet altijd door een mens worden genomen. Dit is wettelijk verplicht.',
     watGoedKan: [
-      'Beschikbare competentie-informatie structureren voor de beslisser',
-      'Objectieve criteria uitschrijven voor promotie-assessment'
+      'Competentie-informatie overzichtelijk maken voor de beslisser',
+      'Criteria voor promotie uitschrijven'
     ],
     watLetjeOp: [
-      'Promotie-AI reproduceert de homogeniteit van het huidige management',
-      'Vrouwen en mensen van kleur worden structureel lager gescoord op "leiderschapspotentieel"',
-      'De beslisser moet altijd een menselijk en gedocumenteerd oordeel kunnen geven'
+      'AI kiest wie lijkt op het huidige management — dat is niet eerlijk',
+      'Vrouwen en mensen van kleur worden vaker lager gescoord op "leiderschap"',
+      'Er moet altijd een gedocumenteerd menselijk oordeel zijn'
     ],
     tips: [
-      'Gebruik gestandaardiseerde en transparante promotiecriteria,ongeacht AI',
-      'Laat promotie-beslissingen altijd door minimaal twee mensen beoordelen',
-      'Monitor actief of promotiepatronen diverse groepen evenredig bereiken'
+      'Gebruik duidelijke en transparante promotiecriteria',
+      'Laat minimaal twee mensen onafhankelijk beoordelen',
+      'Monitor of promoties eerlijk verdeeld zijn over alle groepen'
     ],
     dimensions: {
       aiact: {
@@ -1939,32 +2057,32 @@ const useCases = [
         label: 'Hoog-risico AI',
         sublabel: 'EU AI Act',
         icon: '⚖️',
-        tooltip: 'Promotie valt expliciet onder hoog-risico AI (Bijlage III punt 4: bevordering van medewerkers).',
-        detail: 'De EU AI Act noemt bevordering van medewerkers expliciet als hoog-risico toepassing (Bijlage III, punt 4). Dit brengt alle bijbehorende verplichtingen met zich mee: risicoanalyse, technische documentatie, menselijk toezicht, en het recht van de betrokkene op uitleg en menselijke beoordeling.'
+        tooltip: 'Promotie is officieel hoog-risico AI.',
+        detail: 'De wet noemt promotie van medewerkers expliciet als hoog-risico. Je bent verplicht tot toezicht, documentatie en het recht op uitleg.'
       },
       avg: {
         level: 'hoog',
-        label: 'Significante beslissing',
+        label: 'Grote gevolgen voor de medewerker',
         sublabel: 'AVG',
         icon: '🔒',
-        tooltip: 'Promotie heeft significant gevolg voor de medewerker,AVG art. 22 is van toepassing.',
-        detail: 'Een promotie-beslissing heeft significante gevolgen (salaris, functie, verantwoordelijkheden). AVG artikel 22 verbiedt dit volledig te automatiseren. De medewerker heeft recht op: menselijke tussenkomst, uitleg van de beslissingslogica, en de mogelijkheid om bezwaar te maken.'
+        tooltip: 'Een promotie heeft grote gevolgen. Volledig automatiseren mag niet.',
+        detail: 'De medewerker heeft recht op: menselijke tussenkomst, uitleg over de beslissing, en de mogelijkheid om bezwaar te maken.'
       },
       di: {
         level: 'hoog',
-        label: 'Homogeniteitsrisico',
+        label: 'Risico op homogeniteit',
         sublabel: 'Diversiteit & Inclusie',
         icon: '🌍',
-        tooltip: 'AI-promotiesystemen zoeken naar kandidaten die lijken op het huidige management.',
-        detail: 'Als AI leert van wie historisch werd bevorderd, zoekt het naar profijlen die lijken op het bestaande management. Aangezien dit management in veel organisaties overwegend wit en mannelijk is, worden vrouwen, mensen van kleur en mensen met een niet-traditionele achtergrond structureel benadeeld. Dit is een directe bedreiging voor diversiteit op managementniveau.'
+        tooltip: 'AI kiest wie lijkt op het huidige management.',
+        detail: 'Als AI leert van wie eerder werd gepromoveerd, en dat waren vooral witte mannen, kiest AI opnieuw voor witte mannen. Dit is een direct risico voor diversiteit.'
       },
       praktijk: {
         level: 'voorzichtig',
-        label: 'Niet aanbevolen als leidend',
+        label: 'Niet leidend inzetten',
         sublabel: 'Praktijkcheck',
         icon: '🧭',
-        tooltip: 'AI als informatieondersteuning kan, maar als leidend instrument in promotie niet aanbevolen.',
-        detail: 'In de praktijk wordt AI-ondersteuning bij promotie snel leidend. Beslissers vertrouwen op data-gedreven aanbevelingen zonder de onderliggende logica te begrijpen. Dat ondermijnt zowel rechtvaardigheid als juridische verdedigbaarheid bij bezwaar.'
+        tooltip: 'AI als hulp kan, als leidend instrument niet.',
+        detail: 'Beslissers vertrouwen snel op data-gedreven aanbevelingen zonder te begrijpen hoe ze tot stand komen. Dat is juridisch en ethisch riskant.'
       }
     }
   },
@@ -1974,22 +2092,22 @@ const useCases = [
     category: 'beoordeling',
     icon: '🎓',
     stoplicht: 'groen',
-    tagline: 'Kansrijke toepassing,met aandacht voor gelijke kansen',
-    samenvatting: 'AI kan medewerkers helpen passende trainingen en ontwikkeltrajecten te vinden. Relatief veilig, maar pas op voor ongelijke aanbevelingen op basis van historische leerpatronen.',
+    tagline: 'Goede toepassing, let op gelijke kansen',
+    samenvatting: 'AI kan medewerkers helpen passende trainingen te vinden. Relatief veilig — maar check of alle groepen gelijke aanbevelingen krijgen.',
     watGoedKan: [
-      'Passende trainingen en cursussen aanbevelen op basis van functie en doelen',
-      'Leertrajecten personaliseren en aanbod inzichtelijk maken',
-      'Kenniskloven in teams of functies in kaart brengen'
+      'Passende trainingen aanbevelen per functie en doel',
+      'Leertrajecten afstemmen op de medewerker',
+      'Kennisgaten in teams zichtbaar maken'
     ],
     watLetjeOp: [
-      'Als AI leert van wie eerder trainingen deed, kan het dezelfde groepen benadelen',
-      'Zorg dat aanbevelingen gelijke kansen geven aan alle medewerkers',
-      'Monitor of bepaalde groepen structureel minder ontwikkeladvies ontvangen'
+      'AI leert van wie eerder trainingen deed — dat kan ongelijk zijn',
+      'Check of alle groepen evenveel aanbevelingen krijgen',
+      'Zorg dat medewerkers altijd kunnen kiezen, ook zonder AI'
     ],
     tips: [
       'Geef medewerkers altijd keuzevrijheid naast het AI-advies',
-      'Monitor aanbevelingen per doelgroep op gelijkheid',
-      'Koppel AI-leeradvies aan menselijk gesprek over ambities'
+      'Monitor aanbevelingen per groep op gelijkheid',
+      'Koppel leeradvies aan een persoonlijk gesprek'
     ],
     dimensions: {
       aiact: {
@@ -1997,32 +2115,32 @@ const useCases = [
         label: 'Laag risico',
         sublabel: 'EU AI Act',
         icon: '⚖️',
-        tooltip: 'Leeradvies valt doorgaans buiten de hoog-risico categorieën van de EU AI Act.',
-        detail: 'Aanbevelingssystemen voor leren en ontwikkeling vallen niet standaard onder hoog-risico AI, tenzij de aanbevelingen directe gevolgen hebben voor arbeidsvoorwaarden of doorstroom. Zorg voor transparantie over hoe aanbevelingen tot stand komen.'
+        tooltip: 'Leeradvies is geen hoog-risico toepassing.',
+        detail: 'Aanbevelingen voor trainingen zijn laag-risico, tenzij ze direct gevolgen hebben voor doorstroom of salaris.'
       },
       avg: {
         level: 'gemiddeld',
-        label: 'Persoonsprofielen',
+        label: 'Medewerkerprofielen',
         sublabel: 'AVG',
         icon: '🔒',
-        tooltip: 'Leeradvies-AI verwerkt medewerkerprofielen. Zorg voor transparantie en inzagerecht.',
-        detail: 'AI-leeradviessystemen bouwen profielen op van medewerkers op basis van functies, eerdere trainingen en gedrag. Dit zijn persoonsgegevens. Medewerkers moeten weten dat dit gebeurt, welke data wordt gebruikt, en het recht hebben om hun profiel in te zien en te corrigeren.'
+        tooltip: 'AI bouwt een profiel op van de medewerker.',
+        detail: 'Medewerkers moeten weten dat dit gebeurt, welke data gebruikt wordt, en het recht hebben om hun profiel in te zien.'
       },
       di: {
         level: 'gemiddeld',
         label: 'Monitor op gelijkheid',
         sublabel: 'Diversiteit & Inclusie',
         icon: '🌍',
-        tooltip: 'Ongelijke leerpatronen uit het verleden kunnen ongelijke aanbevelingen voor de toekomst geven.',
-        detail: 'Als AI leert van wie in het verleden welke trainingen volgde, en bepaalde groepen (vrouwen in technische functies, medewerkers met een migratieachtergrond) historisch minder kansen kregen, zal het systeem dit patroon voortzetten. Monitor actief of aanbevelingen gelijkmatig verdeeld zijn over alle doelgroepen.'
+        tooltip: 'Ongelijke leerpatronen uit het verleden herhalen zich in de aanbevelingen.',
+        detail: 'Als bepaalde groepen vroeger minder kansen kregen, krijgen ze nu minder aanbevelingen. Check actief of dit gebeurt.'
       },
       praktijk: {
         level: 'positief',
-        label: 'Aanbevolen met monitoring',
+        label: 'Aanbevolen',
         sublabel: 'Praktijkcheck',
         icon: '🧭',
-        tooltip: 'Een van de kansrijkste positieve toepassingen van AI in HR,mits goed gemonitord.',
-        detail: 'L&D-teams zien grote voordelen van AI-leeradvies: medewerkers vinden sneller passende content, de betrokkenheid bij ontwikkeling neemt toe. Grootste risico in de praktijk: aanbevelingen worden niet gemonitord op gelijkheid, waardoor ongelijkheid onzichtbaar toeneemt.'
+        tooltip: 'Een van de beste positieve toepassingen van AI in HR.',
+        detail: 'Medewerkers vinden sneller passende trainingen. Betrokkenheid bij leren neemt toe. Monitor wel actief op gelijke verdeling.'
       }
     }
   },
@@ -2034,22 +2152,22 @@ const useCases = [
     category: 'beleid',
     icon: '📋',
     stoplicht: 'groen',
-    tagline: 'Breed toepasbaar,inhoudelijke controle is key',
-    samenvatting: 'AI helpt efficiënt beleidsdocumenten, handboeken en procedures opstellen. De inhoud moet altijd worden gevalideerd door HR en juridisch, want AI heeft geen actuele kennis van jouw cao of wetgeving.',
+    tagline: 'Breed inzetbaar, laat inhoud controleren',
+    samenvatting: 'AI helpt snel beleidsdocumenten en handboeken schrijven. Laat de inhoud altijd controleren door HR of een jurist — AI kent jouw cao niet.',
     watGoedKan: [
-      'Eerste concept van beleidsnotities, handboeken en procedures',
-      'Bestaande beleidsteksten toegankelijker en inclusiever maken',
-      'Structuur en consistentie bewaken in grote documentensets'
+      'Snel een eerste versie van beleid of procedures schrijven',
+      'Bestaande teksten toegankelijker maken',
+      'Structuur bewaken in grote documentensets'
     ],
     watLetjeOp: [
-      'AI heeft geen actuele kennis van jouw specifieke cao of recente wetgeving',
-      'Laat elk beleidsdocument valideren door HR of juridisch adviseur',
-      'Zorg dat beleid inclusief en toegankelijk is voor alle medewerkers'
+      'AI kent jouw cao of recente wetgeving niet',
+      'Laat elk document controleren door HR of juridisch',
+      'Zorg dat beleid begrijpelijk is voor alle medewerkers'
     ],
     tips: [
-      'Gebruik AI voor de vorm, laat inhoud valideren door experts',
-      'Vraag AI expliciet om te controleren op inclusieve taal',
-      'Houd een versiebeheer bij van AI-gegenereerde beleidsdocumenten'
+      'Gebruik AI voor de vorm, laat experts de inhoud checken',
+      'Vraag AI om inclusieve taal te gebruiken',
+      'Houd bij welke documenten met AI zijn gemaakt'
     ],
     dimensions: {
       aiact: {
@@ -2057,32 +2175,32 @@ const useCases = [
         label: 'Laag risico',
         sublabel: 'EU AI Act',
         icon: '⚖️',
-        tooltip: 'Beleidsdocumenten schrijven is een lage-risico AI-toepassing.',
-        detail: 'Het schrijven van beleidsdocumenten valt niet onder hoog-risico AI. Er is geen directe besluitvorming over individuen. Transparantieverplichtingen (bijlage V) kunnen gelden als de ontvanger niet weet dat teksten AI-gegenereerd zijn,maar intern is dit doorgaans geen issue.'
+        tooltip: 'Beleidsdocumenten schrijven is laag-risico.',
+        detail: 'Je neemt geen beslissingen over personen. Geen zware regels van toepassing.'
       },
       avg: {
         level: 'laag',
-        label: 'Geen persoonsdata nodig',
+        label: 'Geen persoonsgegevens nodig',
         sublabel: 'AVG',
         icon: '🔒',
-        tooltip: 'Beleidsdocumenten bevatten doorgaans geen persoonsgegevens. AVG is hier nauwelijks relevant.',
-        detail: 'Bij het opstellen van algemene beleidsdocumenten worden doorgaans geen persoonsgegevens verwerkt. AVG is hier nauwelijks van toepassing. Let op als je bestaande documenten met persoonsinformatie als input gebruikt voor de AI.'
+        tooltip: 'Beleidsdocumenten bevatten geen persoonsgegevens.',
+        detail: 'Weinig privacyrisico. Let op als je bestaande documenten met persoonsinfo als input gebruikt.'
       },
       di: {
         level: 'laag',
-        label: 'D&I-kans',
+        label: 'Kans voor inclusiviteit',
         sublabel: 'Diversiteit & Inclusie',
         icon: '🌍',
-        tooltip: 'Gebruik AI juist om beleid inclusiever en toegankelijker te maken voor diverse medewerkers.',
-        detail: 'AI kan hier juist positief bijdragen: beleidsteksten inclusiever formuleren, jargon vermijden, en toegankelijk maken voor medewerkers met verschillende taalniveaus. Vraag de AI expliciet om een D&I-check toe te passen op de output.'
+        tooltip: 'Gebruik AI juist om beleid inclusiever te schrijven.',
+        detail: 'AI kan beleidsteksten begrijpelijker en inclusiever maken. Vraag dit expliciet.'
       },
       praktijk: {
         level: 'positief',
-        label: 'Breed aanbevolen',
+        label: 'Sterk aanbevolen',
         sublabel: 'Praktijkcheck',
         icon: '🧭',
-        tooltip: 'HR-teams besparen significant tijd op het opstellen en onderhouden van beleidsdocumenten.',
-        detail: 'Een van de meest praktische toepassingen van AI voor HR: minder tijd aan schrijfwerk, meer consistentie, en betere leesbaarheid. Aandachtspunt: beleidsdocumenten worden soms klakkeloos overgenomen zonder inhoudelijke validatie. Bouw een validatiestap in als standaardonderdeel van het proces.'
+        tooltip: 'HR besparen veel tijd op schrijfwerk.',
+        detail: 'Minder tijd aan schrijven, betere kwaliteit. Bouw altijd een validatiestap in — AI-teksten worden soms zonder check overgenomen.'
       }
     }
   },
@@ -2092,55 +2210,55 @@ const useCases = [
     category: 'beleid',
     icon: '💶',
     stoplicht: 'oranje',
-    tagline: 'Krachtig instrument,risico op inbakken van loonkloof',
-    samenvatting: 'AI kan helpen bij salarisanalyses en beloningsadvies. Maar als het model leert van historische data, versterkt het de bestaande loonkloof in plaats van die te verkleinen.',
+    tagline: 'Krachtig instrument, risico op inbakken loonkloof',
+    samenvatting: 'AI kan helpen bij salarisanalyses. Maar als het model leert van historische data, versterkt het de loonkloof in plaats van die te verkleinen.',
     watGoedKan: [
-      'Marktconformiteit van salarissen analyseren en benchmarken',
-      'Interne salarisstructuren inzichtelijk maken en vergelijken',
-      'Pay equity analyses uitvoeren om ongelijkheid te detecteren'
+      'Marktconformiteit van salarissen vergelijken',
+      'Salarisstructuren inzichtelijk maken',
+      'Loonkloof binnen de organisatie opsporen'
     ],
     watLetjeOp: [
-      'Historische salarisdata bevat de loonkloof,AI leert hiervan en bestendigt die',
-      'Vrouwen verdienen gemiddeld 13% minder dan mannen (CBS, 2024),zonder correctie bakt AI dit in',
-      'Salarisadvies met significante gevolgen valt onder hoog-risico AI (Bijlage III)'
+      'Historische salarisdata bevat de loonkloof — AI leert die en houdt die in stand',
+      'Vrouwen verdienen gemiddeld 13% minder (CBS, 2024)',
+      'Salarisadvies met directe gevolgen is hoog-risico AI'
     ],
     tips: [
-      'Gebruik AI voor pay equity detectie,dat is een positieve toepassing',
-      'Corrigeer expliciet voor structurele ongelijkheid in trainingsdata',
-      'Laat salarisadvies altijd valideren door een HR-adviseur of arbeidsrechtjurist'
+      'Gebruik AI juist om de loonkloof op te sporen',
+      'Corrigeer bewust voor historische ongelijkheid',
+      'Laat salarisadvies altijd valideren door een HR-adviseur'
     ],
     dimensions: {
       aiact: {
         level: 'gemiddeld',
-        label: 'Context-afhankelijk',
+        label: 'Hangt af van het gebruik',
         sublabel: 'EU AI Act',
         icon: '⚖️',
-        tooltip: 'Analyses: laag risico. Salarisadvies met directe gevolgen: hoog-risico (Bijlage III).',
-        detail: 'Puur analytisch gebruik (marktbenchmark, overzichten) valt buiten hoog-risico. Zodra AI-output direct input wordt voor individuele salarisvaststellingen of beloningsbeslissingen, valt het onder Bijlage III punt 4 van de EU AI Act als hoog-risico systeem.'
+        tooltip: 'Analyses maken: laag risico. Salarisadvies met directe gevolgen: hoog-risico.',
+        detail: 'Wordt AI-output direct gebruikt voor individuele salarisbesluiten? Dan is het hoog-risico AI.'
       },
       avg: {
         level: 'hoog',
-        label: 'Gevoelige persoonsdata',
+        label: 'Gevoelige persoonsgegevens',
         sublabel: 'AVG',
         icon: '🔒',
-        tooltip: 'Salarisgegevens zijn gevoelige persoonsgegevens. Verwerk ze nooit bij externe tools zonder verwerkersovereenkomst.',
-        detail: 'Salarisgegevens zijn financiële persoonsgegevens. Verwerk individuele salarisdata nooit bij externe AI-tools (zoals ChatGPT) zonder verwerkersovereenkomst. Gebruik geanonimiseerde of geaggregeerde data voor analyses. Medewerkers hebben recht op inzage in hoe hun salarisdata wordt verwerkt.'
+        tooltip: 'Salarisgegevens zijn gevoelig. Gebruik geen externe tools.',
+        detail: 'Voer individuele salarisdata nooit in bij een externe AI-tool zonder privacyovereenkomst. Gebruik alleen anonieme of samengevatte data voor analyses.'
       },
       di: {
         level: 'hoog',
-        label: 'Loonkloof-risico',
+        label: 'Risico op loonkloof',
         sublabel: 'Diversiteit & Inclusie',
         icon: '🌍',
-        tooltip: 'Salarisdata bevat de loonkloof. AI die hiervan leert bestendigt ongelijkheid.',
-        detail: 'De Nederlandse loonkloof bedraagt gemiddeld 13% (CBS, 2024). Als AI salarisadvies baseert op marktdata en historische organisatiedata, leert het dat vrouwen, mensen met een migratieachtergrond en mensen met een beperking minder verdienen,en geeft het lagere adviezen voor deze groepen. Gebruik AI juist als instrument om pay equity te detecteren en te corrigeren, niet om bestaande ongelijkheid te institutionaliseren.'
+        tooltip: 'AI die van historische salarisdata leert, versterkt de loonkloof.',
+        detail: 'De loonkloof in Nederland is 13% (CBS, 2024). Als AI hiervan leert, adviseert het lagere salarissen voor vrouwen en mensen met een migratieachtergrond. Gebruik AI juist om dit op te sporen en te corrigeren.'
       },
       praktijk: {
         level: 'gemengd',
-        label: 'Tweezijdig instrument',
+        label: 'Kan goed of slecht uitpakken',
         sublabel: 'Praktijkcheck',
         icon: '🧭',
-        tooltip: 'AI kan de loonkloof vergroten of verkleinen,afhankelijk van hoe je het gebruikt.',
-        detail: 'In de praktijk zien we twee toepassingen: AI als detector van pay equity-problemen (sterk aanbevolen) en AI als generator van salarisadvies op basis van historische data (risicovol). Het eerste gebruik is waardevol en veilig. Het tweede vereist expliciete correctie voor structurele ongelijkheid.'
+        tooltip: 'AI kan de loonkloof groter of kleiner maken — afhankelijk van hoe je het gebruikt.',
+        detail: 'Als detector van loonongelijkheid: goed gebruik. Als generator van salarisadvies op basis van historische data: risicovol. Wees bewust van het verschil.'
       }
     }
   },
@@ -2152,22 +2270,22 @@ const useCases = [
     category: 'verzuim',
     icon: '📉',
     stoplicht: 'rood',
-    tagline: 'Gezondheidsdata = zwaarste AVG-categorie',
-    samenvatting: 'Ziekteverzuimdata bevat gezondheidsgegevens,de zwaarste categorie onder de AVG. Invoeren bij externe AI-tools is vrijwel altijd verboden zonder expliciete wettelijke grondslag.',
+    tagline: 'Gezondheidsdata is de gevoeligste categorie',
+    samenvatting: 'Gezondheidsgegevens zijn extra beschermd door de wet. Individuele verzuimdata invoeren bij externe AI-tools is vrijwel altijd verboden.',
     watGoedKan: [
-      'Geanonimiseerde verzuimtrends op teamniveau inzichtelijk maken',
-      'Seizoenspatronen in verzuim detecteren op organisatieniveau',
-      'Kosten en impact van verzuim kwantificeren voor beleid'
+      'Anonieme verzuimtrends op teamniveau zichtbaar maken',
+      'Seizoenspatronen opsporen op organisatieniveau',
+      'Kosten van verzuim berekenen voor beleid'
     ],
     watLetjeOp: [
-      'Gezondheidsdata is bijzondere persoonsdata (AVG art. 9),verwerking is zwaar gereguleerd',
+      'Gezondheidsdata is extra beschermd (AVG art. 9) — verwerking is streng geregeld',
       'Individueel verzuim invoeren bij externe AI-tools is vrijwel altijd verboden',
-      'Voorspellende modellen die "verzuimrisico" per medewerker schatten zijn hoog-risico AI'
+      'Voorspellen wie gaat verzuimen per medewerker is hoog-risico AI'
     ],
     tips: [
-      'Gebruik alleen geanonimiseerde en geaggregeerde data voor AI-analyses',
-      'Voorspellende verzuimmodellen op individuniveau: altijd juridisch advies inwinnen',
-      'Zorg voor een verwerkersovereenkomst bij elke externe tool die je gebruikt'
+      'Gebruik alleen anonieme en samengevatte data',
+      'Voorspellende modellen per medewerker? Vraag eerst juridisch advies',
+      'Zorg voor een privacyovereenkomst bij elke externe tool'
     ],
     dimensions: {
       aiact: {
@@ -2175,32 +2293,32 @@ const useCases = [
         label: 'Hoog-risico AI',
         sublabel: 'EU AI Act',
         icon: '⚖️',
-        tooltip: 'Voorspellende verzuimmodellen per medewerker vallen onder hoog-risico AI (Bijlage III).',
-        detail: 'AI-systemen die verzuimrisico per individuele medewerker voorspellen vallen onder Bijlage III van de EU AI Act (punt 4 en/of punt 1 bij gezondheidsgerelateerde besluiten). Aggregeerde analyse op teamniveau is minder risicovol, maar vereist nog steeds strikte data-governance.'
+        tooltip: 'Voorspellen van verzuim per medewerker is hoog-risico AI.',
+        detail: 'AI die voorspelt wie gaat verzuimen valt onder hoog-risico AI. Analyses op teamniveau zijn minder risicovol, maar vragen nog steeds strikte regels.'
       },
       avg: {
         level: 'hoog',
-        label: 'Bijzondere persoonsdata',
+        label: 'Bijzondere persoonsgegevens',
         sublabel: 'AVG',
         icon: '🔒',
-        tooltip: 'Gezondheidsdata valt onder AVG artikel 9,de zwaarste beschermingscategorie.',
-        detail: 'Ziekteverzuimdata bevat gezondheidsgegevens,bijzondere persoonsgegevens onder AVG artikel 9. Verwerking is alleen toegestaan met: expliciete toestemming, wettelijke verplichting, of een andere uitzondering van art. 9 lid 2. Invoeren van individuele verzuimgegevens bij externe AI-tools (ChatGPT, etc.) is vrijwel altijd een AVG-overtreding.'
+        tooltip: 'Gezondheidsdata is de zwaarste categorie van de AVG.',
+        detail: 'Ziekteverzuimdata is gezondheidsdata. Verwerking mag alleen met toestemming of een wettelijke plicht. Individuele data invoeren bij externe AI-tools is vrijwel altijd verboden.'
       },
       di: {
         level: 'hoog',
-        label: 'Discriminatie-risico',
+        label: 'Discriminatierisico',
         sublabel: 'Diversiteit & Inclusie',
         icon: '🌍',
-        tooltip: 'Verzuimpatronen correleren met chronische ziekte, neurodivergentie en mantelzorg,beschermde kenmerken.',
-        detail: 'Verzuimpatronen correleren sterk met beschermde kenmerken: mensen met chronische aandoeningen, neurodivergente medewerkers, mantelzorgers en mensen met psychische aandoeningen verzuimen vaker. AI-modellen die "verzuimrisico" voorspellen discrimineren op deze kenmerken, ook al worden ze niet direct als input gebruikt.'
+        tooltip: 'Verzuimpatronen hangen samen met beschermde kenmerken.',
+        detail: 'Mensen met een chronische ziekte, neurodivergente medewerkers en mantelzorgers verzuimen vaker. AI dat "verzuimrisico" voorspelt, discrimineert op deze kenmerken.'
       },
       praktijk: {
         level: 'voorzichtig',
         label: 'Groot juridisch risico',
         sublabel: 'Praktijkcheck',
         icon: '🧭',
-        tooltip: 'HR-tools die verzuimdata verwerken zijn wijd verspreid, maar nauwelijks goed geregeld.',
-        detail: 'Veel HR-systemen (ook grote namen) verwerken verzuimdata met AI-componenten zonder dat organisaties zich bewust zijn van de juridische implicaties. Een AVG-boete voor onrechtmatige verwerking van gezondheidsdata kan oplopen tot 4% van de wereldwijde jaaromzet. Vraag bij elke HR-tool expliciet na hoe verzuimdata wordt verwerkt en of er een verwerkersovereenkomst aanwezig is.'
+        tooltip: 'Veel HR-tools verwerken verzuimdata, maar nauwelijks goed geregeld.',
+        detail: 'Een boete van de Autoriteit Persoonsgegevens (AP) voor onrechtmatig verwerken van gezondheidsdata kan oplopen tot 4% van de jaaromzet. Vraag altijd na hoe een HR-tool omgaat met verzuimdata.'
       }
     }
   },
@@ -2210,22 +2328,22 @@ const useCases = [
     category: 'verzuim',
     icon: '🔄',
     stoplicht: 'oranje',
-    tagline: 'Ondersteuning mogelijk,gezondheidsdata strikt bewaken',
-    samenvatting: 'AI kan helpen bij de structuur van re-integratieplannen. Maar gezondheidsgegevens mogen nooit worden ingevoerd bij externe AI-tools,dat is een directe AVG-overtreding.',
+    tagline: 'Structuur ja, gezondheidsdata altijd buiten de tool',
+    samenvatting: 'AI kan helpen bij de structuur van re-integratieplannen. Maar voer nooit gezondheidsgegevens in bij een externe AI-tool — dat is verboden.',
     watGoedKan: [
       'Structuur en format van re-integratieplannen opstellen',
-      'Wetgeving (Wet Verbetering Poortwachter) samenvatten en toelichten',
-      'Communicatiebrieven rondom re-integratie formuleren'
+      'Wet Verbetering Poortwachter samenvatten',
+      'Communicatiebrieven rondom re-integratie schrijven'
     ],
     watLetjeOp: [
-      'Voer nooit de specifieke diagnose of gezondheidsklacht in bij een AI-tool',
-      'Re-integratieplannen mogen alleen door bevoegden (bedrijfsarts, HR) worden opgesteld',
-      'Het plan zelf bevat gevoelige persoonsgegevens,bewaar dit veilig'
+      'Voer nooit de diagnose of ziekte in bij een AI-tool',
+      'Alleen bevoegden (bedrijfsarts, HR) mogen het plan opstellen',
+      'Het plan bevat gevoelige gegevens — sla het veilig op'
     ],
     tips: [
-      'Gebruik AI alleen voor de algemene structuur en formulering',
-      'Laat de bedrijfsarts alle gezondheidsinhoudelijke informatie invullen',
-      'Informeer de medewerker altijd over welke tools worden gebruikt'
+      'Gebruik AI alleen voor de algemene structuur',
+      'De bedrijfsarts vult alle gezondheidsinfo in',
+      'Vertel de medewerker altijd welke tools je gebruikt'
     ],
     dimensions: {
       aiact: {
@@ -2233,32 +2351,32 @@ const useCases = [
         label: 'Context-afhankelijk',
         sublabel: 'EU AI Act',
         icon: '⚖️',
-        tooltip: 'Structuur opstellen: laag risico. AI-sturing op re-integratiebesluiten: hoog-risico.',
-        detail: 'Als AI alleen helpt bij de structuur en formulering van re-integratieplannen, valt dit buiten hoog-risico. Zodra AI-aanbevelingen input worden voor beslissingen over werk-aanpassingen, takenpakketten of terugkeer, valt het onder Bijlage III van de EU AI Act.'
+        tooltip: 'Structuur opstellen: laag risico. AI bij re-integratiebesluiten: hoog-risico.',
+        detail: 'Helpt AI alleen bij de structuur? Dan is het laag-risico. Wordt de AI-output gebruikt voor beslissingen over taken of terugkeer? Dan is het hoog-risico AI.'
       },
       avg: {
         level: 'hoog',
-        label: 'Gezondheidsdata verboden bij externe tools',
+        label: 'Gezondheidsdata verboden',
         sublabel: 'AVG',
         icon: '🔒',
-        tooltip: 'Gezondheidsdata is bijzondere persoonsdata. Invoeren bij externe AI-tools is AVG-overtreding.',
-        detail: 'Re-integratieplannen bevatten per definitie informatie over gezondheid,bijzondere persoonsgegevens onder AVG artikel 9. Invoeren bij externe AI-tools zonder verwerkersovereenkomst en wettelijke grondslag is een directe AVG-overtreding. Gebruik AI uitsluitend voor de generieke structuur, zonder gezondheidsinhoud.'
+        tooltip: 'Gezondheidsdata invoeren bij een externe tool is een AVG-overtreding.',
+        detail: 'Re-integratieplannen bevatten altijd gezondheidsinfo. Dat zijn bijzondere persoonsgegevens (AVG art. 9). Invoeren bij een externe AI-tool is verboden. De Autoriteit Persoonsgegevens (AP) handhaaft hierop actief.'
       },
       di: {
         level: 'gemiddeld',
         label: 'Gelijke re-integratiekansen',
         sublabel: 'Diversiteit & Inclusie',
         icon: '🌍',
-        tooltip: 'Zorg dat re-integratieplannen gelijke kansen bieden aan alle medewerkers ongeacht achtergrond.',
-        detail: 'Mensen met chronische aandoeningen, neurodivergente medewerkers en mensen met een migratieachtergrond ervaren drempels bij re-integratie. Zorg dat AI-ondersteuning geen standaardoplossingen biedt die niet passend zijn voor diverse situaties, en dat de menselijke begeleiding centraal staat.'
+        tooltip: 'Standaardoplossingen passen niet bij iedereen.',
+        detail: 'Mensen met een chronische ziekte, neurodivergente medewerkers of mantelzorgers hebben andere behoeften. Gebruik AI alleen voor structuur — de inhoud vraagt altijd menselijk maatwerk.'
       },
       praktijk: {
         level: 'gemengd',
         label: 'Nuttig voor structuur',
         sublabel: 'Praktijkcheck',
         icon: '🧭',
-        tooltip: 'AI als sjabloonondersteuning werkt goed,mits gezondheidsdata buiten de tool blijft.',
-        detail: 'In de praktijk gebruiken HR-managers AI om snel een re-integratieplan op te zetten. Dit werkt goed als alleen de structuur en wettelijke kaders worden gegenereerd. Het risico is dat gebruikers niet goed weten welke informatie wel en niet mag worden ingevoerd.'
+        tooltip: 'Werkt goed als AI alleen de structuur schrijft.',
+        detail: 'HR-managers gebruiken AI om snel een re-integratieplan op te zetten. Dat werkt goed. Risico: medewerkers weten niet altijd wat ze wel en niet mogen invoeren.'
       }
     }
   },
@@ -2268,22 +2386,22 @@ const useCases = [
     category: 'verzuim',
     icon: '💬',
     stoplicht: 'oranje',
-    tagline: 'Voorbereiding ja,persoonsdata buiten de tool',
-    samenvatting: 'AI kan helpen bij de voorbereiding van verzuimgesprekken: gespreksstructuur, vragen, tone of voice. Let er op dat je geen persoonsgegevens of medische informatie invoert.',
+    tagline: 'Voorbereiding ja, persoonsdata buiten de tool',
+    samenvatting: 'AI helpt je een verzuimgesprek voor te bereiden. Denk aan vragen, structuur en toon. Voer nooit de naam of situatie van de medewerker in.',
     watGoedKan: [
-      'Gespreksstructuur en gespreksvragen opstellen',
-      'Handige volgorde van onderwerpen voorbereiden',
-      'Wet Verbetering Poortwachter verplichtingen samenvatten'
+      'Gespreksstructuur en vragen opstellen',
+      'Volgorde van onderwerpen bepalen',
+      'Wet Verbetering Poortwachter kort samenvatten'
     ],
     watLetjeOp: [
-      'Voer nooit de naam, situatie of klacht van de medewerker in bij een externe tool',
-      'AI kent de specifieke context van de medewerker niet,ga niet uit van een generiek advies',
-      'Verzuimgesprekken vereisen menselijke empathie,AI is een hulpmiddel, geen vervanging'
+      'Voer nooit de naam of situatie van de medewerker in',
+      'AI kent de persoon niet — gebruik het advies als basis, niet als waarheid',
+      'Een verzuimgesprek vraagt menselijke aandacht'
     ],
     tips: [
-      'Gebruik AI voor voorbereiding op gesprekstechnieken en structuur',
-      'Zorg dat de manager de menselijke context centraal stelt, niet het format',
-      'Vraag bij twijfel altijd advies aan je bedrijfsmaatschappelijk werker of bedrijfsarts'
+      'Gebruik AI alleen voor de voorbereiding',
+      'Zet de persoon centraal, niet het format',
+      'Twijfel je? Vraag advies aan de bedrijfsarts'
     ],
     dimensions: {
       aiact: {
@@ -2291,32 +2409,32 @@ const useCases = [
         label: 'Laag risico',
         sublabel: 'EU AI Act',
         icon: '⚖️',
-        tooltip: 'Gesprekken voorbereiden zonder persoonsdata valt buiten hoog-risico AI.',
-        detail: 'Het genereren van gespreksstructuren en -vragen voor verzuimgesprekken valt buiten de hoog-risico classificatie van de EU AI Act, zolang geen individuele persoonsgegevens worden verwerkt en er geen geautomatiseerde beslissingen worden genomen.'
+        tooltip: 'Voorbereiding zonder persoonsdata is geen hoog-risico AI.',
+        detail: 'Als je alleen gespreksstructuren laat maken zonder persoonsgegevens, is dit geen hoog-risico AI. De EU AI Act is hier dus niet zwaar van toepassing.'
       },
       avg: {
         level: 'hoog',
-        label: 'Persoonsdata strikt buiten tool',
+        label: 'Geen persoonsdata invoeren',
         sublabel: 'AVG',
         icon: '🔒',
-        tooltip: 'Zodra je naam of situatie van de medewerker invoert, wordt het een AVG-risico.',
-        detail: 'Zolang je alleen generieke gespreksstructuren laat genereren zonder persoonsgegevens, zijn er weinig AVG-risico\'s. Zodra je de naam, verzuimduur of medische context van de medewerker invoert bij een externe tool, verwerk je gevoelige persoonsgegevens zonder geldige grondslag,een directe AVG-overtreding.'
+        tooltip: 'Naam of situatie van de medewerker invoeren is een AVG-overtreding.',
+        detail: 'Generieke vragen opstellen mag. Maar voer je de naam, verzuimduur of medische situatie in bij een externe tool? Dan verwerk je privégegevens. Dat mag niet zonder toestemming.'
       },
       di: {
         level: 'laag',
-        label: 'Aandacht voor empathie',
+        label: 'Let op gespreksstijl',
         sublabel: 'Diversiteit & Inclusie',
         icon: '🌍',
-        tooltip: 'Zorg dat gespreksstijl past bij diverse medewerkers en hun culturele context.',
-        detail: 'D&I-risico is beperkt, maar vraag de AI expliciet om gesprekstechnieken die werken voor medewerkers met diverse achtergronden. Standaard gespreksstijlen kunnen cultureel bepaald zijn en minder goed aansluiten bij medewerkers met een andere culturele context.'
+        tooltip: 'Vraag om gespreksstijlen die passen bij diverse medewerkers.',
+        detail: 'Het risico is klein. Vraag AI wel om tips die werken voor medewerkers met verschillende achtergronden. Standaardstijlen passen niet altijd bij iedereen.'
       },
       praktijk: {
         level: 'positief',
         label: 'Nuttige ondersteuning',
         sublabel: 'Praktijkcheck',
         icon: '🧭',
-        tooltip: 'Een veilige en waardevolle toepassing voor managers die verzuimgesprekken als uitdagend ervaren.',
-        detail: 'Veel managers ervaren verzuimgesprekken als moeilijk. AI-ondersteuning bij voorbereiding (structuur, vragen, juridische kaders) is laagdrempelig en waardevol. Grootste risico in de praktijk: managers voeren te veel persoonsinfo in of volgen het AI-format zo strikt dat ze de menselijke verbinding verliezen.'
+        tooltip: 'Handig voor managers die verzuimgesprekken moeilijk vinden.',
+        detail: 'Veel managers vinden dit soort gesprekken lastig. AI helpt bij de voorbereiding. Let op: gebruik het format als hulpmiddel, niet als script. De menselijke verbinding is het belangrijkst.'
       }
     }
   },
@@ -2339,88 +2457,98 @@ const useCases = [
 // ══════════════════════════════════════════
 const toolAdvies = {
   'cv-screening': {
-    openbaar:   { level: 'rood',   tekst: 'Persoonsdata in een publieke omgeving is een directe AVG-overtreding.' },
-    enterprise: { level: 'oranje', tekst: 'Verwerkersovereenkomst aanwezig, maar hoog-risico AI-verplichtingen (EU AI Act) blijven volledig gelden.' },
-    geen:       { level: 'groen',  tekst: 'Aanbevolen: menselijk oordeel blijft leidend en is juridisch het minst risicovol.' }
+    openbaar:   { level: 'rood',   tekst: 'Persoonsdata in een publieke tool is een directe overtreding van de AVG.' },
+    enterprise: { level: 'oranje', tekst: 'Beter beveiligd, maar de EU AI Act blijft volledig gelden.' },
+    geen:       { level: 'groen',  tekst: 'Aanbevolen: mensen beoordelen is juridisch het veiligst.' }
   },
   'vacaturetekst': {
-    openbaar:   { level: 'oranje', tekst: 'Veilig zolang je geen vertrouwelijke bedrijfsinformatie of persoonsdata invoert.' },
-    enterprise: { level: 'groen',  tekst: 'Breed inzetbaar: geen persoonsdata, verwerkersovereenkomst aanwezig.' },
-    geen:       { level: 'groen',  tekst: 'Altijd een optie, maar AI biedt hier weinig risico en veel tijdwinst.' }
+    openbaar:   { level: 'oranje', tekst: 'Veilig zolang je geen bedrijfsgeheimen of persoonsdata invoert.' },
+    enterprise: { level: 'groen',  tekst: 'Veilig te gebruiken: geen persoonsdata nodig.' },
+    geen:       { level: 'groen',  tekst: 'Altijd een optie.' }
   },
   'kandidaten-ranking': {
-    openbaar:   { level: 'rood',   tekst: 'Persoonsdata én hoog-risico AI: dubbel verboden zonder zware safeguards.' },
-    enterprise: { level: 'oranje', tekst: 'EU AI Act-verplichtingen gelden ongeacht de tool: menselijk toezicht altijd verplicht.' },
-    geen:       { level: 'groen',  tekst: 'Aanbevolen: laat ranking door mensen uitvoeren op basis van transparante criteria.' }
+    openbaar:   { level: 'rood',   tekst: 'Persoonsdata én hoog-risico AI: dit mag niet.' },
+    enterprise: { level: 'oranje', tekst: 'EU AI Act geldt ook hier. Menselijk toezicht is altijd verplicht.' },
+    geen:       { level: 'groen',  tekst: 'Aanbevolen: laat mensen de ranking maken op basis van duidelijke criteria.' }
   },
   'video-interview': {
-    openbaar:   { level: 'rood',   tekst: 'Biometrische data zonder verwerkersovereenkomst: absoluut verboden.' },
-    enterprise: { level: 'rood',   tekst: 'Ook binnen je eigen tenant vereist biometrische data een expliciete wettelijke grondslag.' },
-    geen:       { level: 'groen',  tekst: 'Sterk aanbevolen: gebruik video alleen voor menselijke gespreksvoering.' }
+    openbaar:   { level: 'rood',   tekst: 'Lichaamsdata zoals gezichtsherkenning mag niet zonder contractuele basis.' },
+    enterprise: { level: 'rood',   tekst: 'Ook in je eigen omgeving heb je een wettelijke basis nodig voor lichaamsdata.' },
+    geen:       { level: 'groen',  tekst: 'Sterk aanbevolen: gebruik video alleen voor menselijke gesprekken.' }
   },
   'social-media-screening': {
-    openbaar:   { level: 'rood',   tekst: 'Geen geldige verwerkingsgrondslag, bijzondere persoonsdata onvermijdelijk.' },
-    enterprise: { level: 'rood',   tekst: 'Het tool-type maakt het juridische risico hier niet kleiner.' },
-    geen:       { level: 'oranje', tekst: 'Handmatig heeft ook risico\'s: beperk je strikt tot LinkedIn en professionele context.' }
+    openbaar:   { level: 'rood',   tekst: 'Je hebt geen geldige reden voor deze verwerking en privédata is onvermijdelijk.' },
+    enterprise: { level: 'rood',   tekst: 'Een betere tool maakt het risico hier niet kleiner.' },
+    geen:       { level: 'oranje', tekst: 'Handmatig is ook riskant: beperk je tot LinkedIn en professionele info.' }
   },
   'afwijzingsbrief': {
-    openbaar:   { level: 'oranje', tekst: 'Veilig voor generieke teksten: voer nooit naam of persoonsdetails in.' },
-    enterprise: { level: 'groen',  tekst: 'Veilig inzetbaar binnen de bedrijfsomgeving.' },
+    openbaar:   { level: 'oranje', tekst: 'Veilig voor losse teksten: voer nooit naam of persoonsdetails in.' },
+    enterprise: { level: 'groen',  tekst: 'Veilig te gebruiken in de bedrijfsomgeving.' },
     geen:       { level: 'groen',  tekst: 'Altijd een optie.' }
   },
   'arbeidscontract': {
-    openbaar:   { level: 'rood',   tekst: 'Persoonsdata in een arbeidscontract nooit invoeren bij een publieke tool.' },
-    enterprise: { level: 'oranje', tekst: 'Veilig voor generieke concepten: persoonsspecifieke versies altijd juridisch laten valideren.' },
-    geen:       { level: 'groen',  tekst: 'Gebruik vaste templates met periodieke juridische validatie.' }
+    openbaar:   { level: 'rood',   tekst: 'Persoonsdata in een contract nooit invoeren bij een publieke tool.' },
+    enterprise: { level: 'oranje', tekst: 'Veilig voor losse concepten. Laat persoonlijke versies altijd checken door een jurist.' },
+    geen:       { level: 'groen',  tekst: 'Gebruik vaste templates en laat ze regelmatig juridisch controleren.' }
   },
   'interne-communicatie': {
     openbaar:   { level: 'groen',  tekst: 'Veilig zolang je geen persoonsgegevens van medewerkers invoert.' },
-    enterprise: { level: 'groen',  tekst: 'Breed inzetbaar voor alle interne communicatie.' },
+    enterprise: { level: 'groen',  tekst: 'Breed te gebruiken voor interne communicatie.' },
     geen:       { level: 'groen',  tekst: 'Altijd een optie.' }
   },
   'functioneringsgesprek': {
-    openbaar:   { level: 'rood',   tekst: 'Persoonsdata en mogelijk bijzondere data: nooit invoeren bij een publieke tool.' },
-    enterprise: { level: 'oranje', tekst: 'Verwerkersovereenkomst aanwezig, maar wees terughoudend met gevoelige gespreksinhoud.' },
-    geen:       { level: 'groen',  tekst: 'Eigen notities maken blijft de veiligste en meest menselijke optie.' }
+    openbaar:   { level: 'rood',   tekst: 'Persoonlijke en gevoelige data: nooit invoeren bij een publieke tool.' },
+    enterprise: { level: 'oranje', tekst: 'Wees voorzichtig met gevoelige inhoud, ook met enterprise tools.' },
+    geen:       { level: 'groen',  tekst: 'Zelf notities maken is de veiligste en meest menselijke keuze.' }
   },
   'prestatiebeoordeling': {
-    openbaar:   { level: 'rood',   tekst: 'Persoonsdata en mogelijk bijzondere gegevens: niet invoeren bij publieke tools.' },
-    enterprise: { level: 'oranje', tekst: 'Uitsluitend voor structuur en format: inhoudelijk oordeel blijft altijd van de manager.' },
+    openbaar:   { level: 'rood',   tekst: 'Persoonsdata en gevoelige gegevens: niet invoeren bij publieke tools.' },
+    enterprise: { level: 'oranje', tekst: 'Alleen voor structuur. Het oordeel blijft altijd bij de manager.' },
     geen:       { level: 'groen',  tekst: 'Menselijk oordeel is hier altijd leidend.' }
   },
   'promotie-beslissing': {
-    openbaar:   { level: 'rood',   tekst: 'Persoonsdata én hoog-risico AI: niet toepasbaar.' },
-    enterprise: { level: 'rood',   tekst: 'EU AI Act-verplichtingen gelden ook met enterprise tool: menselijk toezicht altijd verplicht.' },
-    geen:       { level: 'groen',  tekst: 'Aanbevolen: promotie is en blijft een menselijke beslissing.' }
+    openbaar:   { level: 'rood',   tekst: 'Persoonsdata én hoog-risico AI: dit mag niet.' },
+    enterprise: { level: 'rood',   tekst: 'EU AI Act geldt ook hier. Menselijk toezicht is verplicht.' },
+    geen:       { level: 'groen',  tekst: 'Aanbevolen: een promotie is en blijft een menselijke beslissing.' }
   },
   'leer-advies': {
-    openbaar:   { level: 'oranje', tekst: 'Veilig voor generieke adviezen: geen individuele medewerkerprofielen invoeren.' },
-    enterprise: { level: 'groen',  tekst: 'Veilig inzetbaar: data blijft binnen de bedrijfsomgeving.' },
+    openbaar:   { level: 'oranje', tekst: 'Veilig voor algemene adviezen: geen persoonlijke profielen invoeren.' },
+    enterprise: { level: 'groen',  tekst: 'Veilig te gebruiken: data blijft binnen de bedrijfsomgeving.' },
     geen:       { level: 'groen',  tekst: 'Altijd een optie.' }
   },
   'beleidsdocumenten': {
-    openbaar:   { level: 'groen',  tekst: 'Veilig: geen persoonsdata nodig voor generieke beleidsteksten.' },
-    enterprise: { level: 'groen',  tekst: 'Breed inzetbaar.' },
+    openbaar:   { level: 'groen',  tekst: 'Veilig: geen persoonsdata nodig voor algemene beleidsteksten.' },
+    enterprise: { level: 'groen',  tekst: 'Breed te gebruiken.' },
     geen:       { level: 'groen',  tekst: 'Altijd een optie.' }
   },
   'salarisanalyse': {
     openbaar:   { level: 'rood',   tekst: 'Financiële persoonsdata nooit invoeren bij een publieke tool.' },
-    enterprise: { level: 'oranje', tekst: 'Gebruik alleen geanonimiseerde of geaggregeerde data: nooit individuele salarisgegevens.' },
-    geen:       { level: 'groen',  tekst: 'Gebruik je eigen HR-systemen voor salarisanalyse.' }
+    enterprise: { level: 'oranje', tekst: 'Gebruik alleen anonieme data. Nooit individuele salarisgegevens.' },
+    geen:       { level: 'groen',  tekst: 'Gebruik je eigen HR-systeem voor salarisanalyse.' }
   },
   'verzuim-analyse': {
-    openbaar:   { level: 'rood',   tekst: 'Gezondheidsdata is absoluut verboden in een publieke tool.' },
-    enterprise: { level: 'rood',   tekst: 'Ook met enterprise tool vereist gezondheidsdata een aparte wettelijke grondslag (AVG art. 9).' },
-    geen:       { level: 'groen',  tekst: 'Aanbevolen: gebruik je eigen HRMS voor verzuimanalyse.' }
+    openbaar:   { level: 'rood',   tekst: 'Gezondheidsdata invoeren in een publieke tool is verboden.' },
+    enterprise: { level: 'rood',   tekst: 'Gezondheidsdata heeft altijd een aparte wettelijke basis nodig, ook hier.' },
+    geen:       { level: 'groen',  tekst: 'Aanbevolen: gebruik je eigen HR-systeem voor verzuimanalyse.' }
   },
   'reintegratie': {
     openbaar:   { level: 'rood',   tekst: 'Gezondheidsdata nooit invoeren bij een publieke tool.' },
-    enterprise: { level: 'oranje', tekst: 'Alleen voor generieke structuur: nooit gezondheidsinhoud invoeren, ook niet in enterprise tools.' },
-    geen:       { level: 'groen',  tekst: 'Bedrijfsarts en HR zonder AI is hier de meest veilige route.' }
+    enterprise: { level: 'oranje', tekst: 'Alleen voor structuur. Voer nooit gezondheidsinhoud in.' },
+    geen:       { level: 'groen',  tekst: 'Bedrijfsarts en HR zonder AI is hier de veiligste keuze.' }
   },
   'verzuimgesprek': {
-    openbaar:   { level: 'groen',  tekst: 'Veilig voor generieke gespreksstructuur: voer nooit naam of situatie van de medewerker in.' },
-    enterprise: { level: 'groen',  tekst: 'Breed inzetbaar voor voorbereiding.' },
+    openbaar:   { level: 'groen',  tekst: 'Veilig voor een losse gespreksstructuur: voer nooit naam of situatie van de medewerker in.' },
+    enterprise: { level: 'groen',  tekst: 'Breed te gebruiken voor voorbereiding.' },
+    geen:       { level: 'groen',  tekst: 'Altijd een optie.' }
+  },
+  'onboarding-materiaal': {
+    openbaar:   { level: 'groen',  tekst: 'Veilig: geen persoonsdata nodig voor onboarding teksten.' },
+    enterprise: { level: 'groen',  tekst: 'Breed te gebruiken. Snel en consistent resultaat.' },
+    geen:       { level: 'groen',  tekst: 'Altijd een optie, maar AI bespaart hier veel tijd.' }
+  },
+  'faq-medewerkers': {
+    openbaar:   { level: 'groen',  tekst: 'Veilig: geen persoonsdata nodig voor FAQ-teksten.' },
+    enterprise: { level: 'groen',  tekst: 'Breed te gebruiken. Snel en consistent resultaat.' },
     geen:       { level: 'groen',  tekst: 'Altijd een optie.' }
   }
 };
@@ -2523,18 +2651,20 @@ function renderCards(filter) {
     const card = document.createElement('div');
     card.className = 'use-card';
     card.style.setProperty('--cc', cc);
+    card.style.position = 'relative';
     card.setAttribute('role', 'button');
     card.setAttribute('tabindex', '0');
     card.setAttribute('aria-label', 'Bekijk ' + uc.title);
     card.innerHTML =
+      (uc.nieuw ? '<span class="card-new-badge">Nieuw</span>' : '') +
       '<div class="card-header">' +
         '<span class="card-icon" aria-hidden="true">' + uc.icon + '</span>' +
         '<span class="card-title">' + uc.title + '</span>' +
       '</div>' +
       '<div class="card-body">' +
-        '<p class="card-tagline">' + uc.tagline + '</p>' +
         '<div class="card-stoplicht">' +
           '<span class="card-stoplicht-dot" style="background:' + slColors[uc.stoplicht] + '"></span>' +
+          '<em class="card-stoplicht-icon" aria-hidden="true">' + (slIcons[uc.stoplicht] || '') + '</em>' +
           '<span class="card-stoplicht-label" style="color:' + slColors[uc.stoplicht] + '">' + slLabels[uc.stoplicht] + '</span>' +
         '</div>' +
       '</div>' +
@@ -2620,6 +2750,11 @@ function openDetailModal(uc) {
 
   html += renderToolAdvies(uc.id);
 
+  html += '<div style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-top:1.5rem;">' +
+    '<button class="modal-print-btn" style="margin-top:0;" onclick="printKaart()">🖨️ Afdrukken / exporteren</button>' +
+    '<a href="https://www.kustenkade.nl/#contact" target="_blank" rel="noopener" class="btn-primary">Ik wil aan de slag →</a>' +
+  '</div>';
+
   document.getElementById('modal-body').innerHTML = html;
   document.getElementById('detail-modal').classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -2640,17 +2775,17 @@ function openCTAModal() {
       '<span class="stoplicht-dot-lg" style="background:var(--green)"></span>' +
       '<span class="modal-stoplicht-label" style="color:var(--green)">Sterk aangeraden</span>' +
     '</div>' +
-    '<p class="modal-summary">Elke organisatie heeft eigen systemen, cao-afspraken en risicobereidheid. Wat hier groen is, kan bij jou anders liggen. Wij helpen je de juiste vragen te stellen.</p>';
+    '<p class="modal-summary">Elke organisatie is anders. Wat hier groen is, kan bij jou anders liggen. Wij helpen je de juiste vragen te stellen.</p>';
 
   document.getElementById('modal-body').innerHTML =
-    '<p class="dimensions-title">Wat we samen kunnen doen</p>' +
+    '<p class="dimensions-title">Wat we samen doen</p>' +
 
     '<div class="dimension-row level-groen">' +
       '<div class="dimension-header">' +
         '<span class="dim-icon">🗺️</span>' +
         '<div style="flex:1;min-width:0;">' +
           '<div class="dim-label">AI-gebruik in kaart brengen</div>' +
-          '<div class="dim-sublabel">Wat gebruiken jullie nu al, bewust of onbewust?</div>' +
+          '<div class="dim-sublabel">Wat gebruiken jullie al?</div>' +
         '</div>' +
       '</div>' +
     '</div>' +
@@ -2659,8 +2794,8 @@ function openCTAModal() {
       '<div class="dimension-header">' +
         '<span class="dim-icon">⚖️</span>' +
         '<div style="flex:1;min-width:0;">' +
-          '<div class="dim-label">Toetsen aan EU AI Act &amp; AVG</div>' +
-          '<div class="dim-sublabel">Concreet, op jouw specifieke situatie</div>' +
+          '<div class="dim-label">Toetsen aan de wet</div>' +
+          '<div class="dim-sublabel">EU AI Act en AVG, concreet voor jouw situatie</div>' +
         '</div>' +
       '</div>' +
     '</div>' +
@@ -2669,8 +2804,8 @@ function openCTAModal() {
       '<div class="dimension-header">' +
         '<span class="dim-icon">🧭</span>' +
         '<div style="flex:1;min-width:0;">' +
-          '<div class="dim-label">Beleid en kaders opstellen</div>' +
-          '<div class="dim-sublabel">Zodat HR weet wat wel en niet mag</div>' +
+          '<div class="dim-label">Beleid opstellen</div>' +
+          '<div class="dim-sublabel">HR weet wat wel en niet mag</div>' +
         '</div>' +
       '</div>' +
     '</div>' +
@@ -2679,8 +2814,8 @@ function openCTAModal() {
       '<div class="dimension-header">' +
         '<span class="dim-icon">🚀</span>' +
         '<div style="flex:1;min-width:0;">' +
-          '<div class="dim-label">Proof of concept bouwen</div>' +
-          '<div class="dim-sublabel">Van idee naar werkende demo in jouw context</div>' +
+          '<div class="dim-label">Iets bouwen</div>' +
+          '<div class="dim-sublabel">Van idee naar werkende demo</div>' +
         '</div>' +
       '</div>' +
     '</div>' +
@@ -2688,9 +2823,9 @@ function openCTAModal() {
     '<div class="tip-box" style="margin-top:1.5rem;">' +
       '<div class="tip-box-title">Klaar om te starten?</div>' +
       '<ul class="tip-list">' +
-        '<li>Geen lange trajecten, we werken in korte, concrete stappen</li>' +
-        '<li>We kijken eerst wat er al is in jullie organisatie en sluiten daar volledig op aan</li>' +
-        '<li>Kennismaking duurt 20 minuten en is altijd gratis</li>' +
+        '<li>We werken in korte, concrete stappen</li>' +
+        '<li>We sluiten aan bij wat er al is</li>' +
+        '<li>Kennismaken duurt 20 minuten en is gratis</li>' +
       '</ul>' +
     '</div>' +
 
@@ -2716,24 +2851,120 @@ function toggleDim(ucId, key) {
 }
 
 // ══════════════════════════════════════════
-//  CONTACT MODAL
+//  ZOEKFUNCTIE
 // ══════════════════════════════════════════
-function openContactModal() {
-  document.getElementById('contact-modal').classList.add('open');
-  document.body.style.overflow = 'hidden';
+var currentFilter = 'all';
+var currentSearch = '';
+
+function renderCardsFiltered() {
+  var grid = document.getElementById('card-grid');
+  var slColors = { groen: 'var(--green)', oranje: 'var(--orange)', rood: 'var(--red)', aanbevolen: 'var(--green)' };
+  var slLabels = { groen: 'Veilig inzetbaar', oranje: 'Met voorzichtigheid', rood: 'Hoog risico', aanbevolen: 'Sterk aangeraden' };
+  var slIcons  = { groen: '✓', oranje: '!', rood: '✕', aanbevolen: '✓' };
+  grid.innerHTML = '';
+  var count = 0;
+  var q = currentSearch.toLowerCase().trim();
+
+  useCases.forEach(function(uc) {
+    if (currentFilter !== 'all' && uc.category !== currentFilter) return;
+    if (q && !(uc.title.toLowerCase().includes(q) || uc.samenvatting.toLowerCase().includes(q) || catLabels[uc.category].toLowerCase().includes(q))) return;
+    count++;
+    var cc = catColors[uc.category] || '#2C5F6E';
+    var card = document.createElement('div');
+    card.className = 'use-card';
+    card.style.setProperty('--cc', cc);
+    card.style.position = 'relative';
+    card.setAttribute('role', 'button');
+    card.setAttribute('tabindex', '0');
+    card.setAttribute('aria-label', 'Bekijk ' + uc.title);
+    card.innerHTML =
+      (uc.nieuw ? '<span class="card-new-badge">Nieuw</span>' : '') +
+      '<div class="card-header">' +
+        '<span class="card-icon" aria-hidden="true">' + uc.icon + '</span>' +
+        '<span class="card-title">' + uc.title + '</span>' +
+      '</div>' +
+      '<div class="card-body">' +
+        '<div class="card-stoplicht">' +
+          '<span class="card-stoplicht-dot" style="background:' + slColors[uc.stoplicht] + '"></span>' +
+          '<em class="card-stoplicht-icon" aria-hidden="true">' + (slIcons[uc.stoplicht] || '') + '</em>' +
+          '<span class="card-stoplicht-label" style="color:' + slColors[uc.stoplicht] + '">' + slLabels[uc.stoplicht] + '</span>' +
+        '</div>' +
+      '</div>' +
+      '<div class="card-footer">' +
+        '<span class="card-cat">' + catLabels[uc.category] + '</span>' +
+        '<span class="card-arrow">Bekijk →</span>' +
+      '</div>';
+    card.addEventListener('click', (function(u) { return function() { if (!didDrag) openDetailModal(u); }; })(uc));
+    card.addEventListener('keydown', (function(u) { return function(e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openDetailModal(u); } }; })(uc));
+    addDragListeners(card);
+    grid.appendChild(card);
+  });
+
+  document.getElementById('count').textContent = count;
+  var clearBtn = document.getElementById('search-clear');
+  if (clearBtn) clearBtn.style.display = q ? 'block' : 'none';
 }
 
-function closeContactModal() {
-  document.getElementById('contact-modal').classList.remove('open');
-  document.body.style.overflow = '';
+var searchInput = document.getElementById('search-input');
+var searchClear = document.getElementById('search-clear');
+
+searchInput.addEventListener('input', function() {
+  currentSearch = this.value;
+  renderCardsFiltered();
+});
+
+searchClear.addEventListener('click', function() {
+  searchInput.value = '';
+  currentSearch = '';
+  renderCardsFiltered();
+  searchInput.focus();
+});
+
+// ══════════════════════════════════════════
+//  AFDRUKKEN
+// ══════════════════════════════════════════
+function toggleLegend() {
+  var legend = document.getElementById('stoplicht-legend');
+  var btn = document.getElementById('legend-toggle');
+  var isOpen = legend.classList.toggle('open');
+  if (btn) btn.setAttribute('aria-expanded', String(isOpen));
 }
 
-function submitForm() {
-  var naam  = document.getElementById('f-naam').value.trim();
-  var email = document.getElementById('f-email').value.trim();
-  if (!naam || !email) { alert('Vul minimaal je naam en e-mailadres in.'); return; }
-  document.getElementById('form-fields').style.display  = 'none';
-  document.getElementById('form-success').style.display = 'block';
+function printKaart() {
+  var top = document.getElementById('modal-top');
+  var body = document.getElementById('modal-body');
+  var title = top.querySelector('.modal-title') ? top.querySelector('.modal-title').textContent : 'HR AI Radar';
+  var summary = body.querySelector('.modal-summary') ? body.querySelector('.modal-summary').textContent : '';
+  var slEl = top.querySelector('.modal-stoplicht-label');
+  var slLabel = slEl ? slEl.textContent : '';
+  var slColors = { 'Veilig inzetbaar': '#3A6B52', 'Met voorzichtigheid': '#B07328', 'Hoog risico': '#8B3A3A', 'Sterk aangeraden': '#3A6B52' };
+  var slColor = slColors[slLabel] || '#555';
+  var slHTML = slLabel ? '<p style="margin:0.4rem 0 0;font-size:0.85rem;font-weight:600;color:' + slColor + '">● ' + slLabel + '</p>' : '';
+
+  var lijsten = ['watGoedKan', 'watLetjeOp', 'tips'];
+  var lijstTitels = { watGoedKan: 'Wat goed kan', watLetjeOp: 'Waar let je op', tips: 'Tips' };
+  var lijstHTML = '';
+  body.querySelectorAll('.modal-section-title').forEach(function(el) {
+    var next = el.nextElementSibling;
+    if (!next) return;
+    lijstHTML += '<div class="print-section"><div class="print-section-title">' + el.textContent + '</div>';
+    if (next.tagName === 'UL') {
+      lijstHTML += '<ul>';
+      next.querySelectorAll('li').forEach(function(li) { lijstHTML += '<li>' + li.textContent + '</li>'; });
+      lijstHTML += '</ul>';
+    }
+    lijstHTML += '</div>';
+  });
+
+  var printArea = document.getElementById('print-area');
+  printArea.innerHTML =
+    '<h2>' + title + '</h2>' +
+    slHTML +
+    '<p style="font-size:0.9rem;color:#555;margin:0.75rem 0 0.5rem">' + summary + '</p>' +
+    lijstHTML +
+    '<div class="print-footer">HR AI Radar · Kust &amp; Kade Lab · kustenkade.nl · Dit is geen juridisch advies.</div>';
+
+  window.print();
 }
 
 // ══════════════════════════════════════════
@@ -2744,23 +2975,21 @@ document.getElementById('filters').addEventListener('click', function(e) {
   if (!btn) return;
   document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
   btn.classList.add('active');
-  renderCards(btn.dataset.cat);
+  currentFilter = btn.dataset.cat;
+  renderCardsFiltered();
 });
 
 document.getElementById('detail-modal').addEventListener('click', function(e) {
   if (e.target === document.getElementById('detail-modal')) closeDetailModal();
 });
-document.getElementById('contact-modal').addEventListener('click', function(e) {
-  if (e.target === document.getElementById('contact-modal')) closeContactModal();
-});
 document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') { closeDetailModal(); closeContactModal(); }
+  if (e.key === 'Escape') { closeDetailModal(); }
 });
 
 // ══════════════════════════════════════════
 //  INIT
 // ══════════════════════════════════════════
-renderCards();
+renderCardsFiltered();
 </script>
 </body>
 </html>
