@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#2E3128">
   <title>HR AI Radar · Kust &amp; Kade Lab</title>
-  <meta name="description" content="HR AI Radar: check per HR-taak welke AI-tool je mag inzetten en wat de risico's zijn op het gebied van EU AI Act, AVG en diversiteit. Een tool van Kust & Kade voor HR-professionals.">
+  <meta name="description" content="HR AI Radar: check per HR-vraagstuk welke AI-tool je mag inzetten en wat de risico's zijn op het gebied van EU AI Act, AVG en diversiteit. Een tool van Kust & Kade voor HR-professionals.">
   <meta name="keywords" content="HR AI Radar, AI in HR, EU AI Act HR, AVG HR, verantwoord AI gebruik, Copilot HR, AI checker HR professionals, diversiteit inclusie AI, Kust en Kade">
   <meta property="og:title" content="HR AI Radar · Kust & Kade Lab">
-  <meta property="og:description" content="Check per HR-taak welke AI-tool je mag inzetten en wat de risico&apos;s zijn op het gebied van EU AI Act, AVG en diversiteit. Een Kust &amp; Kade Lab demo.">
+  <meta property="og:description" content="Check per HR-vraagstuk welke AI-tool je mag inzetten en wat de risico&apos;s zijn op het gebied van EU AI Act, AVG en diversiteit. Een Kust &amp; Kade Lab demo.">
   <meta property="og:type" content="website">
   <meta name="robots" content="index, follow">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%232E3128'/%3E%3Cpath d='M2 20 C6 14, 10 26, 14 20 C18 14, 22 26, 26 20 C28 17, 30 18, 30 20' stroke='%232C5F6E' stroke-width='2.5' stroke-linecap='round' fill='none'/%3E%3Cpath d='M2 24 C6 18, 10 30, 14 24 C18 18, 22 30, 26 24 C28 21, 30 22, 30 24' stroke='%233A7A8C' stroke-width='2' stroke-linecap='round' fill='none' opacity='0.7'/%3E%3C/svg%3E" type="image/svg+xml">
@@ -757,6 +757,9 @@
       margin: 0 auto 1rem;
       position: relative;
     }
+    @media (max-width: 640px) {
+      .search-wrap { margin-top: 1.25rem; }
+    }
     .search-input {
       width: 100%;
       background: var(--card-bg);
@@ -1134,13 +1137,13 @@
       <path d="M0 56 C 240 10, 480 56, 720 28 C 960 0, 1200 48, 1440 56 L1440 56 Z" fill="#FDFCF9"/>
     </svg>
     <div class="landing-body">
-      <p>Welkom bij de HR AI Radar. Kies een HR-taak en ontdek direct of je AI veilig mag inzetten.</p>
+      <p>Welkom bij de HR AI Radar. Kies een HR-vraagstuk en ontdek direct of je AI veilig mag inzetten.</p>
 
       <p style="font-size:0.8rem;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--accent);margin:1.25rem 0 0.5rem;">Hoe gebruik je dit?</p>
       <div class="landing-steps">
         <div class="landing-step">
           <div class="landing-step-num">1</div>
-          <div class="landing-step-text">Kies een HR-taak die je wil toetsen</div>
+          <div class="landing-step-text">Kies een HR-vraagstuk die je wil toetsen</div>
         </div>
         <div class="landing-step">
           <div class="landing-step-num">2</div>
@@ -1188,7 +1191,7 @@
   <span class="hero-label">Kust &amp; Kade Lab &middot; AI Tool #5</span>
   <h1>HR AI <em>Radar</em></h1>
   <p class="hero-subtitle">Kan ik AI hier voor gebruiken?</p>
-  <p>Klik op een HR-taak en zie meteen wat mag, wat je moet weten en wat de risico's zijn.</p>
+  <p>Klik op een HR-vraagstuk en zie meteen wat mag, wat je moet weten en wat de risico's zijn.</p>
   <svg class="hero-wave" viewBox="0 0 1440 56" preserveAspectRatio="none">
     <path d="M0 56 C 240 10, 480 56, 720 28 C 960 0, 1200 48, 1440 56 L1440 56 Z" fill="#F5F3EC"/>
   </svg>
@@ -1201,7 +1204,7 @@
     <!-- Zoekbalk -->
     <div class="search-wrap">
       <span class="search-icon">🔍</span>
-      <input class="search-input" id="search-input" type="search" placeholder="Zoek een HR-taak..." autocomplete="off" aria-label="Zoek een HR-taak">
+      <input class="search-input" id="search-input" type="search" placeholder="Zoek een HR-vraagstuk..." autocomplete="off" aria-label="Zoek een HR-vraagstuk">
       <button class="search-clear" id="search-clear" aria-label="Zoekopdracht wissen">✕</button>
     </div>
 
