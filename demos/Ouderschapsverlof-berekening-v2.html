@@ -1,0 +1,2179 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ouderschapsverlof &amp; geboorteverlof berekening (v2) | CAO Gemeenten 2025-2027</title>
+  <style>
+    /* ============================================================
+       CSS CUSTOM PROPERTIES
+    ============================================================ */
+    :root {
+      --clr-primary:        #1B4F8A;
+      --clr-primary-dark:   #123A66;
+      --clr-primary-light:  #E8F0F9;
+      --clr-green:          #2E7D32;
+      --clr-green-light:    #E8F5E9;
+      --clr-green-dark:     #1B5E20;
+      --clr-gray:           #546E7A;
+      --clr-gray-light:     #ECEFF1;
+      --clr-orange:         #BF360C;
+      --clr-orange-light:   #FBE9E7;
+      --clr-red:            #B71C1C;
+      --clr-red-light:      #FFEBEE;
+      --clr-warning-bg:     #FFF8E1;
+      --clr-warning-border: #F9A825;
+      --clr-warning-text:   #5D4037;
+      --clr-text:           #212121;
+      --clr-text-muted:     #546E7A;
+      --clr-border:         #CFD8DC;
+      --clr-bg:             #F4F6F9;
+      --clr-white:          #FFFFFF;
+      --radius:             8px;
+      --radius-lg:          12px;
+      --shadow-sm:          0 1px 3px rgba(0,0,0,.10);
+      --shadow-md:          0 4px 14px rgba(0,0,0,.10);
+      --font:               system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    }
+
+    /* ============================================================
+       RESET & BASE
+    ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font);
+      font-size: 1rem;
+      line-height: 1.6;
+      color: var(--clr-text);
+      background: var(--clr-bg);
+      min-height: 100vh;
+    }
+    a { color: var(--clr-primary); }
+    a:focus-visible,
+    button:focus-visible,
+    input:focus-visible,
+    select:focus-visible,
+    textarea:focus-visible {
+      outline: 3px solid var(--clr-primary);
+      outline-offset: 2px;
+    }
+
+    /* ============================================================
+       SKIP LINK
+    ============================================================ */
+    .skip-link {
+      position: absolute;
+      top: -40px;
+      left: 0;
+      background: var(--clr-primary);
+      color: #fff;
+      padding: .5rem 1rem;
+      z-index: 100;
+      border-radius: 0 0 var(--radius) 0;
+      text-decoration: none;
+      font-weight: 600;
+      transition: top .2s;
+    }
+    .skip-link:focus { top: 0; }
+
+    /* ============================================================
+       HEADER
+    ============================================================ */
+    .site-header {
+      background: var(--clr-primary);
+      color: #fff;
+      padding: 1.25rem 0;
+      border-bottom: 4px solid var(--clr-primary-dark);
+    }
+    .site-header .container {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .site-header .logo-mark {
+      width: 40px;
+      height: 40px;
+      background: rgba(255,255,255,.15);
+      border-radius: var(--radius);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      flex-shrink: 0;
+    }
+    .site-header .header-text h1 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: -.01em;
+    }
+    .site-header .header-text p {
+      font-size: .8rem;
+      opacity: .8;
+      margin-top: .1rem;
+    }
+    .disclaimer-banner {
+      background: var(--clr-warning-bg);
+      border-left: 4px solid var(--clr-warning-border);
+      color: var(--clr-warning-text);
+      padding: .75rem 1.25rem;
+      font-size: .875rem;
+      line-height: 1.5;
+    }
+    .disclaimer-banner strong { font-weight: 600; }
+
+    /* ============================================================
+       LAYOUT / CONTAINER
+    ============================================================ */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 1.25rem;
+    }
+    main { padding: 2rem 0 4rem; }
+
+    /* ============================================================
+       SECTION HEADINGS
+    ============================================================ */
+    [tabindex="-1"]:focus { outline: none; }
+
+    .section-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--clr-primary);
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
+    .section-title::before {
+      content: '';
+      display: inline-block;
+      width: 4px;
+      height: 1.2em;
+      background: var(--clr-primary);
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+
+    /* ============================================================
+       CARD
+    ============================================================ */
+    .card {
+      background: var(--clr-white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      padding: 1.75rem;
+      border: 1px solid var(--clr-border);
+    }
+
+    /* ============================================================
+       FORM
+    ============================================================ */
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem 2rem;
+    }
+    .form-group { display: flex; flex-direction: column; gap: .35rem; }
+    .form-group.full-width { grid-column: 1 / -1; }
+
+    label {
+      font-weight: 600;
+      font-size: .9rem;
+      color: var(--clr-text);
+    }
+    label .hint {
+      font-weight: 400;
+      color: var(--clr-text-muted);
+      font-size: .8rem;
+      margin-left: .25rem;
+    }
+
+    /* ---- Info hover-tooltip per formulierveld ---- */
+    .field-info {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      margin-left: .35rem;
+      cursor: help;
+      vertical-align: middle;
+    }
+    .field-info-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1rem;
+      height: 1rem;
+      border-radius: 50%;
+      border: 1.5px solid var(--clr-primary);
+      color: var(--clr-primary);
+      font-size: .65rem;
+      font-weight: 700;
+      font-style: normal;
+      line-height: 1;
+      flex-shrink: 0;
+      user-select: none;
+    }
+    .field-info-tooltip {
+      display: none;
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1A1A2E;
+      color: #fff;
+      font-size: .78rem;
+      font-weight: 400;
+      padding: .55rem .8rem;
+      border-radius: var(--radius);
+      width: 230px;
+      white-space: normal;
+      z-index: 200;
+      line-height: 1.45;
+      box-shadow: 0 4px 14px rgba(0,0,0,.25);
+      pointer-events: none;
+    }
+    .field-info-tooltip::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 5px solid transparent;
+      border-top-color: #1A1A2E;
+    }
+    .field-info:hover .field-info-tooltip,
+    .field-info:focus-within .field-info-tooltip { display: block; }
+
+    input[type="date"],
+    input[type="number"],
+    input[type="text"],
+    select {
+      width: 100%;
+      padding: .65rem .85rem;
+      border: 1.5px solid var(--clr-border);
+      border-radius: var(--radius);
+      font-family: var(--font);
+      font-size: 1rem;
+      color: var(--clr-text);
+      background: var(--clr-white);
+      transition: border-color .2s, box-shadow .2s;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+    input[type="date"]:hover,
+    input[type="number"]:hover,
+    select:hover { border-color: var(--clr-primary); }
+    input[type="date"]:focus,
+    input[type="number"]:focus,
+    input[type="text"]:focus,
+    select:focus {
+      border-color: var(--clr-primary);
+      box-shadow: 0 0 0 3px rgba(27,79,138,.18);
+      outline: none;
+    }
+    input.invalid, select.invalid {
+      border-color: var(--clr-red);
+      background: var(--clr-red-light);
+    }
+    .field-error {
+      font-size: .82rem;
+      color: var(--clr-red);
+      font-weight: 600;
+      display: none;
+      align-items: center;
+      gap: .25rem;
+    }
+    .field-error.visible { display: flex; }
+
+    /* Radio group */
+    .radio-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .6rem;
+      margin-top: .2rem;
+    }
+    .radio-option {
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+      padding: .5rem .9rem;
+      border: 1.5px solid var(--clr-border);
+      border-radius: 100px;
+      cursor: pointer;
+      font-size: .9rem;
+      transition: border-color .2s, background .2s;
+      user-select: none;
+    }
+    .radio-option:has(input:checked) {
+      border-color: var(--clr-primary);
+      background: var(--clr-primary-light);
+      color: var(--clr-primary);
+      font-weight: 600;
+    }
+    .radio-option input[type="radio"] {
+      width: auto;
+      accent-color: var(--clr-primary);
+    }
+
+    /* Checkbox */
+    .checkbox-group {
+      display: flex;
+      align-items: flex-start;
+      gap: .65rem;
+      margin-top: .25rem;
+    }
+    .checkbox-group input[type="checkbox"] {
+      width: 1.1rem;
+      height: 1.1rem;
+      margin-top: .2rem;
+      flex-shrink: 0;
+      accent-color: var(--clr-primary);
+      cursor: pointer;
+    }
+    .checkbox-group label {
+      font-weight: 400;
+      font-size: .9rem;
+      cursor: pointer;
+    }
+
+    /* Buttons */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      background: var(--clr-primary);
+      color: #fff;
+      border: none;
+      padding: .8rem 2rem;
+      border-radius: var(--radius);
+      font-family: var(--font);
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background .2s, transform .1s;
+      text-decoration: none;
+    }
+    .btn-primary:hover { background: var(--clr-primary-dark); }
+    .btn-primary:active { transform: scale(.98); }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      background: var(--clr-white);
+      color: var(--clr-primary);
+      border: 1.5px solid var(--clr-primary);
+      padding: .7rem 1.5rem;
+      border-radius: var(--radius);
+      font-family: var(--font);
+      font-size: .95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .2s, color .2s;
+      text-decoration: none;
+    }
+    .btn-secondary:hover {
+      background: var(--clr-primary-light);
+    }
+
+    .form-actions {
+      margin-top: 1.75rem;
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    /* ============================================================
+       ALERT / WARNING BOXES
+    ============================================================ */
+    .alert {
+      padding: .9rem 1.1rem;
+      border-radius: var(--radius);
+      font-size: .9rem;
+      line-height: 1.55;
+      display: flex;
+      gap: .75rem;
+      align-items: flex-start;
+      margin-bottom: 1rem;
+    }
+    .alert-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: .05rem; }
+    .alert.alert-warning {
+      background: var(--clr-warning-bg);
+      border: 1.5px solid var(--clr-warning-border);
+      color: var(--clr-warning-text);
+    }
+    .alert.alert-danger {
+      background: var(--clr-red-light);
+      border: 1.5px solid var(--clr-red);
+      color: var(--clr-red);
+    }
+    .alert.alert-info {
+      background: var(--clr-primary-light);
+      border: 1.5px solid var(--clr-primary);
+      color: var(--clr-primary-dark);
+    }
+    #warnings-area { margin-bottom: .25rem; }
+
+    /* ============================================================
+       RESULTS SECTION
+    ============================================================ */
+    #results-section { display: none; margin-top: 2rem; }
+    #results-section.visible { display: block; }
+
+    /* ============================================================
+       KPI CARDS
+    ============================================================ */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .kpi-card {
+      background: var(--clr-white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      padding: 1.25rem;
+      border: 1px solid var(--clr-border);
+      border-top: 4px solid var(--clr-border);
+      display: flex;
+      flex-direction: column;
+      gap: .3rem;
+    }
+    .kpi-card.paid    { border-top-color: var(--clr-green); }
+    .kpi-card.unpaid  { border-top-color: var(--clr-gray); }
+    .kpi-card.total   { border-top-color: var(--clr-primary); }
+    .kpi-card.calendar{ border-top-color: #7B1FA2; }
+    .kpi-card .kpi-label {
+      font-size: .78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      color: var(--clr-text-muted);
+    }
+    .kpi-card .kpi-value {
+      font-size: 1.65rem;
+      font-weight: 700;
+      color: var(--clr-text);
+      line-height: 1.15;
+    }
+    .kpi-card .kpi-sub {
+      font-size: .82rem;
+      color: var(--clr-text-muted);
+      line-height: 1.4;
+    }
+    .kpi-card .kpi-badge {
+      display: inline-block;
+      padding: .2rem .55rem;
+      border-radius: 100px;
+      font-size: .75rem;
+      font-weight: 700;
+      margin-top: .35rem;
+    }
+    .kpi-badge.green  { background: var(--clr-green-light); color: var(--clr-green-dark); }
+    .kpi-badge.gray   { background: var(--clr-gray-light);  color: var(--clr-gray); }
+    .kpi-badge.blue   { background: var(--clr-primary-light); color: var(--clr-primary-dark); }
+    .kpi-badge.purple { background: #F3E5F5; color: #4A148C; }
+
+    /* ============================================================
+       TIMELINE
+    ============================================================ */
+    .timeline-card {
+      background: var(--clr-white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      padding: 1.75rem;
+      border: 1px solid var(--clr-border);
+      margin-bottom: 2rem;
+      overflow-x: auto;
+    }
+    .timeline-wrapper { min-width: 560px; }
+
+    .tl-wrap {
+      position: relative;
+      height: 130px;
+    }
+
+    .tl-bg {
+      position: absolute;
+      top: 16px; left: 0; right: 0;
+      height: 36px;
+      background: var(--clr-gray-light);
+      border-radius: var(--radius);
+    }
+
+    .tl-segment {
+      position: absolute;
+      top: 16px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .78rem;
+      font-weight: 700;
+      color: #fff;
+      overflow: hidden;
+      border-radius: var(--radius);
+      transition: opacity .2s;
+    }
+    .tl-segment span { padding: 0 .6rem; white-space: nowrap; }
+
+    .tl-deadline-callout {
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      margin-top: 1.25rem;
+      padding: .65rem 1rem;
+      background: #FFF8E1;
+      border: 1.5px solid var(--clr-warning-border);
+      border-radius: var(--radius);
+      font-size: .85rem;
+      color: var(--clr-warning-text);
+      line-height: 1.4;
+    }
+    .tl-deadline-icon { font-size: 1rem; flex-shrink: 0; }
+
+    .tl-tick {
+      position: absolute;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+    .tl-tick::before {
+      content: '';
+      display: block;
+      width: 1.5px;
+      height: 8px;
+      background: var(--clr-border);
+    }
+    .tl-row1 { top: 56px; }
+    .tl-row2 { top: 104px; }
+
+    .tl-tick-date {
+      font-size: .72rem;
+      font-weight: 700;
+      color: var(--clr-text-muted);
+      white-space: nowrap;
+    }
+    .tl-tick-lbl {
+      font-size: .68rem;
+      color: var(--clr-text-muted);
+      white-space: nowrap;
+    }
+    .tl-tick-deadline::before { background: var(--clr-orange); }
+    .tl-tick-deadline .tl-tick-date { color: var(--clr-orange); }
+    .tl-tick-deadline .tl-tick-lbl  { color: var(--clr-orange); font-weight: 600; }
+
+    /* Legend */
+    .timeline-legend {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      margin-top: 1rem;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+      font-size: .82rem;
+      color: var(--clr-text-muted);
+    }
+    .legend-swatch {
+      width: 14px;
+      height: 14px;
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+    .legend-swatch.paid    { background: var(--clr-green); }
+    .legend-swatch.unpaid  { background: var(--clr-gray); }
+    .legend-swatch.deadline{ background: var(--clr-orange); width: 3px; border-radius: 0; }
+
+    /* ============================================================
+       SALARY TABLE
+    ============================================================ */
+    .table-card {
+      background: var(--clr-white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      padding: 1.75rem;
+      border: 1px solid var(--clr-border);
+      margin-bottom: 2rem;
+      overflow-x: auto;
+    }
+    .table-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.25rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: .9rem;
+      min-width: 560px;
+    }
+    thead th {
+      background: var(--clr-primary);
+      color: #fff;
+      padding: .7rem .9rem;
+      text-align: left;
+      font-weight: 700;
+      font-size: .82rem;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      white-space: nowrap;
+    }
+    thead th:first-child { border-radius: var(--radius) 0 0 0; }
+    thead th:last-child  { border-radius: 0 var(--radius) 0 0; }
+    tbody tr:nth-child(even) { background: #F9FAFB; }
+    tbody td {
+      padding: .65rem .9rem;
+      border-bottom: 1px solid var(--clr-border);
+      vertical-align: middle;
+    }
+    tbody tr:hover td { background: var(--clr-primary-light); }
+    .td-paid   { color: var(--clr-green-dark); font-weight: 600; }
+    .td-unpaid { color: var(--clr-gray); font-weight: 600; }
+    .td-mixed  { color: #6A1B9A; font-weight: 600; }
+    tfoot td {
+      padding: .8rem .9rem;
+      font-weight: 700;
+      background: var(--clr-primary-light);
+      border-top: 2px solid var(--clr-primary);
+      color: var(--clr-primary-dark);
+    }
+    tfoot td:first-child { border-radius: 0 0 0 var(--radius); }
+    tfoot td:last-child  { border-radius: 0 0 var(--radius) 0; }
+    .text-right { text-align: right; }
+
+    /* ============================================================
+       HR CONFIRMATION SECTION
+    ============================================================ */
+    .hr-section {
+      background: var(--clr-white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      padding: 1.75rem;
+      border: 1px solid var(--clr-border);
+      margin-bottom: 2rem;
+    }
+    .hr-section h2 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--clr-text);
+      margin-bottom: 1rem;
+    }
+    .confirm-box {
+      background: var(--clr-primary-light);
+      border: 1.5px solid var(--clr-primary);
+      border-radius: var(--radius);
+      padding: 1rem 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+    .confirm-box .checkbox-group label {
+      font-weight: 600;
+      color: var(--clr-primary-dark);
+    }
+
+    /* ============================================================
+       FOOTER
+    ============================================================ */
+    .site-footer {
+      background: var(--clr-primary-dark);
+      color: rgba(255,255,255,.75);
+      padding: 1.25rem 0;
+      font-size: .8rem;
+      margin-top: 2rem;
+    }
+    .site-footer .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: .5rem;
+    }
+    .site-footer a { color: rgba(255,255,255,.85); }
+
+    /* ============================================================
+       RESPONSIVE
+    ============================================================ */
+    @media (max-width: 900px) {
+      .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 600px) {
+      .form-grid { grid-template-columns: 1fr; }
+      .form-group.full-width { grid-column: 1; }
+      .kpi-grid { grid-template-columns: 1fr; }
+      .site-header .header-text h1 { font-size: 1rem; }
+      .card, .timeline-card, .table-card, .hr-section { padding: 1.25rem; }
+      .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
+      .form-actions { flex-direction: column; }
+    }
+
+    /* ============================================================
+       PRINT STYLES
+    ============================================================ */
+    @media print {
+      body { background: #fff; font-size: .9rem; }
+      .site-header { background: var(--clr-primary) !important; color: #fff !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .skip-link,
+      .form-section,
+      .form-actions,
+      .table-actions,
+      .hr-section,
+      .btn-primary,
+      .btn-secondary { display: none !important; }
+      #results-section { display: block !important; }
+      .card, .timeline-card, .table-card, .kpi-card {
+        box-shadow: none !important;
+        border: 1px solid #ccc !important;
+        break-inside: avoid;
+      }
+      table { font-size: .78rem; }
+      thead th { background: #1B4F8A !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      tfoot td  { background: #E8F0F9 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .page-break-before { break-before: page; }
+      .disclaimer-banner { background: #FFF8E1 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .tl-segment { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+
+    /* ============================================================
+       V2 TOEVOEGINGEN
+    ============================================================ */
+    /* Accordion verlofvorm */
+    .verlofvorm-card { border: 1.5px solid var(--clr-border); border-radius: var(--radius-lg);
+      margin-bottom: 1rem; overflow: hidden; }
+    .verlofvorm-header { display: flex; align-items: center; gap: .75rem;
+      padding: 1rem 1.25rem; cursor: pointer; background: var(--clr-white);
+      border: none; width: 100%; text-align: left; font-family: var(--font); }
+    .verlofvorm-header:hover { background: var(--clr-primary-light); }
+    .verlofvorm-header[aria-expanded="true"] { background: var(--clr-primary-light);
+      border-bottom: 1.5px solid var(--clr-border); }
+    .verlofvorm-title { font-weight: 600; font-size: .95rem; color: var(--clr-text); flex: 1; }
+    .verlofvorm-badge { font-size: .75rem; font-weight: 600; padding: .2rem .6rem;
+      border-radius: 100px; white-space: nowrap; }
+    .verlofvorm-chevron { font-size: .8rem; color: var(--clr-text-muted); transition: transform .2s; }
+    .verlofvorm-header[aria-expanded="true"] .verlofvorm-chevron { transform: rotate(180deg); }
+    .verlofvorm-body { display: none; padding: 1.25rem 1.25rem 1.5rem; background: var(--clr-white); }
+    .verlofvorm-body.open { display: block; }
+
+    /* Rechten-overzicht tabel */
+    .rechten-table { width: 100%; border-collapse: collapse; font-size: .875rem; margin-top: .75rem; }
+    .rechten-table th { background: var(--clr-primary); color: #fff; padding: .6rem .85rem;
+      text-align: left; font-size: .78rem; text-transform: uppercase; letter-spacing: .04em; }
+    .rechten-table td { padding: .6rem .85rem; border-bottom: 1px solid var(--clr-border); }
+    .rechten-table tr:nth-child(even) td { background: #F9FAFB; }
+    /* Tooltips in de rechtentabel klappen naar beneden uit, zodat ze niet
+       buiten de scrollende tabelcontainer vallen. */
+    .rechten-scroll { overflow-x: auto; padding-bottom: 130px; margin-bottom: -130px; }
+    .rechten-table .field-info-tooltip {
+      bottom: auto;
+      top: calc(100% + 8px);
+    }
+    .rechten-table .field-info-tooltip::after {
+      top: auto;
+      bottom: 100%;
+      border-top-color: transparent;
+      border-bottom-color: #1A1A2E;
+    }
+    .cel-nadruk  { font-weight: 600; }
+    .status-ok   { color: var(--clr-green-dark); font-weight: 600; }
+    .status-warn { color: #BF360C; font-weight: 600; }
+    .status-na   { color: var(--clr-text-muted); }
+
+    /* Tijdlijn kleur per verlofvorm */
+    .tl-geboorte  { background: #E65100; }
+    .tl-aanvullend{ background: #F57C00; }
+    .tl-bov-uwv   { background: var(--clr-green); }
+    .tl-bov-cao   { background: var(--clr-primary); }
+    .tl-oov       { background: var(--clr-gray); }
+
+    /* Badges per verlofvorm (accordion-headers) */
+    .badge-geboorte   { background: #FBE9E7; color: #BF360C; }
+    .badge-aanvullend { background: #FFF3E0; color: #E65100; }
+    .badge-bov-uwv    { background: var(--clr-green-light); color: var(--clr-green-dark); }
+    .badge-bov-cao    { background: var(--clr-primary-light); color: var(--clr-primary-dark); }
+    .badge-oov        { background: var(--clr-gray-light); color: var(--clr-gray); }
+
+    /* Legenda-swatches per verlofvorm */
+    .legend-swatch.geboorte   { background: #E65100; }
+    .legend-swatch.aanvullend { background: #F57C00; }
+    .legend-swatch.bov-uwv    { background: var(--clr-green); }
+    .legend-swatch.bov-cao    { background: var(--clr-primary); }
+    .legend-swatch.oov        { background: var(--clr-gray); }
+
+    /* Sectie 2 en rechten-overzicht: verborgen tot sectie 1 is bevestigd */
+    #rechten-section, #plan-section { display: none; margin-top: 2rem; }
+    #rechten-section.visible, #plan-section.visible { display: block; }
+
+    /* Velden binnen een accordion-body: pas zichtbaar na aanvinken */
+    .vv-fields { display: none; margin-top: 1rem; }
+    .vv-fields.open { display: block; }
+
+    .vv-meta {
+      font-size: .85rem;
+      color: var(--clr-text-muted);
+      line-height: 1.5;
+      background: var(--clr-gray-light);
+      border-radius: var(--radius);
+      padding: .7rem .9rem;
+      margin-bottom: .25rem;
+    }
+    .vv-meta strong { color: var(--clr-text); }
+
+    .resterend-pill {
+      display: inline-block;
+      background: var(--clr-primary-light);
+      color: var(--clr-primary-dark);
+      border-radius: 100px;
+      padding: .15rem .6rem;
+      font-size: .78rem;
+      font-weight: 700;
+    }
+
+    /* ============================================================
+       POP-UP: DISCLAIMER
+    ============================================================ */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(18, 34, 51, .68);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.25rem;
+      z-index: 500;
+    }
+    .modal-overlay.closed { display: none; }
+    .modal-box {
+      background: var(--clr-white);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 12px 40px rgba(0,0,0,.35);
+      max-width: 540px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 1.75rem;
+      border-top: 6px solid var(--clr-warning-border);
+    }
+    .modal-box h2 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--clr-text);
+      margin-bottom: .85rem;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
+    .modal-box p { font-size: .95rem; margin-bottom: .85rem; line-height: 1.6; }
+    .modal-box ul { margin: 0 0 1rem 1.25rem; font-size: .95rem; line-height: 1.6; }
+    .modal-box li { margin-bottom: .35rem; }
+    .modal-box .modal-highlight {
+      background: var(--clr-warning-bg);
+      border: 1.5px solid var(--clr-warning-border);
+      border-radius: var(--radius);
+      padding: .8rem 1rem;
+      font-size: .92rem;
+      color: var(--clr-warning-text);
+      margin-bottom: 1.25rem;
+      line-height: 1.55;
+    }
+    .modal-actions { display: flex; justify-content: flex-end; }
+    @media (max-width: 600px) {
+      .modal-actions .btn-primary { width: 100%; justify-content: center; }
+    }
+    @media print { .modal-overlay { display: none !important; } }
+  </style>
+</head>
+<body>
+
+  <a href="#main-content" class="skip-link">Ga naar hoofdinhoud</a>
+
+  <!-- ========================================================
+       POP-UP: eerst lezen, dan verder
+  ======================================================== -->
+  <div class="modal-overlay" id="disclaimer-modal" role="dialog" aria-modal="true"
+       aria-labelledby="modal-title" aria-describedby="modal-body">
+    <div class="modal-box">
+      <h2 id="modal-title"><span aria-hidden="true">⚠️</span> Indicatieve berekening</h2>
+      <div id="modal-body">
+        <div class="modal-highlight">
+          Deze rekenhulp geeft een indicatieve berekening. U kunt er geen rechten aan ontlenen.
+        </div>
+        <p>Uw gegevens worden niet opgeslagen.</p>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn-primary" id="modal-accept">
+          Ik begrijp het, ga verder
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <header class="site-header" role="banner">
+    <div class="container">
+      <div class="logo-mark" aria-hidden="true">📋</div>
+      <div class="header-text">
+        <h1>Geboorteverlof &amp; ouderschapsverlof berekenen</h1>
+        <p>Intern HR-hulpmiddel, CAO Gemeenten 2025-2027 · versie 2</p>
+      </div>
+    </div>
+  </header>
+
+  <div class="disclaimer-banner" role="note">
+    <strong>Indicatieve berekening.</strong>
+    Gebaseerd op de CAO Gemeenten 2025-2027 en de wet WAZO.
+  </div>
+
+  <main id="main-content">
+    <div class="container">
+
+      <!-- ========================================================
+           SECTIE 1: BASISGEGEVENS
+      ======================================================== -->
+      <section class="form-section card" aria-labelledby="basis-title" style="margin-top:2rem;">
+        <h2 id="basis-title" class="section-title">1. Basisgegevens</h2>
+
+        <div id="warnings-area" role="status" aria-live="polite" aria-atomic="false"></div>
+
+        <form id="basis-form" novalidate>
+          <div class="form-grid">
+
+            <div class="form-group">
+              <label for="geboortedatum">
+                Geboortedatum kind
+                <span class="field-info" tabindex="0">
+                  <span class="field-info-icon" aria-hidden="true">i</span>
+                  <span class="field-info-tooltip" role="tooltip">Hiermee rekent de tool uit tot wanneer u elk soort verlof mag opnemen: 4 weken, 6 maanden, tot het kind 1 jaar wordt of tot het kind 8 jaar wordt.</span>
+                </span>
+              </label>
+              <input type="date" id="geboortedatum" name="geboortedatum" required autocomplete="off"
+                     aria-describedby="geboortedatum-error">
+              <span class="field-error" id="geboortedatum-error" role="alert" aria-live="polite">
+                <span aria-hidden="true">⚠</span><span class="error-text"></span>
+              </span>
+            </div>
+
+            <div class="form-group">
+              <label for="contracturen">
+                Contracturen per week
+                <span class="field-info" tabindex="0">
+                  <span class="field-info-icon" aria-hidden="true">i</span>
+                  <span class="field-info-tooltip" role="tooltip">Het aantal uur dat u per week werkt volgens uw contract. Werkt u voltijd bij de gemeente, dan is dat 36 uur. Al uw verlof wordt met dit getal berekend.</span>
+                </span>
+              </label>
+              <input type="number" id="contracturen" name="contracturen"
+                     value="36" min="1" max="40" step="0.5" required
+                     aria-describedby="contracturen-error">
+              <span class="field-error" id="contracturen-error" role="alert" aria-live="polite">
+                <span aria-hidden="true">⚠</span><span class="error-text"></span>
+              </span>
+            </div>
+
+            <div class="form-group">
+              <label for="maandsalaris">
+                Bruto maandsalaris voltijd (€)
+                <span class="field-info" tabindex="0">
+                  <span class="field-info-icon" aria-hidden="true">i</span>
+                  <span class="field-info-tooltip" role="tooltip">Uw vaste brutosalaris per maand, zonder toeslagen, vakantiegeld en IKB. Dit bedrag bepaalt ook hoeveel procent u krijgt tijdens betaald ouderschapsverlof: 80, 70 of 50 procent.</span>
+                </span>
+              </label>
+              <input type="number" id="maandsalaris" name="maandsalaris"
+                     placeholder="3500" min="1" step="1" required
+                     aria-describedby="maandsalaris-error">
+              <span class="field-error" id="maandsalaris-error" role="alert" aria-live="polite">
+                <span aria-hidden="true">⚠</span><span class="error-text"></span>
+              </span>
+            </div>
+
+            <div class="form-group full-width">
+              <label id="rol-label">Wie bent u?</label>
+              <div class="radio-group" role="radiogroup" aria-labelledby="rol-label">
+                <label class="radio-option">
+                  <input type="radio" name="rol" value="barende" checked>
+                  Barende ouder
+                </label>
+                <label class="radio-option">
+                  <input type="radio" name="rol" value="partner">
+                  Partner / medeouder
+                </label>
+              </div>
+            </div>
+
+            <div class="form-group full-width">
+              <div class="checkbox-group">
+                <input type="checkbox" id="meerling" name="meerling">
+                <label for="meerling">
+                  Het gaat om een tweeling of meerling
+                </label>
+              </div>
+            </div>
+
+            <div class="form-group full-width">
+              <div class="checkbox-group">
+                <input type="checkbox" id="wisselende-arbeidsomvang" name="wisselende-arbeidsomvang">
+                <label for="wisselende-arbeidsomvang">
+                  Ik werk niet elke week hetzelfde aantal uur
+                </label>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn-primary" id="btn-rechten">
+              <span aria-hidden="true">🔎</span> Bekijk mijn rechten
+            </button>
+            <button type="button" class="btn-secondary" id="btn-reset">
+              <span aria-hidden="true">↺</span> Opnieuw beginnen
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <!-- ========================================================
+           RECHTEN-OVERZICHT
+      ======================================================== -->
+      <section id="rechten-section" class="card" aria-labelledby="rechten-title">
+        <h2 id="rechten-title" class="section-title" tabindex="-1">Dit verlof kunt u opnemen</h2>
+        <p style="font-size:.9rem;color:var(--clr-text-muted);">
+          Dit hangt af van wie u bent en wanneer uw kind is geboren.
+          "Opnemen vóór" is de laatste dag waarop u dit verlof nog kunt gebruiken.
+          Beweeg met uw muis over de <span class="field-info-icon" aria-hidden="true"
+          style="vertical-align:middle;">i</span> voor uitleg per soort verlof.
+        </p>
+        <div class="rechten-scroll">
+          <table class="rechten-table" id="rechten-table">
+            <thead>
+              <tr>
+                <th scope="col">Soort verlof</th>
+                <th scope="col">Hoeveel</th>
+                <th scope="col">Wat krijgt u betaald</th>
+                <th scope="col">Opnemen vóór</th>
+                <th scope="col">Voor u?</th>
+              </tr>
+            </thead>
+            <tbody id="rechten-tbody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ========================================================
+           SECTIE 2: VERLOFVORMEN PLANNEN
+      ======================================================== -->
+      <section id="plan-section" class="card" aria-labelledby="plan-title">
+        <h2 id="plan-title" class="section-title">2. Uw verlof plannen</h2>
+        <p style="font-size:.9rem;color:var(--clr-text-muted);margin-bottom:1.25rem;">
+          Klik een soort verlof open, vink aan dat u dit wilt plannen en vul de vragen in.
+          U kunt meerdere soorten verlof tegelijk plannen.
+        </p>
+
+        <div id="accordion-wrap"></div>
+
+        <div id="plan-errors" role="alert" aria-live="polite"></div>
+
+        <div class="form-actions">
+          <button type="button" class="btn-primary" id="btn-bereken">
+            <span aria-hidden="true">📊</span> Bereken verlofplan
+          </button>
+        </div>
+      </section>
+
+      <!-- ========================================================
+           RESULTATEN
+      ======================================================== -->
+      <section id="results-section" aria-labelledby="results-title" aria-live="polite" aria-atomic="false">
+
+        <h2 id="results-title" class="section-title" style="margin-top:.25rem;" tabindex="-1">
+          Uw verlofplan
+        </h2>
+
+        <div id="result-warnings" role="status" aria-live="polite"></div>
+
+        <div class="kpi-grid" id="kpi-grid" role="list" aria-label="Kerncijfers verlofplan"></div>
+
+        <div class="timeline-card" aria-label="Verloftijdlijn">
+          <h3 class="section-title" style="margin-bottom:1.25rem;">Tijdlijn</h3>
+          <div class="timeline-wrapper" id="timeline-wrapper"></div>
+          <div class="timeline-legend" id="timeline-legend"></div>
+        </div>
+
+        <div class="table-card" aria-label="Salaris per maand">
+          <h3 class="section-title" style="margin-bottom:.75rem;">Wat u per maand krijgt</h3>
+          <div style="overflow-x:auto;" tabindex="0" role="region" aria-label="Tabel met salaris per maand, u kunt hem opzij schuiven">
+            <table id="salary-table" aria-label="Salaris per maand tijdens uw verlof">
+              <thead>
+                <tr>
+                  <th scope="col">Maand</th>
+                  <th scope="col">Soort verlof</th>
+                  <th scope="col" class="text-right">Verlofuren</th>
+                  <th scope="col" class="text-right">U krijgt minder (€)</th>
+                  <th scope="col" class="text-right">Brutosalaris (€)</th>
+                </tr>
+              </thead>
+              <tbody id="salary-tbody"></tbody>
+              <tfoot id="salary-tfoot"></tfoot>
+            </table>
+          </div>
+        </div>
+
+        <div class="hr-section" aria-labelledby="hr-title">
+          <h2 id="hr-title"><span aria-hidden="true">📄</span> Overzicht bewaren</h2>
+          <div id="hr-notes"></div>
+          <div class="confirm-box">
+            <p style="font-size:.9rem;color:var(--clr-primary-dark);margin:0;">
+              Sla dit overzicht op als PDF en neem het mee naar het gesprek met uw leidinggevende.
+              Denk eraan: deze berekening is indicatief, u kunt er geen rechten aan ontlenen.
+            </p>
+          </div>
+          <div class="form-actions" style="margin-top:0;">
+            <button type="button" class="btn-primary" id="btn-print">
+              <span aria-hidden="true">🖨</span> Afdrukken of opslaan als PDF
+            </button>
+          </div>
+        </div>
+
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="container">
+      <span>Indicatieve berekening. U kunt er geen rechten aan ontlenen. Vraag uw verlof aan bij uw leidinggevende.</span>
+      <span id="footer-versie"></span>
+    </div>
+  </footer>
+
+  <script>
+  'use strict';
+
+  /* ============================================================
+     CONSTANTEN (aanpasbaar bij CAO-wijziging)
+  ============================================================ */
+  const PAID_UWV_MAX_X   = 9;    // BOV UWV: max x contracturen (WAZO art. 6:3)
+  const PAID_CAO_MAX_X   = 13;   // BOV CAO: max x contracturen (CAO Gemeenten)
+  const TOTAL_POOL_X     = 26;   // Totale verlofpool x contracturen (WAZO art. 6:1)
+  const MAX_SCHAAL_2     = 2889; // Bruto max. maandsalaris schaal 2 (voltijd, juli 2025)
+  const MAX_SCHAAL_4     = 3278; // Bruto max. maandsalaris schaal 4 (voltijd, juli 2025)
+  const CAO_VERSIE       = '2025-2027';
+  const LAATSTE_CONTROLE = 'juli 2026';
+
+  const GEBOORTE_MAX_X   = 1;    // geboorteverlof: 1 x contracturen
+  const AANV_MAX_X       = 5;    // aanvullend geboorteverlof: max 5 x contracturen
+  const AANV_PCT         = 0.70; // UWV-uitkering aanvullend geboorteverlof
+
+  /* ============================================================
+     DOM HELPERS
+  ============================================================ */
+  const $  = id => document.getElementById(id);
+  const $$ = sel => Array.from(document.querySelectorAll(sel));
+
+  /* ============================================================
+     DATUM- EN REKENHULPFUNCTIES
+  ============================================================ */
+  function parseInputDate(str) {
+    if (!str) return null;
+    const [y, m, d] = str.split('-').map(Number);
+    if (!y || !m || !d) return null;
+    return new Date(y, m - 1, d);
+  }
+  function addDays(date, days) {
+    const d = new Date(date); d.setDate(d.getDate() + days); return d;
+  }
+  function addMonths(date, months) {
+    const d = new Date(date); d.setMonth(d.getMonth() + months); return d;
+  }
+  function addYears(date, years) {
+    const d = new Date(date); d.setFullYear(d.getFullYear() + years); return d;
+  }
+  function addCalendarWeeks(date, weeks) { return addDays(date, weeks * 7); }
+  function daysBetween(start, end) { return Math.round((end - start) / 86400000); }
+  function calendarWeken(totalUren, verlofUrenPerWeek) {
+    return Math.ceil(totalUren / verlofUrenPerWeek);
+  }
+  function formatDateNL(date) {
+    return date.toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' });
+  }
+  function formatMonthYear(date) {
+    return date.toLocaleDateString('nl-NL', { month: 'short', year: 'numeric' });
+  }
+  function formatCurrency(amount) {
+    return new Intl.NumberFormat('nl-NL', {
+      style: 'currency', currency: 'EUR', maximumFractionDigits: 2
+    }).format(amount);
+  }
+  function fmtNum(n) { return Number.isInteger(n) ? String(n) : n.toFixed(1); }
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, c =>
+      ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+  }
+
+  /** CAO-percentage op basis van bruto voltijd maandsalaris */
+  function caoPctMax(maandsalaris) {
+    if (maandsalaris <= MAX_SCHAAL_2) return 80;
+    if (maandsalaris <= MAX_SCHAAL_4) return 70;
+    return 50;
+  }
+  /** Beschikbare keuzepercentages voor BOV CAO */
+  function caoPctOpties(caoPctMaxWaarde) {
+    return [50, 70, 80, 100].filter(p => p <= caoPctMaxWaarde);
+  }
+  /** Netto salarisfractie bij partieel verlof met doorbetalingspercentage pct (0-1) */
+  function nettoPct(verlofUrenPerWeek, contracturen, pct) {
+    const X = verlofUrenPerWeek * pct;
+    const Y = (contracturen - verlofUrenPerWeek) * 1.00;
+    return (X + Y) / contracturen;
+  }
+  /** Netto salarisfractie bij onbetaald ouderschapsverlof */
+  function nettoPctOOV(verlofUrenPerWeek, contracturen) {
+    return (contracturen - verlofUrenPerWeek) / contracturen;
+  }
+
+  /* ============================================================
+     VELDFOUTEN
+  ============================================================ */
+  function showError(fieldId, msg) {
+    const input = $(fieldId), errorEl = $(fieldId + '-error');
+    if (!input || !errorEl) return;
+    input.classList.add('invalid');
+    input.setAttribute('aria-invalid', 'true');
+    errorEl.querySelector('.error-text').textContent = msg;
+    errorEl.classList.add('visible');
+  }
+  function clearError(fieldId) {
+    const input = $(fieldId), errorEl = $(fieldId + '-error');
+    if (!input || !errorEl) return;
+    input.classList.remove('invalid');
+    input.removeAttribute('aria-invalid');
+    errorEl.querySelector('.error-text').textContent = '';
+    errorEl.classList.remove('visible');
+  }
+  function errSpan(id) {
+    return '<span class="field-error" id="' + id + '-error" role="alert" aria-live="polite">' +
+           '<span aria-hidden="true">&#9888;</span><span class="error-text"></span></span>';
+  }
+  function info(text) {
+    return '<span class="field-info" tabindex="0"><span class="field-info-icon" aria-hidden="true">i</span>' +
+           '<span class="field-info-tooltip" role="tooltip">' + esc(text) + '</span></span>';
+  }
+
+  /* ============================================================
+     APPLICATIESTAAT
+  ============================================================ */
+  let BASIS = null;       // ingevulde basisgegevens
+  let CALC  = null;       // laatste berekening
+
+  /* ============================================================
+     VERLOFVORM-DEFINITIES
+  ============================================================ */
+  const VORMEN = [
+    { key: 'geboorte',   naam: 'Geboorteverlof',
+      badge: 'badge-geboorte',   badgeText: '100% salaris',  kleur: 'tl-geboorte',
+      swatch: 'geboorte',   rollen: ['partner'] },
+    { key: 'aanvullend', naam: 'Aanvullend geboorteverlof',
+      badge: 'badge-aanvullend', badgeText: '70% via UWV',   kleur: 'tl-aanvullend',
+      swatch: 'aanvullend', rollen: ['partner'] },
+    { key: 'uwv',        naam: 'Betaald ouderschapsverlof (UWV / WAZO)',
+      badge: 'badge-bov-uwv',    badgeText: '70% of 100%',   kleur: 'tl-bov-uwv',
+      swatch: 'bov-uwv',    rollen: ['barende', 'partner'] },
+    { key: 'cao',        naam: 'Betaald ouderschapsverlof (CAO Gemeenten)',
+      badge: 'badge-bov-cao',    badgeText: 'CAO-percentage', kleur: 'tl-bov-cao',
+      swatch: 'bov-cao',    rollen: ['barende', 'partner'] },
+    { key: 'oov',        naam: 'Onbetaald ouderschapsverlof',
+      badge: 'badge-oov',        badgeText: '0% over verlofuren', kleur: 'tl-oov',
+      swatch: 'oov',        rollen: ['barende', 'partner'] }
+  ];
+
+  function actieveVormen() {
+    return VORMEN.filter(v => v.rollen.includes(BASIS.rol));
+  }
+
+  /* ============================================================
+     DEADLINES
+  ============================================================ */
+  function deadlines(geboortedatum, thuiskomst) {
+    const ref = thuiskomst || geboortedatum;
+    return {
+      geboorte:   addDays(ref, 28),               // 4 weken
+      aanvullend: addMonths(geboortedatum, 6),    // 6 maanden
+      uwv:        addYears(geboortedatum, 1),     // 1e verjaardag
+      cao:        addYears(geboortedatum, 8),     // 8e verjaardag
+      oov:        addYears(geboortedatum, 8)      // 8e verjaardag
+    };
+  }
+
+  /* ============================================================
+     SECTIE 1: VALIDATIE BASISGEGEVENS
+  ============================================================ */
+  function validateBasis() {
+    let valid = true;
+    ['geboortedatum', 'contracturen', 'maandsalaris'].forEach(clearError);
+
+    const geboortedatumVal = $('geboortedatum').value;
+    const contracturen     = parseFloat($('contracturen').value);
+    const maandsalaris     = parseFloat($('maandsalaris').value);
+    const rol              = document.querySelector('input[name="rol"]:checked').value;
+    const meerling         = $('meerling').checked;
+    const wisselende       = $('wisselende-arbeidsomvang').checked;
+
+    if (!geboortedatumVal) {
+      showError('geboortedatum', 'Vul de geboortedatum van uw kind in.'); valid = false;
+    }
+    if (isNaN(contracturen) || contracturen <= 0) {
+      showError('contracturen', 'Vul in hoeveel uur per week u werkt. Dit moet meer zijn dan 0.'); valid = false;
+    } else if (contracturen > 40) {
+      showError('contracturen', 'Vul maximaal 40 uur per week in.'); valid = false;
+    }
+    if (isNaN(maandsalaris) || maandsalaris <= 0) {
+      showError('maandsalaris', 'Vul uw brutosalaris per maand in.'); valid = false;
+    }
+    if (!valid) return null;
+
+    return {
+      rol, meerling, wisselende, contracturen, maandsalaris,
+      geboortedatum: parseInputDate(geboortedatumVal),
+      caoPctMax: caoPctMax(maandsalaris)
+    };
+  }
+
+  /* ============================================================
+     RECHTEN-OVERZICHT RENDEREN
+  ============================================================ */
+  function renderRechten() {
+    const ct = BASIS.contracturen;
+    const dl = deadlines(BASIS.geboortedatum, null);
+    const vandaag = new Date(); vandaag.setHours(0, 0, 0, 0);
+
+    const rijen = [];
+    if (BASIS.rol === 'partner') {
+      rijen.push({
+        naam: 'Geboorteverlof',
+        recht: '1 week werk: ' + fmtNum(GEBOORTE_MAX_X * ct) + ' uur',
+        betaling: 'Uw hele salaris',
+        datum: dl.geboorte,
+        tip: 'Verlof vlak na de geboorte van uw kind. U krijgt 1 werkweek vrij met uw hele salaris. Opnemen binnen 4 weken na de geboorte of na thuiskomst uit het ziekenhuis. U hoeft dit niet aan te vragen in Youforce.'
+      });
+      rijen.push({
+        naam: 'Aanvullend geboorteverlof',
+        recht: 'Tot 5 weken werk: ' + fmtNum(AANV_MAX_X * ct) + ' uur',
+        betaling: '70% van uw dagloon (van het UWV)',
+        datum: dl.aanvullend,
+        tip: 'Extra verlof na uw geboorteverlof, tot 5 werkweken. Het UWV betaalt 70% van uw dagloon over de verlofuren. U neemt dit op binnen 6 maanden na de geboorte.'
+      });
+    }
+    rijen.push({
+      naam: 'Betaald ouderschapsverlof (UWV)',
+      recht: '9 weken werk: ' + fmtNum(PAID_UWV_MAX_X * ct) + ' uur',
+      betaling: '70% of 100% (de CAO vult aan)',
+      datum: dl.uwv,
+      tip: 'Verlof om voor uw kind te zorgen. U krijgt 9 werkweken, betaald door het UWV. Kiest u 100%, dan betaalt de gemeente het verschil bij. U moet dit opnemen voordat uw kind 1 jaar wordt. Dit verlof gaat af van uw 26 weken ouderschapsverlof.'
+    });
+    rijen.push({
+      naam: 'Betaald ouderschapsverlof (CAO)',
+      recht: '13 weken werk: ' + fmtNum(PAID_CAO_MAX_X * ct) + ' uur',
+      betaling: BASIS.caoPctMax + '% van uw salaris',
+      datum: dl.cao,
+      tip: 'Extra betaald verlof dat de gemeente u geeft bovenop de 9 weken van het UWV. Hoeveel procent u krijgt, hangt af van uw salaris: 80, 70 of 50 procent. U heeft hier tot de 8e verjaardag van uw kind de tijd voor. Dit verlof gaat af van uw 26 weken ouderschapsverlof.'
+    });
+    rijen.push({
+      naam: 'Onbetaald ouderschapsverlof',
+      recht: 'Wat overblijft van 26 weken werk (' + fmtNum(TOTAL_POOL_X * ct) + ' uur)',
+      betaling: 'Niets over de verlofuren',
+      datum: dl.oov,
+      tip: 'U mag in totaal 26 werkweken ouderschapsverlof opnemen. Wat overblijft na uw betaalde verlof, kunt u onbetaald opnemen. Over die uren krijgt u geen salaris en u bouwt minder vakantie-uren op.'
+    });
+
+    $('rechten-tbody').innerHTML = rijen.map(r => {
+      const verlopen = r.datum < vandaag;
+      const status = verlopen
+        ? '<span class="status-warn">Datum voorbij</span>'
+        : '<span class="status-ok">Ja</span>';
+      return '<tr><td class="cel-nadruk">' + esc(r.naam) + info(r.tip) + '</td><td>' + esc(r.recht) +
+             '</td><td>' + esc(r.betaling) + '</td><td>' + formatDateNL(r.datum) +
+             '</td><td>' + status + '</td></tr>';
+    }).join('');
+
+    if (BASIS.caoPctMax) {
+      const uitleg = BASIS.caoPctMax === 80
+        ? 'uw salaris is niet hoger dan ' + formatCurrency(MAX_SCHAAL_2) + ' (schaal 2)'
+        : BASIS.caoPctMax === 70
+          ? 'uw salaris ligt tussen ' + formatCurrency(MAX_SCHAAL_2) + ' en ' + formatCurrency(MAX_SCHAAL_4) + ' (schaal 3 of 4)'
+          : 'uw salaris is hoger dan ' + formatCurrency(MAX_SCHAAL_4) + ' (boven schaal 4)';
+      $('rechten-tbody').insertAdjacentHTML('beforeend',
+        '<tr><td colspan="5" style="font-size:.82rem;color:var(--clr-text-muted);">' +
+        'Tijdens betaald ouderschapsverlof via de CAO krijgt u ' + BASIS.caoPctMax + '% van uw salaris. Dat komt doordat ' + esc(uitleg) + '.</td></tr>');
+    }
+  }
+
+  /* ============================================================
+     ACCORDION-KAARTEN BOUWEN
+  ============================================================ */
+  function urenVeld(id, label, tip) {
+    const ct = BASIS.contracturen;
+    return '<div class="form-group"><label for="' + id + '">' + esc(label) + info(tip) + '</label>' +
+      '<input type="number" id="' + id + '" min="0.5" max="' + ct + '" step="0.5" value="' + ct +
+      '" aria-describedby="' + id + '-error">' + errSpan(id) + '</div>';
+  }
+  function datumVeld(id, label, tip, verplicht) {
+    return '<div class="form-group"><label for="' + id + '">' + esc(label) + info(tip) + '</label>' +
+      '<input type="date" id="' + id + '" autocomplete="off"' + (verplicht ? ' required' : '') +
+      ' aria-describedby="' + id + '-error">' + errSpan(id) + '</div>';
+  }
+  function getalVeld(id, label, tip, min, max, val) {
+    return '<div class="form-group"><label for="' + id + '">' + esc(label) + info(tip) + '</label>' +
+      '<input type="number" id="' + id + '" min="' + min + '" max="' + max + '" step="1" value="' + val +
+      '" aria-describedby="' + id + '-error">' + errSpan(id) + '</div>';
+  }
+  function selectVeld(id, label, tip, opties, geselecteerd) {
+    const opts = opties.map(o =>
+      '<option value="' + o.v + '"' + (o.v == geselecteerd ? ' selected' : '') + '>' + esc(o.t) + '</option>'
+    ).join('');
+    return '<div class="form-group"><label for="' + id + '">' + esc(label) + info(tip) + '</label>' +
+      '<select id="' + id + '" aria-describedby="' + id + '-error">' + opts + '</select>' +
+      errSpan(id) + '</div>';
+  }
+
+  function bodyHTML(key) {
+    const ct = BASIS.contracturen;
+    const dl = deadlines(BASIS.geboortedatum, null);
+
+    if (key === 'geboorte') {
+      return '<div class="vv-meta">U krijgt ' + fmtNum(ct) + ' uur verlof, dat is 1 werkweek. ' +
+        'U houdt uw hele salaris. Neem dit verlof op binnen 4 weken na de geboorte, ' +
+        'of binnen 4 weken nadat moeder en kind thuis zijn uit het ziekenhuis. ' +
+        'U mag de uren verdelen over meerdere dagen of weken. ' +
+        'Dit verlof gaat niet af van uw 26 weken ouderschapsverlof. ' +
+        'U hoeft hiervoor niets aan te vragen in Youforce: overleg het met uw leidinggevende.</div>' +
+        '<div class="form-grid" style="margin-top:1rem;">' +
+        datumVeld('geboorte-start', 'Eerste verlofdag', 'De dag waarop uw verlof begint. Deze dag moet binnen 4 weken na de geboorte of na thuiskomst liggen.', true) +
+        datumVeld('geboorte-thuiskomst', 'Thuiskomst uit ziekenhuis (mag u leeg laten)', 'Komen moeder en kind later thuis? Dan tellen de 4 weken pas vanaf die dag.', false) +
+        urenVeld('geboorte-uren', 'Hoeveel uur verlof per week?', 'Meestal neemt u dit verlof in 1 week helemaal op. U mag ook minder uur per week opnemen. Dan duurt het verlof langer.') +
+        '</div>';
+    }
+
+    if (key === 'aanvullend') {
+      const opties = [];
+      for (let i = 1; i <= AANV_MAX_X; i++) opties.push({ v: i, t: i + (i === 1 ? ' week' : ' weken') + ' werk (' + fmtNum(i * ct) + ' uur)' });
+      return '<div class="vv-meta">U kunt 1 tot 5 weken verlof opnemen. ' +
+        'Het UWV betaalt 70% van uw dagloon over de uren dat u verlof heeft. ' +
+        'Neem dit verlof op binnen 6 maanden na de geboorte, dus vóór ' + formatDateNL(dl.aanvullend) + '. ' +
+        'U moet eerst uw geboorteverlof opnemen. ' +
+        'Dit verlof gaat niet af van uw 26 weken ouderschapsverlof.</div>' +
+        '<div class="form-grid" style="margin-top:1rem;">' +
+        selectVeld('aanv-mult', 'Hoeveel weken verlof?', 'Kies hoeveel weken u wilt opnemen. Meer dan 5 weken mag niet.', opties, 5) +
+        urenVeld('aanv-uren', 'Hoeveel uur verlof per week?', 'Neemt u minder uur per week op? Dan duurt uw verlof langer, maar u krijgt in totaal evenveel verlofuren.') +
+        datumVeld('aanv-start', 'Eerste verlofdag', 'De dag waarop dit verlof begint.', true) +
+        '</div>';
+    }
+
+    if (key === 'uwv') {
+      const gehadOpties = [];
+      for (let i = 0; i <= PAID_UWV_MAX_X; i++) gehadOpties.push({ v: i, t: i + (i === 1 ? ' week' : ' weken') + ' werk' });
+      const multOpties = [];
+      for (let i = 1; i <= PAID_UWV_MAX_X; i++) multOpties.push({ v: i, t: i + (i === 1 ? ' week' : ' weken') + ' werk (' + fmtNum(i * ct) + ' uur)' });
+      return '<div class="vv-meta">U kunt 9 weken verlof opnemen, dat is ' + fmtNum(PAID_UWV_MAX_X * ct) +
+        ' uur. U krijgt 70% van het UWV, of 100% omdat de CAO het verschil bijbetaalt. ' +
+        'Neem dit verlof op vóór uw kind 1 jaar wordt, dus vóór ' + formatDateNL(dl.uwv) + '. ' +
+        'U mag het opdelen in maximaal 3 stukken. ' +
+        'Dit verlof gaat af van uw 26 weken ouderschapsverlof. ' +
+        '<span class="resterend-pill" id="uwv-resterend"></span></div>' +
+        '<div class="form-grid" style="margin-top:1rem;">' +
+        selectVeld('uwv-gehad', 'Hoeveel heeft u al opgenomen?', 'Vul in hoeveel weken van dit verlof u voor dit kind al heeft gehad. Weet u het niet zeker? Vraag het aan HR.', gehadOpties, 0) +
+        selectVeld('uwv-mult', 'Hoeveel wilt u nu opnemen?', 'Kies hoeveel weken u nu wilt aanvragen. Meer dan er nog over is, kan niet.', multOpties, 9) +
+        urenVeld('uwv-uren', 'Hoeveel uur verlof per week?', 'De uren die u wel werkt, krijgt u gewoon helemaal betaald.') +
+        datumVeld('uwv-start', 'Eerste verlofdag', 'De dag waarop dit verlof begint. Deze dag moet liggen vóór uw kind 1 jaar wordt.', true) +
+        selectVeld('uwv-pct', 'Hoeveel wilt u betaald krijgen?', 'Bij 70% krijgt u alleen het geld van het UWV. Bij 100% betaalt de gemeente het verschil bij. U krijgt in beide gevallen evenveel verlofuren.',
+          [{ v: 70, t: '70% (alleen van het UWV)' }, { v: 100, t: '100% (de CAO vult aan)' }], 100) +
+        '</div>';
+    }
+
+    if (key === 'cao') {
+      const gehadOpties = [];
+      for (let i = 0; i <= PAID_CAO_MAX_X; i++) gehadOpties.push({ v: i, t: i + (i === 1 ? ' week' : ' weken') + ' werk' });
+      const multOpties = [];
+      for (let i = 1; i <= PAID_CAO_MAX_X; i++) multOpties.push({ v: i, t: i + (i === 1 ? ' week' : ' weken') + ' werk (' + fmtNum(i * ct) + ' uur)' });
+      const pctOpties = caoPctOpties(BASIS.caoPctMax).map(p => ({ v: p, t: p + '%' }));
+      const alleOpties = [50, 70, 80, 100].map(p => ({ v: p, t: p + '%' }));
+      return '<div class="vv-meta">U kunt 13 weken verlof opnemen, dat is ' + fmtNum(PAID_CAO_MAX_X * ct) +
+        ' uur. U krijgt ' + BASIS.caoPctMax + '% van uw salaris. Dat percentage hangt af van hoeveel u verdient. ' +
+        'Neem dit verlof op vóór uw kind 8 jaar wordt, dus vóór ' + formatDateNL(dl.cao) + '. ' +
+        'Het percentage dat u kiest, geldt voor al uw verlof voor dit kind. U kunt het later niet meer veranderen. ' +
+        'Dit verlof gaat af van uw 26 weken ouderschapsverlof. ' +
+        '<span class="resterend-pill" id="cao-resterend"></span></div>' +
+        '<div class="form-grid" style="margin-top:1rem;">' +
+        selectVeld('cao-gehad', 'Hoeveel heeft u al opgenomen?', 'Vul in hoeveel weken van dit verlof u voor dit kind al heeft gehad. Weet u het niet zeker? Vraag het aan HR.', gehadOpties, 0) +
+        selectVeld('cao-eerder-pct', 'Welk percentage koos u toen?', 'Het percentage dat u de vorige keer koos. Dit ligt vast en geldt ook nu weer.', alleOpties, BASIS.caoPctMax) +
+        selectVeld('cao-mult', 'Hoeveel wilt u nu opnemen?', 'Kies hoeveel weken u nu wilt aanvragen.', multOpties, 13) +
+        urenVeld('cao-uren', 'Hoeveel uur verlof per week?', 'De uren die u wel werkt, krijgt u gewoon helemaal betaald.') +
+        datumVeld('cao-start', 'Eerste verlofdag', 'De dag waarop dit verlof begint.', true) +
+        selectVeld('cao-pct', 'Hoeveel wilt u betaald krijgen?', 'Wij vullen alvast het hoogste percentage in waar u recht op heeft. Kiest u meer? Overleg dat dan eerst met uw leidinggevende.', pctOpties, BASIS.caoPctMax) +
+        '</div>';
+    }
+
+    if (key === 'oov') {
+      const gehadOpties = [];
+      for (let i = 0; i <= TOTAL_POOL_X; i++) gehadOpties.push({ v: i, t: i + (i === 1 ? ' week' : ' weken') + ' werk' });
+      const multOpties = [];
+      for (let i = 1; i <= TOTAL_POOL_X; i++) multOpties.push({ v: i, t: i + (i === 1 ? ' week' : ' weken') + ' werk (' + fmtNum(i * ct) + ' uur)' });
+      return '<div class="vv-meta">U mag in totaal 26 weken ouderschapsverlof opnemen. ' +
+        'Wat overblijft na uw betaalde verlof, kunt u onbetaald opnemen. ' +
+        'Over die uren krijgt u geen salaris. ' +
+        'Neem dit verlof op vóór uw kind 8 jaar wordt, dus vóór ' + formatDateNL(dl.oov) + '. ' +
+        '<span class="resterend-pill" id="oov-resterend"></span></div>' +
+        '<div class="form-grid" style="margin-top:1rem;">' +
+        selectVeld('oov-gehad', 'Hoeveel heeft u al opgenomen?', 'Vul in hoeveel weken onbetaald verlof u voor dit kind al heeft gehad. Uw betaalde verlof rekent de tool er zelf al af.', gehadOpties, 0) +
+        selectVeld('oov-mult', 'Hoeveel wilt u nu opnemen?', 'Kies hoeveel weken u nu onbetaald wilt opnemen. Meer dan er nog over is van uw 26 weken, kan niet.', multOpties, 1) +
+        urenVeld('oov-uren', 'Hoeveel uur verlof per week?', 'De uren die u wel werkt, krijgt u gewoon helemaal betaald.') +
+        datumVeld('oov-start', 'Eerste verlofdag', 'De dag waarop dit verlof begint.', true) +
+        '</div>';
+    }
+    return '';
+  }
+
+  function renderAccordions() {
+    const wrap = $('accordion-wrap');
+    wrap.innerHTML = actieveVormen().map(v =>
+      '<div class="verlofvorm-card">' +
+        '<button type="button" class="verlofvorm-header" id="hdr-' + v.key + '" ' +
+          'aria-expanded="false" aria-controls="body-' + v.key + '">' +
+          '<span class="verlofvorm-title">' + esc(v.naam) + '</span>' +
+          '<span class="verlofvorm-badge ' + v.badge + '">' + esc(v.badgeText) + '</span>' +
+          '<span class="verlofvorm-chevron" aria-hidden="true">&#9660;</span>' +
+        '</button>' +
+        '<div class="verlofvorm-body" id="body-' + v.key + '" role="region" aria-labelledby="hdr-' + v.key + '">' +
+          '<div class="checkbox-group">' +
+            '<input type="checkbox" id="plan-' + v.key + '">' +
+            '<label for="plan-' + v.key + '">Ik wil dit verlof opnemen</label>' +
+          '</div>' +
+          '<div class="vv-fields" id="fields-' + v.key + '">' + bodyHTML(v.key) + '</div>' +
+        '</div>' +
+      '</div>'
+    ).join('');
+
+    // Accordion openen en sluiten
+    actieveVormen().forEach(v => {
+      $('hdr-' + v.key).addEventListener('click', function () {
+        const open = this.getAttribute('aria-expanded') === 'true';
+        this.setAttribute('aria-expanded', String(!open));
+        $('body-' + v.key).classList.toggle('open', !open);
+      });
+      $('plan-' + v.key).addEventListener('change', function () {
+        $('fields-' + v.key).classList.toggle('open', this.checked);
+        updateResterend();
+      });
+    });
+
+    // Startdatum geboorteverlof beïnvloedt geen andere velden, maar wel de deadline-melding
+    ['uwv-gehad', 'uwv-mult', 'cao-gehad', 'cao-mult', 'oov-gehad', 'oov-mult'].forEach(id => {
+      const el = $(id); if (el) el.addEventListener('change', updateResterend);
+    });
+    const caoGehad = $('cao-gehad');
+    if (caoGehad) caoGehad.addEventListener('change', toggleEerderPct);
+    toggleEerderPct();
+    updateResterend();
+  }
+
+  /** Toont het veld 'eerder gekozen percentage' alleen als er al CAO-verlof is opgenomen */
+  function toggleEerderPct() {
+    const gehad = $('cao-gehad'), veld = $('cao-eerder-pct');
+    if (!gehad || !veld) return;
+    const groep = veld.closest('.form-group');
+    const zichtbaar = Number(gehad.value) > 0;
+    groep.style.display = zichtbaar ? 'flex' : 'none';
+    const pct = $('cao-pct');
+    if (zichtbaar && pct) {
+      pct.value = veld.value;
+      pct.disabled = true;
+      pct.title = 'Vergrendeld: uw eerder gekozen percentage geldt voor alle aanvragen voor dit kind.';
+    } else if (pct) {
+      pct.disabled = false;
+      pct.title = '';
+    }
+  }
+
+  /** Werkt de 'resterend'-pillen bij op basis van de huidige invoer */
+  function updateResterend() {
+    if (!BASIS) return;
+    const ct = BASIS.contracturen;
+    const num = id => { const el = $(id); return el ? Number(el.value) : 0; };
+    const aan = key => { const el = $('plan-' + key); return el ? el.checked : false; };
+
+    const uwvGehadX = num('uwv-gehad');
+    const caoGehadX = num('cao-gehad');
+    const oovGehadX = num('oov-gehad');
+    const uwvNuX = aan('uwv') ? num('uwv-mult') : 0;
+    const caoNuX = aan('cao') ? num('cao-mult') : 0;
+
+    const uwvRest = Math.max(0, PAID_UWV_MAX_X - uwvGehadX);
+    const caoRest = Math.max(0, PAID_CAO_MAX_X - caoGehadX);
+    const oovRest = Math.max(0, TOTAL_POOL_X - uwvGehadX - uwvNuX - caoGehadX - caoNuX - oovGehadX);
+
+    const zet = (id, tekst) => { const el = $(id); if (el) el.textContent = tekst; };
+    zet('uwv-resterend', 'U heeft nog ' + uwvRest + ' weken over (' + fmtNum(uwvRest * ct) + ' uur)');
+    zet('cao-resterend', 'U heeft nog ' + caoRest + ' weken over (' + fmtNum(caoRest * ct) + ' uur)');
+    zet('oov-resterend', 'Van uw 26 weken heeft u er nog ' + oovRest + ' over (' + fmtNum(oovRest * ct) + ' uur)');
+  }
+
+  /* ============================================================
+     FASES OPBOUWEN EN VALIDEREN
+  ============================================================ */
+  function verzamelFases() {
+    const ct = BASIS.contracturen;
+    const ms = BASIS.maandsalaris;
+    const fouten = [];
+    const meldingen = [];
+    const fases = [];
+
+    // Wis eerdere veldfouten
+    ['geboorte-start', 'geboorte-thuiskomst', 'geboorte-uren',
+     'aanv-mult', 'aanv-uren', 'aanv-start',
+     'uwv-gehad', 'uwv-mult', 'uwv-uren', 'uwv-start',
+     'cao-gehad', 'cao-mult', 'cao-uren', 'cao-start',
+     'oov-gehad', 'oov-mult', 'oov-uren', 'oov-start'].forEach(id => { if ($(id)) clearError(id); });
+
+    const aan = key => { const el = $('plan-' + key); return el ? el.checked : false; };
+    const num = id => { const el = $(id); return el ? Number(el.value) : 0; };
+    const dat = id => { const el = $(id); return el ? parseInputDate(el.value) : null; };
+
+    /** Controleert een uren-per-week veld */
+    function checkUren(id) {
+      const u = num(id);
+      if (isNaN(u) || u <= 0) { showError(id, 'Vul in hoeveel uur verlof u per week wilt opnemen.'); fouten.push(id); return null; }
+      if (u > ct) { showError(id, 'U kunt niet meer verlofuren opnemen dan u werkt (' + fmtNum(ct) + ' uur per week).'); fouten.push(id); return null; }
+      return u;
+    }
+    function checkStart(id) {
+      const d = dat(id);
+      if (!d) { showError(id, 'Vul in op welke dag uw verlof begint.'); fouten.push(id); return null; }
+      return d;
+    }
+
+    const achtsteVerjaardag = addYears(BASIS.geboortedatum, 8);
+
+    // ---- 1. Geboorteverlof ----
+    if (aan('geboorte')) {
+      const start = checkStart('geboorte-start');
+      const upw   = checkUren('geboorte-uren');
+      const thuis = dat('geboorte-thuiskomst');
+      if (start && upw) {
+        const uren = GEBOORTE_MAX_X * ct;
+        const weken = calendarWeken(uren, upw);
+        const deadline = addDays(thuis || BASIS.geboortedatum, 28);
+        if (start > deadline) {
+          meldingen.push({ type: 'danger', msg: '<strong>Uw geboorteverlof begint te laat.</strong> U moet dit verlof opnemen vóór ' + formatDateNL(deadline) + '. Daarna vervalt het waarschijnlijk. Overleg met uw leidinggevende wat er nog mogelijk is.' });
+        }
+        fases.push({
+          key: 'geboorte', naam: 'Geboorteverlof', kleur: 'tl-geboorte', swatch: 'geboorte',
+          start, uren, upw, weken, eind: addCalendarWeeks(start, weken),
+          pct: 1.00, netto: 1.00, poolAftrek: 0, deadline
+        });
+      }
+    }
+
+    // ---- 2. Aanvullend geboorteverlof ----
+    if (aan('aanvullend')) {
+      const start = checkStart('aanv-start');
+      const upw   = checkUren('aanv-uren');
+      const mult  = num('aanv-mult');
+      if (start && upw) {
+        const uren = mult * ct;
+        const weken = calendarWeken(uren, upw);
+        const deadline = addMonths(BASIS.geboortedatum, 6);
+        if (start > deadline) {
+          meldingen.push({ type: 'danger', msg: '<strong>Uw aanvullend geboorteverlof begint te laat.</strong> U moet dit verlof opnemen vóór ' + formatDateNL(deadline) + ', dat is 6 maanden na de geboorte. Daarna vervalt het waarschijnlijk.' });
+        }
+        fases.push({
+          key: 'aanvullend', naam: 'Aanvullend geboorteverlof', kleur: 'tl-aanvullend', swatch: 'aanvullend',
+          start, uren, upw, weken, eind: addCalendarWeeks(start, weken),
+          pct: AANV_PCT, netto: nettoPct(upw, ct, AANV_PCT), poolAftrek: 0, deadline
+        });
+      }
+    }
+
+    // ---- Poolberekening ----
+    const uwvGehadX = num('uwv-gehad');
+    const caoGehadX = num('cao-gehad');
+    const oovGehadX = num('oov-gehad');
+    const uwvNuX = aan('uwv') ? num('uwv-mult') : 0;
+    const caoNuX = aan('cao') ? num('cao-mult') : 0;
+    const oovNuX = aan('oov') ? num('oov-mult') : 0;
+
+    // ---- 3. BOV UWV ----
+    if (aan('uwv')) {
+      const start = checkStart('uwv-start');
+      const upw   = checkUren('uwv-uren');
+      const pct   = num('uwv-pct') / 100;
+      const rest  = Math.max(0, PAID_UWV_MAX_X - uwvGehadX);
+      if (uwvGehadX >= PAID_UWV_MAX_X) {
+        showError('uwv-gehad', 'U heeft alle 9 weken van dit verlof al opgenomen. Er is niets meer over.');
+        fouten.push('uwv-gehad');
+      } else if (uwvNuX > rest) {
+        showError('uwv-mult', 'U heeft nog ' + rest + ' weken over. Kies een lager aantal.');
+        fouten.push('uwv-mult');
+      } else if (start && upw) {
+        const uren = uwvNuX * ct;
+        const weken = calendarWeken(uren, upw);
+        const deadline = addYears(BASIS.geboortedatum, 1);
+        if (start >= deadline) {
+          meldingen.push({ type: 'danger', msg: '<strong>Uw betaald ouderschapsverlof (UWV) begint te laat.</strong> U moet dit verlof opnemen vóór ' + formatDateNL(deadline) + ', want dan wordt uw kind 1 jaar. Daarna vervalt het waarschijnlijk.' });
+        }
+        fases.push({
+          key: 'uwv', naam: 'Betaald ouderschapsverlof UWV', kleur: 'tl-bov-uwv', swatch: 'bov-uwv',
+          start, uren, upw, weken, eind: addCalendarWeeks(start, weken),
+          pct, netto: nettoPct(upw, ct, pct), poolAftrek: uren, deadline
+        });
+      }
+    }
+
+    // ---- 4. BOV CAO ----
+    if (aan('cao')) {
+      const start = checkStart('cao-start');
+      const upw   = checkUren('cao-uren');
+      const gekozenPct = Number($('cao-pct').value);
+      const rest  = Math.max(0, PAID_CAO_MAX_X - caoGehadX);
+      if (caoGehadX >= PAID_CAO_MAX_X) {
+        showError('cao-gehad', 'U heeft alle 13 weken van dit verlof al opgenomen. Er is niets meer over.');
+        fouten.push('cao-gehad');
+      } else if (caoNuX > rest) {
+        showError('cao-mult', 'U heeft nog ' + rest + ' weken over. Kies een lager aantal.');
+        fouten.push('cao-mult');
+      } else if (start && upw) {
+        const uren = caoNuX * ct;
+        const weken = calendarWeken(uren, upw);
+        const deadline = addYears(BASIS.geboortedatum, 8);
+        if (gekozenPct > BASIS.caoPctMax) {
+          meldingen.push({ type: 'warning', msg: '<strong>U koos een hoger percentage dan waar u recht op heeft.</strong> Volgens uw salaris krijgt u ' + BASIS.caoPctMax + '%. U koos ' + gekozenPct + '%. Overleg dit eerst met uw leidinggevende.' });
+        }
+        if (caoGehadX > 0) {
+          meldingen.push({ type: 'info', msg: 'De tool rekent met ' + $('cao-eerder-pct').value + '%, want dat percentage koos u eerder voor dit kind. U kunt dat niet meer veranderen.' });
+        }
+        fases.push({
+          key: 'cao', naam: 'Betaald ouderschapsverlof CAO', kleur: 'tl-bov-cao', swatch: 'bov-cao',
+          start, uren, upw, weken, eind: addCalendarWeeks(start, weken),
+          pct: gekozenPct / 100, netto: nettoPct(upw, ct, gekozenPct / 100), poolAftrek: uren, deadline
+        });
+      }
+    }
+
+    // ---- 5. OOV ----
+    if (aan('oov')) {
+      const start = checkStart('oov-start');
+      const upw   = checkUren('oov-uren');
+      const restX = Math.max(0, TOTAL_POOL_X - uwvGehadX - uwvNuX - caoGehadX - caoNuX - oovGehadX);
+      if (restX === 0) {
+        showError('oov-gehad', 'U heeft uw 26 weken ouderschapsverlof al helemaal gebruikt.');
+        fouten.push('oov-gehad');
+      } else if (oovNuX > restX) {
+        showError('oov-mult', 'U heeft nog ' + restX + ' weken over van uw 26 weken. Kies een lager aantal.');
+        fouten.push('oov-mult');
+      } else if (start && upw) {
+        const uren = oovNuX * ct;
+        const weken = calendarWeken(uren, upw);
+        const deadline = addYears(BASIS.geboortedatum, 8);
+        fases.push({
+          key: 'oov', naam: 'Onbetaald ouderschapsverlof', kleur: 'tl-oov', swatch: 'oov',
+          start, uren, upw, weken, eind: addCalendarWeeks(start, weken),
+          pct: 0, netto: nettoPctOOV(upw, ct), poolAftrek: uren, deadline
+        });
+        meldingen.push({ type: 'info', msg: '<strong>U bouwt minder vakantie-uren op.</strong> Tijdens onbetaald verlof krijgt u minder vakantie-uren. Hoeveel minder, hangt af van het aantal uur verlof dat u per week opneemt. Vraag uw leidinggevende hoeveel dit voor u is.' });
+      }
+    }
+
+    // ---- Algemene randgevallen ----
+    fases.forEach(f => {
+      if (f.start >= achtsteVerjaardag) {
+        meldingen.push({ type: 'danger', msg: '<strong>' + esc(f.naam) + ' kan niet meer.</strong> Uw kind wordt op ' + formatDateNL(achtsteVerjaardag) + ' 8 jaar. Daarna kunt u geen ouderschapsverlof meer opnemen. Kies een eerdere datum.' });
+        fouten.push(f.key + '-start');
+      }
+    });
+
+    // ---- Overlap detecteren ----
+    for (let i = 0; i < fases.length; i++) {
+      for (let j = i + 1; j < fases.length; j++) {
+        const a = fases[i], b = fases[j];
+        if (a.start < b.eind && b.start < a.eind) {
+          const somUren = a.upw + b.upw;
+          meldingen.push({
+            type: 'warning',
+            msg: '<strong>Twee soorten verlof lopen tegelijk.</strong> ' + esc(a.naam) + ' en ' + esc(b.naam) +
+                 ' vallen in dezelfde periode. Samen is dat ' + fmtNum(somUren) + ' uur verlof per week' +
+                 (somUren > ct ? ', en dat is meer dan de ' + fmtNum(ct) + ' uur die u werkt. Dat kan niet. Pas de datums aan.' : '. Klopt dat?')
+          });
+        }
+      }
+    }
+
+    return { fases, fouten, meldingen };
+  }
+
+  /* ============================================================
+     MAANDTABEL BOUWEN (per maand, per verlofvorm)
+  ============================================================ */
+  function buildMonthRows(fases, maandsalaris) {
+    if (!fases.length) return [];
+    const minStart = new Date(Math.min.apply(null, fases.map(f => f.start.getTime())));
+    const maxEind  = new Date(Math.max.apply(null, fases.map(f => f.eind.getTime())));
+
+    const maanden = [];
+    let cursor = new Date(minStart.getFullYear(), minStart.getMonth(), 1);
+
+    while (cursor < maxEind) {
+      const maandStart    = new Date(cursor);
+      const maandEindExcl = new Date(cursor.getFullYear(), cursor.getMonth() + 1, 1);
+      const dagenInMaand  = daysBetween(maandStart, maandEindExcl);
+
+      const items = [];
+      let dervingMaand = 0;
+
+      fases.forEach(f => {
+        const periodeStart = new Date(Math.max(f.start.getTime(), maandStart.getTime()));
+        const periodeEind  = new Date(Math.min(f.eind.getTime(), maandEindExcl.getTime()));
+        if (periodeStart >= periodeEind) return;
+
+        const dagen   = daysBetween(periodeStart, periodeEind);
+        const aandeel = dagen / dagenInMaand;
+        const derving = (1 - f.netto) * maandsalaris * aandeel;
+        const verlofUren = f.upw * (dagen / 7);
+
+        dervingMaand += derving;
+        items.push({ naam: f.naam, key: f.key, dagen, verlofUren, derving });
+      });
+
+      if (items.length) {
+        const bruto = Math.max(0, maandsalaris - dervingMaand);
+        maanden.push({
+          maandLabel: formatMonthYear(maandStart),
+          items, dervingMaand, brutosalaris: bruto
+        });
+      }
+      cursor = maandEindExcl;
+    }
+    return maanden;
+  }
+
+  /* ============================================================
+     BEREKENING
+  ============================================================ */
+  function calculate(fases) {
+    const ct = BASIS.contracturen;
+    const ms = BASIS.maandsalaris;
+
+    const num = id => { const el = $(id); return el ? Number(el.value) : 0; };
+    const uwvGehadX = $('uwv-gehad') ? num('uwv-gehad') : 0;
+    const caoGehadX = $('cao-gehad') ? num('cao-gehad') : 0;
+    const oovGehadX = $('oov-gehad') ? num('oov-gehad') : 0;
+
+    const poolGebruiktNu = fases.reduce((s, f) => s + f.poolAftrek, 0);
+    const poolGebruiktEerder = (uwvGehadX + caoGehadX + oovGehadX) * ct;
+    const poolRestUren = Math.max(0, TOTAL_POOL_X * ct - poolGebruiktEerder - poolGebruiktNu);
+
+    const uwvNuX = fases.filter(f => f.key === 'uwv').reduce((s, f) => s + f.uren / ct, 0);
+    const uwvRestX = Math.max(0, PAID_UWV_MAX_X - uwvGehadX - uwvNuX);
+
+    const totaalUren  = fases.reduce((s, f) => s + f.uren, 0);
+    const minStart = new Date(Math.min.apply(null, fases.map(f => f.start.getTime())));
+    const maxEind  = new Date(Math.max.apply(null, fases.map(f => f.eind.getTime())));
+    const kalenderWeken = Math.ceil(daysBetween(minStart, maxEind) / 7);
+
+    const maanden = buildMonthRows(fases, ms);
+    const totaleDerving = maanden.reduce((s, m) => s + m.dervingMaand, 0);
+
+    return {
+      fases, maanden, totaalUren, kalenderWeken, totaleDerving,
+      minStart, maxEind,
+      poolRestUren, poolRestWeken: poolRestUren / ct,
+      uwvRestX,
+      achtsteVerjaardag: addYears(BASIS.geboortedatum, 8),
+      basis: BASIS
+    };
+  }
+
+  /* ============================================================
+     RENDEREN: KPI's
+  ============================================================ */
+  function renderKPI(c) {
+    $('kpi-grid').innerHTML =
+      '<div class="kpi-card total" role="listitem">' +
+        '<div class="kpi-label">Uw verlof in totaal</div>' +
+        '<div class="kpi-value">' + fmtNum(c.totaalUren) + ' uur</div>' +
+        '<div class="kpi-sub">' + c.fases.length + ' soort' + (c.fases.length === 1 ? '' : 'en') +
+          ' verlof &middot; loopt over ' + c.kalenderWeken + ' weken</div>' +
+        '<span class="kpi-badge blue">' + formatDateNL(c.minStart) + ' t/m ' + formatDateNL(addDays(c.maxEind, -1)) + '</span>' +
+      '</div>' +
+      '<div class="kpi-card unpaid" role="listitem">' +
+        '<div class="kpi-label">U krijgt minder salaris</div>' +
+        '<div class="kpi-value" style="color:var(--clr-red)">' +
+          (c.totaleDerving > 0.01 ? '&minus;' + formatCurrency(c.totaleDerving) : formatCurrency(0)) + '</div>' +
+        '<div class="kpi-sub">Bruto, in de hele verlofperiode</div>' +
+        '<span class="kpi-badge gray">Effect op IKB en pensioen zit hier niet in</span>' +
+      '</div>' +
+      '<div class="kpi-card paid" role="listitem">' +
+        '<div class="kpi-label">Betaald verlof (UWV) over</div>' +
+        '<div class="kpi-value">' + fmtNum(c.uwvRestX) + ' wkn</div>' +
+        '<div class="kpi-sub">van de 9 weken &middot; ' + fmtNum(c.uwvRestX * c.basis.contracturen) + ' uur</div>' +
+        '<span class="kpi-badge green">Op te nemen vóór uw kind 1 jaar wordt</span>' +
+      '</div>' +
+      '<div class="kpi-card calendar" role="listitem">' +
+        '<div class="kpi-label">Ouderschapsverlof over</div>' +
+        '<div class="kpi-value">' + fmtNum(Math.round(c.poolRestWeken * 10) / 10) + ' wkn</div>' +
+        '<div class="kpi-sub">van de ' + TOTAL_POOL_X + ' weken &middot; ' + fmtNum(Math.round(c.poolRestUren * 10) / 10) + ' uur</div>' +
+        '<span class="kpi-badge purple">Op te nemen vóór uw kind 8 jaar wordt</span>' +
+      '</div>';
+  }
+
+  /* ============================================================
+     RENDEREN: TIJDLIJN
+  ============================================================ */
+  function renderTimeline(c) {
+    const wrapper = $('timeline-wrapper');
+    const totalMs = (c.maxEind - c.minStart) || 1;
+    const pct = d => Math.max(0, Math.min(100, ((d - c.minStart) / totalMs) * 100));
+
+    const segments = c.fases.map(f => {
+      const left = pct(f.start), right = pct(f.eind), width = Math.max(0.5, right - left);
+      const label = width > 14 ? '<span>' + esc(f.naam) + '</span>' : '';
+      return '<div class="tl-segment ' + f.kleur + '" style="left:' + left + '%;width:' + width + '%" aria-hidden="true">' + label + '</div>';
+    }).join('');
+
+    const gesorteerd = c.fases.slice().sort((a, b) => a.start - b.start);
+    const ticks = gesorteerd.map((f, i) =>
+      '<div class="tl-tick ' + (i % 2 === 0 ? 'tl-row1' : 'tl-row2') + '" style="left:' + pct(f.start) + '%">' +
+        '<div class="tl-tick-date">' + formatDateNL(f.start) + '</div>' +
+        '<div class="tl-tick-lbl">Start ' + esc(f.naam.toLowerCase()) + '</div>' +
+      '</div>').join('') +
+      '<div class="tl-tick ' + (gesorteerd.length % 2 === 0 ? 'tl-row1' : 'tl-row2') + '" style="left:100%">' +
+        '<div class="tl-tick-date">' + formatDateNL(addDays(c.maxEind, -1)) + '</div>' +
+        '<div class="tl-tick-lbl">Einde verlof</div>' +
+      '</div>';
+
+    const hoogte = 130 + Math.max(0, (gesorteerd.length - 2)) * 6;
+
+    wrapper.innerHTML =
+      '<div class="tl-wrap" style="height:' + hoogte + 'px" role="img" aria-label="Tijdlijn van ' +
+        formatDateNL(c.minStart) + ' tot ' + formatDateNL(addDays(c.maxEind, -1)) + ' met ' +
+        c.fases.length + ' verlofperiodes">' +
+        '<div class="tl-bg" aria-hidden="true"></div>' + segments + ticks +
+      '</div>' +
+      '<div class="tl-deadline-callout" role="note">' +
+        '<span class="tl-deadline-icon" aria-hidden="true">&#9888;</span>' +
+        '<span><strong>Let op de einddatum:</strong> uw kind wordt op ' +
+        formatDateNL(c.achtsteVerjaardag) + ' 8 jaar. Daarna kunt u geen ouderschapsverlof meer opnemen.</span>' +
+      '</div>';
+
+    $('timeline-legend').innerHTML = c.fases.map(f =>
+      '<div class="legend-item"><div class="legend-swatch ' + f.swatch + '" aria-hidden="true"></div>' +
+      esc(f.naam) + ': ' + fmtNum(f.uren) + ' uur, ' + fmtNum(f.upw) + ' uur per week</div>').join('');
+  }
+
+  /* ============================================================
+     RENDEREN: MAANDTABEL
+  ============================================================ */
+  function renderTable(c) {
+    const rijen = [];
+    c.maanden.forEach(m => {
+      m.items.forEach((it, i) => {
+        rijen.push('<tr>' +
+          (i === 0 ? '<td rowspan="' + m.items.length + '" class="cel-nadruk">' + esc(m.maandLabel) + '</td>' : '') +
+          '<td>' + esc(it.naam) + '</td>' +
+          '<td class="text-right">' + fmtNum(Math.round(it.verlofUren * 10) / 10) + ' u</td>' +
+          '<td class="text-right">' + (it.derving > 0.01
+            ? '<span style="color:var(--clr-red)">&minus;' + formatCurrency(it.derving) + '</span>'
+            : '<span style="color:var(--clr-green)">&minus;</span>') + '</td>' +
+          (i === 0 ? '<td rowspan="' + m.items.length + '" class="text-right cel-nadruk">' +
+            formatCurrency(m.brutosalaris) + '</td>' : '') +
+        '</tr>');
+      });
+    });
+    $('salary-tbody').innerHTML = rijen.join('');
+    $('salary-tfoot').innerHTML =
+      '<tr><td colspan="3">U krijgt in totaal minder salaris</td>' +
+      '<td class="text-right" colspan="2"><span style="color:var(--clr-red)">' +
+      (c.totaleDerving > 0.01 ? '&minus;' + formatCurrency(c.totaleDerving) : formatCurrency(0)) +
+      '</span></td></tr>';
+  }
+
+  /* ============================================================
+     RENDEREN: MELDINGEN
+  ============================================================ */
+  function renderMeldingen(doelId, meldingen) {
+    const area = $(doelId);
+    if (!meldingen.length) { area.innerHTML = ''; return; }
+    area.innerHTML = meldingen.map(w =>
+      '<div class="alert alert-' + w.type + '" role="' + (w.type === 'info' ? 'note' : 'alert') + '">' +
+        '<span class="alert-icon" aria-hidden="true">' +
+          (w.type === 'danger' ? '&#128683;' : w.type === 'warning' ? '&#9888;' : '&#8505;') +
+        '</span><div>' + w.msg + '</div></div>').join('');
+  }
+
+  /* ============================================================
+     RENDEREN: HR-SECTIE
+  ============================================================ */
+  function renderHR(c) {
+    const heeftOOV = c.fases.some(f => f.key === 'oov');
+    const heeftGeboorte = c.fases.some(f => f.key === 'geboorte');
+    let html = '<p style="margin-bottom:1rem;font-size:.9rem;color:var(--clr-text-muted);">' +
+      'Dit plan is indicatief. Bespreek het met uw leidinggevende voordat u verlof aanvraagt. ' +
+      'U mag ouderschapsverlof in overleg opdelen: achter elkaar, in losse stukken, of een paar uur per week.</p>';
+    if (heeftGeboorte) {
+      html += '<div class="alert alert-info"><span class="alert-icon" aria-hidden="true">&#8505;</span><div>' +
+        'Geboorteverlof vraagt u niet aan in Youforce. Spreek de dagen af met uw leidinggevende.' +
+        '</div></div>';
+    }
+    if (heeftOOV) {
+      html += '<div class="alert alert-warning"><span class="alert-icon" aria-hidden="true">&#9888;</span><div>' +
+        '<strong>U bouwt minder vakantie-uren op.</strong> Tijdens onbetaald verlof krijgt u minder vakantie-uren. ' +
+        'Hoeveel minder, hangt af van het aantal uur verlof dat u per week opneemt. ' +
+        'Vraag uw leidinggevende hoeveel dit voor u is.</div></div>';
+    }
+    $('hr-notes').innerHTML = html;
+  }
+
+  /* ============================================================
+     EVENT: SECTIE 1 INDIENEN
+  ============================================================ */
+  $('basis-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    const basis = validateBasis();
+    if (!basis) {
+      const first = document.querySelector('.invalid');
+      if (first) first.focus();
+      return;
+    }
+    BASIS = basis;
+
+    // Randgevallen op basisniveau
+    const meldingen = [];
+    if (BASIS.meerling) {
+      meldingen.push({ type: 'danger', msg: '<strong>Meerling aangevinkt.</strong> Voor meerlingen gelden aangepaste regels waar dit hulpmiddel geen rekening mee houdt. De berekening is geblokkeerd. Neem contact op met uw leidinggevende of HR voor de juiste berekening.' });
+    }
+    if (BASIS.wisselende) {
+      meldingen.push({ type: 'warning', msg: '<strong>Wisselende arbeidsomvang.</strong> Uw verlof wordt berekend met het gemiddelde aantal uren dat u de afgelopen periode werkte. De uitkomst hieronder is daarom extra indicatief. Bespreek dit met uw leidinggevende.' });
+    }
+    renderMeldingen('warnings-area', meldingen);
+
+    if (BASIS.meerling) {
+      $('rechten-section').classList.remove('visible');
+      $('plan-section').classList.remove('visible');
+      $('results-section').classList.remove('visible');
+      $('warnings-area').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    renderRechten();
+    renderAccordions();
+    $('rechten-section').classList.add('visible');
+    $('plan-section').classList.add('visible');
+    $('results-section').classList.remove('visible');
+    $('rechten-title').focus();
+    $('rechten-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  /* ============================================================
+     EVENT: BEREKEN VERLOFPLAN
+  ============================================================ */
+  $('btn-bereken').addEventListener('click', function () {
+    if (!BASIS) return;
+    const geplandeVormen = actieveVormen().filter(v => $('plan-' + v.key) && $('plan-' + v.key).checked);
+    if (!geplandeVormen.length) {
+      renderMeldingen('plan-errors', [{ type: 'warning', msg: 'Vink minimaal één verlofvorm aan die u wilt plannen.' }]);
+      return;
+    }
+    renderMeldingen('plan-errors', []);
+
+    const { fases, fouten, meldingen } = verzamelFases();
+
+    if (fouten.length || !fases.length) {
+      renderMeldingen('plan-errors', meldingen.concat([{ type: 'danger', msg: 'Er zijn nog velden die aandacht nodig hebben. Controleer de rood gemarkeerde invoer hierboven.' }]));
+      const first = document.querySelector('.invalid');
+      if (first) {
+        const card = first.closest('.verlofvorm-body');
+        if (card && !card.classList.contains('open')) {
+          card.classList.add('open');
+          const hdr = document.getElementById(card.id.replace('body-', 'hdr-'));
+          if (hdr) hdr.setAttribute('aria-expanded', 'true');
+        }
+        first.focus();
+      }
+      $('results-section').classList.remove('visible');
+      return;
+    }
+
+    CALC = calculate(fases);
+    renderMeldingen('result-warnings', meldingen);
+    renderKPI(CALC);
+    renderTimeline(CALC);
+    renderTable(CALC);
+    renderHR(CALC);
+
+    $('results-section').classList.add('visible');
+    $('results-title').focus();
+    $('results-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+
+  /* ============================================================
+     OVERIGE EVENTS
+  ============================================================ */
+  $('btn-print').addEventListener('click', function () { window.print(); });
+
+  $('btn-reset').addEventListener('click', function () {
+    $('basis-form').reset();
+    BASIS = null; CALC = null;
+    $('accordion-wrap').innerHTML = '';
+    ['warnings-area', 'plan-errors', 'result-warnings'].forEach(id => { $(id).innerHTML = ''; });
+    ['rechten-section', 'plan-section', 'results-section'].forEach(id => $(id).classList.remove('visible'));
+    ['geboortedatum', 'contracturen', 'maandsalaris'].forEach(clearError);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // Toetsenbordondersteuning voor accordion-headers via delegatie (Enter en Space)
+  $('accordion-wrap').addEventListener('keydown', function (e) {
+    if ((e.key === 'Enter' || e.key === ' ') && e.target.classList.contains('verlofvorm-header')) {
+      e.preventDefault();
+      e.target.click();
+    }
+  });
+
+  /* ============================================================
+     POP-UP: openen, sluiten en focus vasthouden
+  ============================================================ */
+  (function initModal() {
+    const modal  = $('disclaimer-modal');
+    const knop   = $('modal-accept');
+    const box    = modal.querySelector('.modal-box');
+    let laatsteFocus = null;
+
+    function sluit() {
+      modal.classList.add('closed');
+      document.removeEventListener('keydown', bewaakToetsen, true);
+      const doel = laatsteFocus || $('geboortedatum');
+      if (doel) doel.focus();
+    }
+
+    function bewaakToetsen(e) {
+      if (e.key === 'Escape') { e.preventDefault(); sluit(); return; }
+      if (e.key !== 'Tab') return;
+      // Houd de focus binnen de pop-up
+      const focusbaar = box.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+      if (!focusbaar.length) return;
+      const eerste = focusbaar[0], laatste = focusbaar[focusbaar.length - 1];
+      if (e.shiftKey && document.activeElement === eerste) { e.preventDefault(); laatste.focus(); }
+      else if (!e.shiftKey && document.activeElement === laatste) { e.preventDefault(); eerste.focus(); }
+    }
+
+    knop.addEventListener('click', sluit);
+    document.addEventListener('keydown', bewaakToetsen, true);
+    knop.focus();
+  })();
+
+  // Footer
+  $('footer-versie').textContent = 'CAO ' + CAO_VERSIE + ' · Regels gecontroleerd in ' + LAATSTE_CONTROLE + ' · Indicatieve berekening';
+  </script>
+</body>
+</html>
