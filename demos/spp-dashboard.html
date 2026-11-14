@@ -1,0 +1,1456 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SPP-dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Layout: vaste donkere navigatiekolom links, werkblad in het midden, gesprekshulp rechts. Eén donker thema. */
+:root{
+  color-scheme:dark;
+  --bg:#0d0e10; --side:#111214; --card:#131417; --raise:#191a1e; --field:#17181c;
+  --line:#22242a; --line2:#2d3038; --ink:#ededf0; --muted:#9c9ea8; --dim:#6f727d;
+  --accent:#a3a4f7; --accent-ink:#101124; --accent-soft:#1f2036;
+  --pos:#6fcf97; --pos-bg:#14291d; --neg:#f08875; --neg-bg:#371d19; --warn:#e6b455; --warn-bg:#35290f; --inf:#78b4f0; --inf-bg:#13273b; --neu:#a7aab4; --neu-bg:#202228;
+  --body:"Geist", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono:"Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --r:12px;
+}
+*{box-sizing:border-box}
+html{font-size:15px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);line-height:1.5;-webkit-font-smoothing:antialiased}
+h1,h2,h3{margin:0;font-weight:600;text-wrap:balance;line-height:1.25;letter-spacing:-.01em}
+h1{font-size:1.85rem} h2{font-size:1.07rem} h3{font-size:.95rem}
+p{margin:0}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.k{font-family:var(--mono);font-size:.7rem;letter-spacing:.09em;text-transform:uppercase;color:var(--dim)}
+
+.app{display:grid;grid-template-columns:262px minmax(0,1fr);min-height:100vh}
+.side{background:var(--side);border-right:1px solid var(--line);padding:18px 12px;display:flex;flex-direction:column;gap:14px;position:sticky;top:0;height:100vh;overflow:auto}
+.brand{display:flex;align-items:center;gap:10px;padding:2px 8px;font-weight:700;font-size:1.1rem;letter-spacing:-.02em}
+.brand i{width:22px;height:22px;border-radius:6px;background:linear-gradient(135deg,var(--accent),#6f70d8);display:grid;place-items:center;color:var(--accent-ink);font-style:normal;font-size:.7rem;font-weight:700}
+.ws{border:1px solid var(--line);border-radius:10px;background:var(--card);padding:10px 12px;display:flex;flex-direction:column;gap:2px}
+.ws input{border:0;background:transparent;padding:0;font-weight:600;width:100%;border-radius:4px}
+.ws small{color:var(--dim);font-size:.8rem}
+.pr{padding:0 8px;display:flex;flex-direction:column;gap:6px}
+.pr .bar{display:grid;grid-template-columns:repeat(10,1fr);gap:3px}
+.pr .bar span{height:4px;border-radius:2px;background:var(--line2)}
+.pr .bar span.prep{background:var(--warn)} .pr .bar span.disc{background:var(--inf)} .pr .bar span.ok{background:var(--pos)}
+.pr small{color:var(--dim);font-size:.78rem}
+.nav{display:flex;flex-direction:column;gap:1px}
+.nav .k{padding:14px 10px 6px}
+.nav button{display:grid;grid-template-columns:22px 1fr 8px;align-items:center;gap:10px;text-align:left;border:0;background:transparent;padding:8px 10px;border-radius:8px;cursor:pointer;color:var(--muted)}
+.nav button:hover{background:var(--raise);color:var(--ink)}
+.nav button[aria-current="step"]{background:var(--accent-soft);color:var(--ink)}
+.nav .nr{font-family:var(--mono);font-size:.78rem;color:var(--dim)}
+.nav button[aria-current="step"] .nr{color:var(--accent)}
+.nav .t{font-size:.94rem;font-weight:500;line-height:1.25}
+.nav .dot{width:8px;height:8px;border-radius:50%;border:1.5px solid var(--line2)}
+.nav .dot.prep{border-color:var(--warn);background:linear-gradient(90deg,var(--warn) 50%,transparent 50%)}
+.nav .dot.disc{border-color:var(--inf);background:var(--inf)} .nav .dot.ok{border-color:var(--pos);background:var(--pos)}
+.nav .later{opacity:.55}
+
+.col{min-width:0;display:flex;flex-direction:column}
+.top{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;padding:12px 28px;border-bottom:1px solid var(--line)}
+.crumb{color:var(--dim);font-size:.92rem;flex:1 1 200px}
+.crumb b{color:var(--ink);font-weight:500}
+.top .right{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:9px;padding:2px;background:var(--card)}
+.seg button{border:0;background:transparent;padding:5px 12px;border-radius:7px;cursor:pointer;font-weight:500;font-size:.88rem;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--raise);color:var(--ink);box-shadow:inset 0 0 0 1px var(--line2)}
+.save{font-size:.82rem;color:var(--muted);display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:999px;padding:4px 12px;background:var(--card)}
+.save:empty{display:none}
+.save i{width:7px;height:7px;border-radius:50%;background:var(--pos)}
+.save.bezig i{background:var(--warn)} .save.fout i{background:var(--neg)} .save.fout{color:var(--neg)}
+
+main{padding:26px 28px 70px;min-width:0;max-width:1500px}
+.ttl h1{margin-bottom:4px}
+.ttl p{color:var(--muted);font-size:1.02rem;max-width:72ch}
+.ttl p.intro{color:var(--ink);font-size:.98rem;margin-top:10px;max-width:80ch;line-height:1.6}
+.meta{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:16px 0 18px}
+.chip{display:inline-flex;align-items:center;gap:7px;padding:6px 12px;border-radius:9px;font-size:.88rem;border:1px solid var(--line);background:var(--card);color:var(--muted);white-space:nowrap}
+.chip b{color:var(--ink);font-weight:500}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:7px;font-size:.82rem;font-weight:500;background:var(--neu-bg);color:var(--neu);white-space:nowrap}
+.pill.prep{background:var(--warn-bg);color:var(--warn)} .pill.disc{background:var(--inf-bg);color:var(--inf)} .pill.ok{background:var(--pos-bg);color:var(--pos)}
+.pill::before{content:"";width:7px;height:7px;border-radius:50%;border:1.5px solid currentColor}
+.pill.prep::before{background:linear-gradient(90deg,currentColor 50%,transparent 50%)} .pill.disc::before,.pill.ok::before{background:currentColor}
+
+.amb{display:grid;grid-template-columns:auto 1fr auto;gap:6px 14px;align-items:center;border:1px solid var(--line);border-left:3px solid var(--accent);background:var(--card);border-radius:var(--r);padding:13px 18px;margin-bottom:18px}
+.amb p{font-size:1.02rem;max-width:90ch}
+.amb p.leeg{color:var(--dim)}
+@media (max-width:720px){.amb{grid-template-columns:1fr}}
+
+.cols{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:20px;align-items:start}
+.work{display:flex;flex-direction:column;gap:16px;min-width:0}
+.aside{display:flex;flex-direction:column;gap:14px;position:sticky;top:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:20px 22px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.card>header{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.card>header h2{margin-right:2px}
+.card>header .sp{flex:1}
+.sub{color:var(--muted);font-size:.9rem;margin-top:-8px}
+.aside .card{padding:16px 18px;gap:10px}
+.aside ul,.sumlist{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px;font-size:.92rem;color:var(--muted)}
+.aside ul li,.sumlist li{padding-left:14px;position:relative}
+.aside ul li::before,.sumlist li::before{content:"";position:absolute;left:0;top:.6em;width:5px;height:5px;border-radius:50%;background:var(--line2)}
+.sumlist li b,.aside li b{color:var(--ink);font-weight:500}
+
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px}
+.fld{display:flex;flex-direction:column;gap:6px;min-width:0}
+.lab{display:flex;flex-wrap:wrap;align-items:center;gap:7px}
+.lab label{font-weight:500;font-size:.92rem}
+.prep{font-family:var(--mono);font-size:.64rem;letter-spacing:.07em;text-transform:uppercase;padding:2px 7px;border-radius:5px;background:var(--accent-soft);color:var(--accent)}
+.hint{font-size:.84rem;color:var(--dim)}
+input[type=text],input[type=date],input[type=number],select,textarea{width:100%;padding:8px 11px;border:1px solid var(--line2);border-radius:8px;background:var(--field);min-width:0}
+input:hover,select:hover,textarea:hover{border-color:#3a3d47}
+textarea{resize:vertical;min-height:2.6em}
+input:disabled,select:disabled,textarea:disabled{opacity:.55;cursor:not-allowed}
+input[type=checkbox]{width:17px;height:17px;accent-color:var(--accent)}
+::placeholder{color:var(--dim)}
+
+.btn{border:1px solid var(--line2);background:var(--raise);padding:7px 13px;border-radius:8px;cursor:pointer;font-weight:500;font-size:.9rem}
+.btn:hover{border-color:var(--accent);color:var(--accent)}
+.btn.pri{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+.btn.pri:hover{filter:brightness(1.08);color:var(--accent-ink)}
+.btn.sm{padding:4px 10px;font-size:.84rem}
+.btn.del{color:var(--dim);border-color:transparent;background:transparent;padding:4px 8px}
+.btn.del:hover,.btn.del.armed{color:var(--neg);border-color:var(--neg)}
+.btn.ghost{background:transparent;border-style:dashed;color:var(--muted)}
+.btn.vb{padding:1px 8px;font-size:.76rem;color:var(--accent);background:transparent;border-color:var(--accent-soft)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.info{width:18px;height:18px;border-radius:50%;border:1px solid var(--line2);background:var(--raise);color:var(--muted);font-size:.7rem;font-weight:600;cursor:pointer;padding:0;line-height:1;flex:none}
+.info:hover{border-color:var(--accent);color:var(--accent)}
+.pop{position:fixed;z-index:50;background:#22242b;border:1px solid var(--line2);color:var(--ink);padding:13px 15px;border-radius:10px;font-size:.9rem;box-shadow:0 12px 32px rgba(0,0,0,.5);display:flex;flex-direction:column;gap:8px}
+.pop[hidden]{display:none}
+.pop b{font-weight:600}
+.pop span{color:var(--muted)}
+
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:10px}
+table{border-collapse:collapse;width:100%;font-size:.92rem}
+th{font-size:.82rem;color:var(--dim);text-align:left;font-weight:500;padding:9px 12px;background:var(--raise);border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:7px 12px;border-bottom:1px solid var(--line);vertical-align:middle}
+tr:last-child td{border-bottom:0}
+td.num{font-family:var(--mono);color:var(--dim);font-size:.82rem}
+.rows{display:flex;flex-direction:column;gap:8px}
+.row{display:grid;gap:8px;align-items:start}
+.row.r-betr{grid-template-columns:minmax(120px,1fr) minmax(140px,1.5fr) auto}
+.row.r-doel{grid-template-columns:minmax(160px,1fr) 150px auto}
+.row.r-fac{grid-template-columns:minmax(160px,1fr) 130px 140px auto}
+@media (max-width:640px){.row.r-betr,.row.r-doel,.row.r-fac{grid-template-columns:1fr 1fr}.row>:first-child{grid-column:1/-1}}
+
+.ex{border:1px dashed var(--line2);border-radius:9px;padding:9px 13px;font-size:.9rem}
+.ex summary{cursor:pointer;font-weight:500;color:var(--accent)}
+.ex p,.ex ul{margin:8px 0 2px;color:var(--muted)} .ex ul{padding-left:1.1em} .ex b{color:var(--ink);font-weight:500}
+.prev{border-top:1px solid var(--line);padding-top:9px}
+.prev:first-of-type{border-top:0;padding-top:0}
+.prev summary{cursor:pointer;font-weight:500;font-size:.9rem}
+.prev ul{margin-top:8px}
+
+.tag{display:inline-block;padding:2px 8px;border-radius:6px;font-size:.78rem;font-weight:500;white-space:nowrap;background:var(--neu-bg);color:var(--neu)}
+.tag.neg{background:var(--neg-bg);color:var(--neg)} .tag.warn{background:var(--warn-bg);color:var(--warn)} .tag.pos{background:var(--pos-bg);color:var(--pos)} .tag.acc{background:var(--accent-soft);color:var(--accent)}
+.empty{color:var(--dim);font-size:.9rem}
+.note{padding:10px 13px;border-radius:9px;font-size:.9rem;background:var(--raise);color:var(--muted);border:1px solid var(--line)}
+.note.ok{background:var(--pos-bg);color:var(--pos);border-color:transparent} .note.warn{background:var(--warn-bg);color:var(--warn);border-color:transparent} .note.bad{background:var(--neg-bg);color:var(--neg);border-color:transparent}
+.banner{margin:0 0 16px}
+
+.sugs{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.sug{border:1px solid var(--line2);background:transparent;color:var(--muted);border-radius:999px;padding:3px 11px;font-size:.82rem;cursor:pointer;text-align:left}
+.sug:hover{border-color:var(--accent);color:var(--ink)}
+.sug::before{content:"+ ";color:var(--accent)}
+.dfield{border-top:1px solid var(--line);padding-top:14px;display:flex;flex-direction:column;gap:9px}
+.dfield:first-of-type{border-top:0;padding-top:0}
+.dfield .hd{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.dfield .hd b{font-weight:600}
+.teller{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.teller>div{border:1px solid var(--line);border-radius:10px;padding:10px 14px;background:var(--raise);display:flex;flex-direction:column;gap:5px}
+.teller .n{font-size:1.5rem;font-weight:600;font-variant-numeric:tabular-nums;line-height:1}
+.teller .n small{font-size:.84rem;font-weight:400;color:var(--dim)}
+.teller .m{display:grid;grid-template-columns:repeat(5,1fr);gap:3px}
+.teller .m i{height:4px;border-radius:2px;background:var(--line2)}
+.teller .kans .m i.on{background:var(--pos)} .teller .bedr .m i.on{background:var(--neg)} .teller .m i.over{background:var(--warn)}
+
+.cov{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}
+.cov>div{border:1px solid var(--line);border-radius:9px;padding:9px 11px;background:var(--raise);min-width:0}
+.cov b{display:block;font-weight:500;font-size:.86rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cov span{font-size:.8rem;color:var(--dim);font-variant-numeric:tabular-nums}
+.cov span em{font-style:normal} .cov .p{color:var(--pos)} .cov .n{color:var(--neg)}
+.cov .leeg{opacity:.55}
+@media (max-width:900px){.cov{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.mx{display:grid;grid-template-columns:86px minmax(0,1fr) minmax(0,1fr);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.mx>div{padding:11px 13px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);min-width:0}
+.mx>div:nth-child(3n){border-right:0}
+.mx>div:nth-last-child(-n+3){border-bottom:0}
+.mx .h{background:var(--raise);font-size:.84rem;font-weight:500;color:var(--muted);display:flex;align-items:center;gap:8px}
+.mx .h.kans{box-shadow:inset 0 2px 0 var(--pos)} .mx .h.bedr{box-shadow:inset 0 2px 0 var(--neg)}
+.mx .rh{background:var(--raise);display:flex;flex-direction:column;gap:2px;justify-content:center}
+.mx .rh b{font-weight:500;font-size:.9rem}
+.mx .cell{display:flex;flex-direction:column;gap:7px}
+.mi{display:grid;grid-template-columns:26px 1fr;gap:9px;align-items:start;font-size:.92rem}
+.fb{font-family:var(--mono);font-size:.7rem;height:20px;border-radius:5px;background:var(--neu-bg);color:var(--neu);display:grid;place-items:center;margin-top:1px}
+@media (max-width:640px){.mx{grid-template-columns:60px minmax(0,1fr) minmax(0,1fr)}}
+.mk{display:grid;grid-template-columns:minmax(120px,1.2fr) auto auto 1fr;gap:8px 12px;align-items:center;font-size:.92rem}
+.mk .ar{color:var(--dim)}
+
+.swot{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.swot>div{border:1px solid var(--line);border-radius:10px;padding:13px 15px;background:var(--raise);min-width:0}
+.swot h3{margin-bottom:8px;display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.swot h3 small{font-weight:400;color:var(--dim);font-size:.78rem}
+.swot .s{box-shadow:inset 0 2px 0 var(--pos)} .swot .w{box-shadow:inset 0 2px 0 var(--warn)} .swot .o{box-shadow:inset 0 2px 0 var(--inf)} .swot .t{box-shadow:inset 0 2px 0 var(--neg)}
+@media (max-width:640px){.swot{grid-template-columns:1fr}}
+.segs{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px}
+.segs>div{border:1px solid var(--line);background:var(--raise);border-radius:10px;padding:13px 15px;display:flex;flex-direction:column;gap:8px}
+
+.tl{position:relative;height:104px;margin:6px 16px 0}
+.tl .track{position:absolute;left:0;right:0;top:51px;height:2px;background:var(--line2)}
+.tl .dot{position:absolute;top:39px;width:26px;height:26px;margin-left:-13px;border-radius:50%;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font-weight:600;font-size:.8rem;box-shadow:0 0 0 4px var(--card)}
+.tl .lbl{position:absolute;transform:translateX(-50%);font-size:.74rem;color:var(--muted);white-space:nowrap}
+.tl .lbl.up{top:15px} .tl .lbl.dn{top:72px}
+.tl .tick{position:absolute;top:45px;width:1px;height:14px;background:var(--dim);opacity:.6}
+.tl .mn{position:absolute;top:90px;font-family:var(--mono);font-size:.66rem;color:var(--dim);text-transform:uppercase;letter-spacing:.08em}
+
+.tabs{display:flex;flex-wrap:wrap;gap:6px;align-items:center;border-bottom:1px solid var(--line);padding-bottom:0}
+.tabs .tab{border:0;border-bottom:2px solid transparent;background:transparent;padding:8px 12px;cursor:pointer;font-weight:500;color:var(--muted)}
+.tabs .tab[aria-selected="true"]{border-color:var(--accent);color:var(--ink)}
+.opm{display:flex;flex-direction:column;gap:8px}
+.opm .o{display:grid;grid-template-columns:auto 1fr auto;gap:9px;align-items:start;font-size:.9rem;padding:9px 10px;border-radius:9px;background:var(--raise);border:1px solid var(--line)}
+.opm .o.af .tx{text-decoration:line-through;color:var(--dim)}
+.opm .o small{display:block}
+.grid7{display:grid;grid-template-columns:repeat(auto-fit,minmax(112px,1fr));gap:10px}
+.grid4{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.gtabs{display:flex;flex-wrap:wrap;gap:6px}
+.gtabs button{border:1px solid var(--line2);background:transparent;color:var(--muted);border-radius:8px;padding:6px 12px;cursor:pointer;font-weight:500;font-size:.9rem}
+.gtabs button[aria-selected="true"]{background:var(--accent-soft);border-color:var(--accent);color:var(--ink)}
+.subh{font-weight:600;font-size:.92rem;display:flex;align-items:center;gap:7px;margin-top:4px}
+.ch{width:100%;height:auto;display:block}
+.ch .cl{fill:var(--muted);font-size:12px} .ch .cv{fill:var(--ink);font-size:12px;font-variant-numeric:tabular-nums} .ch .ax{fill:var(--dim);font-size:11px} .ch .gr{stroke:var(--line);stroke-width:1}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:.84rem;color:var(--muted)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.chgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px}
+.chbox{border:1px solid var(--line);border-radius:10px;padding:14px 16px;background:var(--raise);display:flex;flex-direction:column;gap:10px;min-width:0}
+.chbox.wide{grid-column:1/-1}
+td.r,th.r{text-align:right;font-variant-numeric:tabular-nums}
+.hr3p{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.hr3p>div{border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:var(--raise);display:flex;flex-direction:column;gap:6px}
+.stack{display:flex;height:10px;border-radius:5px;overflow:hidden;gap:2px;min-width:120px}
+.stack i{display:block;height:100%}
+.pm{display:grid;grid-template-columns:28px repeat(5,minmax(0,1fr));gap:3px;max-width:560px}
+.pm .c{aspect-ratio:1.5;border-radius:6px;background:var(--raise);border:1px solid var(--line);display:flex;flex-wrap:wrap;gap:3px;align-items:center;justify-content:center;padding:3px}
+.pm .c.m{background:var(--warn-bg);border-color:transparent} .pm .c.h{background:var(--neg-bg);border-color:transparent}
+.pm .ax{display:grid;place-items:center;font-family:var(--mono);font-size:.72rem;color:var(--dim)}
+.pm .d{width:22px;height:22px;border-radius:50%;background:var(--neu-bg);border:1px solid var(--line2);color:var(--ink);font-size:.72rem;font-weight:600;display:grid;place-items:center}
+.pm .d.sel{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.gaprow{display:grid;grid-template-columns:auto 26px minmax(0,1fr) 120px 120px 44px;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line);font-size:.92rem}
+.gaprow:last-child{border-bottom:0}
+.gaprow .nr{font-family:var(--mono);font-size:.76rem;color:var(--dim)}
+.gaprow .sc{font-weight:600;text-align:right;font-variant-numeric:tabular-nums}
+@media (max-width:700px){.gaprow{grid-template-columns:auto 26px minmax(0,1fr)}.gaprow>:nth-child(n+4){grid-column:span 1}}
+
+[hidden]{display:none!important}
+main{--hue:#a3a4f7;--hrgb:163,164,247}
+.hero{border:1px solid var(--line);border-radius:16px;padding:22px 26px;background:linear-gradient(120deg,rgba(var(--hrgb),.2),rgba(var(--hrgb),.05) 45%,rgba(var(--hrgb),0) 75%),var(--card);display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 20px;margin-bottom:14px;position:relative;overflow:hidden}
+.hero::after{content:attr(data-nr);position:absolute;right:18px;top:-34px;font-size:11rem;font-weight:700;line-height:1;color:rgba(var(--hrgb),.07);letter-spacing:-.05em;pointer-events:none}
+.hero .ic{width:54px;height:54px;border-radius:15px;background:rgba(var(--hrgb),.18);color:var(--hue);display:grid;place-items:center;grid-row:span 3}
+.hero .ic svg{width:28px;height:28px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.hero .k{color:var(--hue)}
+.hero h1{font-size:2rem}
+.hero .q{color:var(--muted);font-size:1.05rem}
+.hero .intro{grid-column:1/-1;margin-top:12px;max-width:86ch;line-height:1.6;color:var(--ink);position:relative;z-index:1}
+.hero .meta{grid-column:1/-1;margin:14px 0 0;position:relative;z-index:1}
+.hero .chip{background:rgba(0,0,0,.25);border-color:rgba(255,255,255,.07)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:12px;margin-bottom:14px}
+.kpi{border:1px solid var(--line);border-radius:14px;background:var(--card);padding:14px 16px 13px;display:flex;flex-direction:column;gap:5px;position:relative;overflow:hidden}
+.kpi::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--tone,var(--hue))}
+.kpi .v{font-size:1.75rem;font-weight:600;letter-spacing:-.02em;line-height:1.1;font-variant-numeric:tabular-nums}
+.kpi .v small{font-size:.9rem;font-weight:400;color:var(--dim);letter-spacing:0}
+.kpi .s{font-size:.82rem;color:var(--muted)}
+.kpi.pos{--tone:var(--pos)} .kpi.neg{--tone:var(--neg)} .kpi.warn{--tone:var(--warn)} .kpi.inf{--tone:var(--inf)}
+.kpi.neg .v{color:var(--neg)} .kpi.pos .v{color:var(--pos)} .kpi.warn .v{color:var(--warn)}
+.amb{border-left-color:var(--hue)}
+.secnav{display:flex;flex-wrap:wrap;gap:4px;padding:5px;border:1px solid var(--line);border-radius:13px;background:var(--card);position:sticky;top:8px;z-index:5;box-shadow:0 8px 20px rgba(0,0,0,.35)}
+.secnav button{display:inline-flex;align-items:center;gap:8px;border:0;background:transparent;color:var(--muted);padding:7px 12px;border-radius:9px;cursor:pointer;font-weight:500;font-size:.9rem}
+.secnav button:hover{background:var(--raise);color:var(--ink)}
+.secnav button span{width:20px;height:20px;border-radius:50%;display:grid;place-items:center;font-family:var(--mono);font-size:.7rem;background:var(--raise);border:1px solid var(--line2)}
+.secnav button[aria-selected="true"]{background:rgba(var(--hrgb),.16);color:var(--ink)}
+.secnav button[aria-selected="true"] span{background:var(--hue);color:#101124;border-color:transparent;font-weight:600}
+.secnav .all{margin-left:auto;font-size:.82rem;color:var(--dim)}
+.secnav .all[aria-pressed="true"]{color:var(--hue)}
+.secno{width:26px;height:26px;border-radius:8px;background:rgba(var(--hrgb),.16);color:var(--hue);display:grid;place-items:center;font-family:var(--mono);font-size:.8rem;flex:none}
+.secfoot{display:flex;justify-content:space-between;gap:10px;border-top:1px solid var(--line);padding-top:14px;margin-top:4px}
+.sumc{background:linear-gradient(160deg,rgba(var(--hrgb),.13),rgba(var(--hrgb),0) 60%),var(--card)!important;border-color:rgba(var(--hrgb),.3)!important}
+.sumc .k{color:var(--hue)}
+.card>header h2{font-size:1.12rem}
+.dfield .hd b::before{content:"";display:inline-block;width:8px;height:8px;border-radius:2px;background:var(--hue);margin-right:9px;vertical-align:1px}
+.gq{display:flex;flex-direction:column}
+.gqrow{display:grid;grid-template-columns:minmax(150px,1.1fr) 120px minmax(220px,2.4fr) minmax(120px,auto);gap:14px;align-items:center;padding:13px 0;border-bottom:1px solid var(--line)}
+.gqrow:last-child{border-bottom:0}
+.gqrow.hd{padding:0 0 8px}
+.gqrow .nm{display:flex;flex-direction:column;gap:3px;min-width:0}
+.gqrow .nm b{font-weight:500}
+.gqrow .nm small{color:var(--dim);font-size:.8rem}
+.bt{position:relative;height:30px}
+.bt .tr{position:absolute;left:0;right:0;top:9px;height:12px;border-radius:6px;background:var(--raise);border:1px solid var(--line)}
+.bt .sup{position:absolute;left:0;top:9px;height:12px;border-radius:6px;background:#3987e5}
+.bt .gp{position:absolute;top:9px;height:12px;border-radius:3px}
+.bt .gp.neg{background:repeating-linear-gradient(135deg,rgba(240,136,117,.75) 0 4px,rgba(240,136,117,.25) 4px 8px)}
+.bt .gp.warn{background:repeating-linear-gradient(135deg,rgba(230,180,85,.8) 0 4px,rgba(230,180,85,.3) 4px 8px)}
+.bt .dem{position:absolute;top:2px;width:3px;height:26px;margin-left:-1px;border-radius:2px;background:var(--ink)}
+.bl{display:flex;justify-content:space-between;font-size:.76rem;color:var(--dim);margin-top:2px;font-variant-numeric:tabular-nums}
+.lg2{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:.82rem;color:var(--muted);align-items:center}
+.lg2 i{display:inline-block;vertical-align:-2px;margin-right:6px}
+.cgrp{display:flex;flex-direction:column;gap:9px;padding:13px 0;border-bottom:1px solid var(--line)}
+.cgrp:last-child{border-bottom:0}
+.crow{display:grid;grid-template-columns:minmax(140px,1fr) minmax(180px,2fr) minmax(150px,auto);gap:14px;align-items:center;font-size:.92rem}
+.cb{position:relative;height:22px}
+.cb .tr{position:absolute;left:0;right:0;top:7px;height:8px;border-radius:4px;background:var(--raise);border:1px solid var(--line)}
+.cb .fl{position:absolute;left:0;top:7px;height:8px;border-radius:4px;background:#199e70}
+.cb .ms{position:absolute;left:0;top:7px;height:8px;border-radius:2px;background:repeating-linear-gradient(135deg,rgba(240,136,117,.75) 0 4px,rgba(240,136,117,.25) 4px 8px)}
+.cb .tg{position:absolute;top:1px;width:3px;height:20px;margin-left:-1px;border-radius:2px;background:var(--ink)}
+.prio2{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(300px,1fr);gap:22px;align-items:start}
+@media (max-width:1000px){.prio2{grid-template-columns:minmax(0,1fr)}.gqrow{grid-template-columns:1fr 110px}.gqrow.hd{display:none}.gqrow>:nth-child(n+3){grid-column:1/-1}.crow{grid-template-columns:1fr}}
+.gcard{display:grid;grid-template-columns:auto 28px minmax(0,1fr);gap:8px 11px;align-items:start;padding:11px 12px;border:1px solid var(--line);border-radius:11px;background:var(--raise);margin-bottom:8px}
+.gcard.sel{border-color:var(--accent);background:var(--accent-soft)}
+.gcard .tx{font-size:.92rem}
+.gcard .ctl{grid-column:3;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.gcard .ctl select{width:auto;padding:4px 8px;font-size:.84rem}
+.gcard .ctl .sc{margin-left:auto;font-size:.82rem;color:var(--muted)}
+.gcard .ctl .sc b{font-size:1.05rem;color:var(--ink)}
+.bub{width:26px;height:26px;border-radius:50%;background:var(--card);border:1.5px solid var(--line2);color:var(--ink);font-size:.76rem;font-weight:600;display:grid;place-items:center;flex:none;position:relative}
+.bub.sel{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.bub.key::after{content:"";position:absolute;right:-3px;top:-3px;width:9px;height:9px;border-radius:50%;background:var(--neg);border:2px solid var(--card)}
+.quad{display:grid;grid-template-columns:22px minmax(0,1fr);gap:6px 8px;position:sticky;top:60px}
+.quad .yl{writing-mode:vertical-rl;transform:rotate(180deg);text-align:center}
+.quad .xl{grid-column:2;text-align:center}
+.qp{position:relative;display:grid;grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(5,1fr);aspect-ratio:1.08;border:1px solid var(--line2);border-radius:12px;overflow:hidden}
+.qp .c{display:flex;flex-wrap:wrap;gap:3px;align-items:center;justify-content:center;align-content:center;padding:3px;border-right:1px dashed rgba(255,255,255,.05);border-bottom:1px dashed rgba(255,255,255,.05);background:rgba(255,255,255,.015)}
+.qp .c:nth-child(-n+5){padding-top:20px} .qp .c:nth-child(n+21):nth-child(-n+25){padding-bottom:20px}
+.qp .c.hot{background:rgba(240,136,117,.16)} .qp .c.plan{background:rgba(120,180,240,.1)} .qp .c.fast{background:rgba(230,180,85,.1)}
+.qp .c.bx{border-right:2px solid var(--line2)} .qp .c.by{border-bottom:2px solid var(--line2)}
+.qp .ql{position:absolute;font-family:var(--mono);font-size:.66rem;letter-spacing:.07em;text-transform:uppercase;padding:6px 9px;pointer-events:none}
+.qp .ql.tr{right:0;top:0;color:var(--neg)} .qp .ql.tl{left:0;top:0;color:var(--inf)} .qp .ql.br{right:0;bottom:0;color:var(--warn)} .qp .ql.bl2{left:0;bottom:0;color:var(--dim)}
+.qt{display:grid;grid-template-columns:repeat(5,1fr);grid-column:2;font-family:var(--mono);font-size:.7rem;color:var(--dim);text-align:center}
+
+main{max-width:1800px}
+.hero{padding:16px 20px;grid-template-columns:auto minmax(0,1fr) auto;gap:4px 16px;border-radius:14px;margin-bottom:10px}
+.hero::after{font-size:7rem;top:-22px;right:14px}
+.hero .ic{width:44px;height:44px;border-radius:12px;grid-row:auto;align-self:start}
+.hero .ic svg{width:23px;height:23px}
+.hero h1{font-size:1.55rem}
+.hero .q{font-size:.98rem}
+.hero .meta{grid-column:auto;margin:0;justify-content:flex-end;align-self:start;max-width:440px}
+.hero .intro{margin-top:8px;font-size:.93rem;line-height:1.55;color:var(--muted);max-width:110ch}
+@media (max-width:1000px){.hero{grid-template-columns:auto minmax(0,1fr)}.hero .meta{grid-column:1/-1;justify-content:flex-start;max-width:none;margin-top:8px}}
+.kpis{grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-bottom:10px}
+.kpi{padding:8px 14px 9px;gap:1px;border-radius:11px}
+.kpi .row{display:flex;align-items:baseline;gap:8px;min-width:0}
+.kpi .v{font-size:1.25rem;white-space:nowrap}
+.kpi .v small{font-size:.8rem}
+.kpi .s{font-size:.78rem;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.amb2{margin-bottom:12px}
+.amb2 button{width:100%;display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:center;text-align:left;padding:10px 16px;border:1px solid var(--line);border-left:3px solid var(--hue);border-radius:var(--r);background:var(--card);cursor:pointer}
+.amb2 button:hover{border-color:var(--hue)}
+.amb2 .one{font-size:.95rem;line-height:1.45}
+.amb2 .one.leeg{color:var(--dim)}
+.amb2 .go{font-size:.8rem;color:var(--dim);white-space:nowrap}
+.amb2 button:hover .go{color:var(--hue)}
+details.amb{display:block;padding:0;margin-bottom:12px}
+details.amb summary{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:center;padding:9px 16px;cursor:pointer;list-style:none}
+details.amb summary::-webkit-details-marker{display:none}
+details.amb .one{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:.95rem}
+details.amb[open] .one{white-space:normal}
+details.amb .one.leeg{color:var(--dim)}
+.aside{max-height:calc(100vh - 28px);overflow:auto;gap:10px}
+details.acc{display:block;padding:0}
+details.acc>summary{cursor:pointer;list-style:none;padding:12px 16px;font-family:var(--mono);font-size:.7rem;letter-spacing:.09em;text-transform:uppercase;color:var(--dim);display:flex;justify-content:space-between;align-items:center}
+details.acc>summary::-webkit-details-marker{display:none}
+details.acc>summary::after{content:"+";font-size:1rem;color:var(--dim)}
+details.acc[open]>summary::after{content:"-"}
+details.acc>.in{padding:0 16px 14px;display:flex;flex-direction:column;gap:10px}
+details.acc.sumc>summary{color:var(--hue)}
+.prevs{border-top:1px solid var(--line);padding-top:10px;display:flex;flex-direction:column;gap:8px}
+.todo{display:flex;flex-direction:column;gap:6px}
+.todo button{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 10px;text-align:left;border:1px solid var(--line);background:var(--raise);border-radius:9px;padding:8px 10px;cursor:pointer;font-size:.88rem}
+.todo button:hover{border-color:var(--hue)}
+.todo small{color:var(--dim);grid-column:1/-1}
+.colhd{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}
+.grid7{grid-template-columns:repeat(7,minmax(0,1fr))}
+.grid5{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+@media (max-width:1100px){.grid7,.grid5{grid-template-columns:repeat(auto-fit,minmax(112px,1fr))}}
+.row.r-fac{grid-template-columns:minmax(160px,1fr) 150px 150px auto}
+details.sugd{display:inline-block}
+details.sugd summary{cursor:pointer;list-style:none;display:inline-block}
+details.sugd summary::-webkit-details-marker{display:none}
+details.sugd[open]{display:block;width:100%}
+details.sugd .sugs{margin-top:8px}
+main.sect .foot{display:none}
+.prio3{display:flex;flex-direction:column;gap:20px}
+.pth,.ptr{display:grid;grid-template-columns:minmax(0,1fr) 168px 168px 128px;gap:12px;align-items:center}
+.pth{padding:0 10px 6px}
+.ptg{margin:14px 0 4px;padding:0 10px;font-weight:600;font-size:.9rem;display:flex;gap:8px;align-items:baseline}
+.ptg small{font-weight:400;color:var(--dim)}
+.ptr{padding:8px 10px;border-radius:9px;border:1px solid transparent}
+.ptr:nth-of-type(odd){background:var(--raise)}
+.ptr.sel{border-color:var(--accent);background:var(--accent-soft)}
+.ptr .tx{display:flex;flex-direction:column;gap:1px;min-width:0;font-size:.9rem}
+.ptr .tx b{font-weight:500}
+.ptr .tx span{color:var(--muted);font-size:.84rem}
+.sg{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line2);border-radius:8px;overflow:hidden;background:var(--card)}
+.sg button{border:0;background:transparent;color:var(--dim);padding:5px 0;font-size:.78rem;cursor:pointer;border-right:1px solid var(--line2)}
+.sg button:last-child{border-right:0}
+.sg button:hover:not(:disabled){color:var(--ink)}
+.sg button[aria-pressed="true"]{background:var(--neu-bg);color:var(--ink);font-weight:600}
+.sg button[aria-pressed="true"][data-v="hoog"]{background:var(--neg-bg);color:var(--neg)}
+.sg button[aria-pressed="true"][data-v="midden"]{background:var(--warn-bg);color:var(--warn)}
+.pick{border:1px solid var(--line2);background:transparent;color:var(--muted);border-radius:8px;padding:5px 0;font-size:.8rem;cursor:pointer;font-weight:500}
+.pick:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+.pick[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+details.minor{margin-top:12px}
+details.minor summary{cursor:pointer;color:var(--accent);font-size:.88rem;font-weight:500;padding:0 10px}
+.mx3w{display:flex;flex-direction:column;gap:10px}
+.mx3{display:grid;grid-template-columns:54px repeat(3,minmax(0,1fr));gap:4px}
+.mx3 .c{min-height:58px;flex-flow:row wrap;align-content:flex-start;border-radius:9px;border:1px solid var(--line);background:var(--raise);padding:6px;display:flex;flex-direction:column;gap:4px;position:relative}
+.mx3 .c.hot{background:var(--neg-bg);border-color:transparent}
+.mx3 .c.hot::before{content:"Nu aanpakken";flex:0 0 100%;font-family:var(--mono);font-size:.62rem;letter-spacing:.07em;text-transform:uppercase;color:var(--neg)}
+.mx3 .ax{display:grid;place-items:center;font-size:.76rem;color:var(--dim)}
+.mx3 .ax.y{justify-items:end;padding-right:6px}
+.mx3 .c{min-width:0;flex-direction:row}
+.mc{max-width:100%;overflow-wrap:anywhere;font-size:.76rem;line-height:1.25;padding:3px 8px;border-radius:6px;background:var(--card);border:1px solid var(--line2);color:var(--ink)}
+.mc.sel{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+
+@media (max-width:760px){.pth{display:none}.ptr{grid-template-columns:1fr 1fr}.ptr .tx{grid-column:1/-1}.ptr .pick{grid-column:1/-1}}
+.ovw{display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:12px}
+.ovw .card{gap:10px;padding:16px 18px;cursor:pointer}
+.ovw .card:hover{border-color:var(--line2)}
+.ovw .card header{justify-content:space-between}
+.ovw .mini{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:.86rem;color:var(--muted)}
+.ovw .mini b{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+body.sessie .banner,body.sessie .btn.del,body.sessie .btn.vb,body.sessie .prep,body.sessie .ex,body.sessie .aside details:not([data-as="vragen"]),body.sessie .secnav .all{display:none}
+
+.how{margin:0;padding:12px 16px 12px 34px;border:1px solid var(--line);border-radius:10px;background:var(--raise);display:flex;flex-direction:column;gap:5px;font-size:.92rem;color:var(--muted)}
+.how b{color:var(--ink);font-weight:600}
+.bk{display:flex;flex-wrap:wrap;gap:6px;padding:0 8px}.bk small{flex:0 0 100%;color:var(--dim);font-size:.76rem}.bk small:empty{display:none}body.sessie .bk{display:none}
+.foot{display:flex;justify-content:space-between;gap:12px;margin-top:22px}
+.sessbar{display:none}
+
+body.sessie{font-size:1.14rem}
+body.sessie .side,body.sessie .top,body.sessie .hrbp{display:none}
+body.sessie .secnav{top:0}
+body.sessie .app{grid-template-columns:minmax(0,1fr)}
+body.sessie main{padding:26px 4vw 60px;max-width:none}
+body.sessie .sessbar{display:flex;align-items:center;gap:10px;padding:10px 4vw;background:var(--side);border-bottom:1px solid var(--line)}
+body.sessie .sessbar b{flex:1;font-weight:600;font-size:1.05rem}
+body.sessie .cols{grid-template-columns:minmax(0,1fr) 380px}
+
+@media (max-width:1220px){.cols,body.sessie .cols{grid-template-columns:minmax(0,1fr)}.aside{position:static}}
+@media (max-width:860px){
+  .app{grid-template-columns:minmax(0,1fr)}
+  .side{position:static;height:auto;border-right:0;border-bottom:1px solid var(--line)}
+  .nav{flex-direction:row;overflow-x:auto} .nav .k{display:none}
+  .nav button{grid-template-columns:22px;flex:none} .nav .t,.nav .dot{display:none}
+  main{padding:20px 16px 50px} .top{padding:10px 16px}
+}
+@media (prefers-reduced-motion:no-preference){.btn,.nav button,.info,.sug,input,select,textarea{transition:background .12s,color .12s,border-color .12s}}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <div class="brand"><i>S</i>SPP-dashboard</div>
+    <div class="ws" id="ws"></div>
+    <div class="pr" id="prog"></div>
+    <div class="bk"><button type="button" class="btn sm" data-act="bkdl">Dossier opslaan</button><label class="btn sm" for="bkfile">Dossier openen</label><input type="file" id="bkfile" accept=".json,application/json" data-bk="1" hidden><small id="bkmsg"></small></div>
+    <nav class="nav" id="side" aria-label="Stappen"></nav>
+  </aside>
+  <div class="col">
+    <header class="top" id="top"></header>
+    <div class="sessbar" id="sessbar"></div>
+    <main id="main"></main>
+  </div>
+</div>
+<div class="pop" id="pop" hidden></div>
+
+<script>
+"use strict";
+/* ---------- Vaste inhoud ---------- */
+const TERMS={
+  spp:["Strategische personeelsplanning (SPP)","Een methode om te bepalen welke mensen de afdeling over 3 tot 5 jaar nodig heeft, wat er nu is en wat je moet doen om het verschil te overbruggen."],
+  hrbp:["HR business partner (HRBP)","De HR-adviseur die de afdeling door het proces begeleidt en de sessies leidt."],
+  mt:["MT","Managementteam: de leidinggevenden die samen de afdeling aansturen."],
+  ambitie:["Personele ambitie","Eén of twee zinnen over wat de afdeling over 3 tot 5 jaar met haar mensen wil bereiken. Het is de toetssteen voor elke keuze in dit traject."],
+  scenario:["Scenario","Een mogelijk toekomstbeeld waarop je de planning baseert. Het basisscenario is de meest waarschijnlijke ontwikkeling, een alternatief scenario laat zien wat er verandert als het anders loopt."],
+  destep:["DESTEP","Een checklist voor de buitenwereld: Demografisch, Economisch, Sociaal-cultureel, Technologisch, Ecologisch en Politiek-juridisch. Zo vergeet je geen ontwikkeling die het personeel raakt."],
+  markt:["Arbeidsmarkt","Hoe moeilijk het is om mensen voor een functie te vinden. Je schat dit in op basis van je eigen ervaring met vacatures."],
+  swot:["SWOT","Overzicht van Sterktes en Zwaktes (intern) en Kansen en Bedreigingen (extern). In het Engels: Strengths, Weaknesses, Opportunities, Threats."],
+    formatie:["Formatieruimte","Het aantal arbeidsplaatsen dat de afdeling mag invullen, uitgedrukt in FTE. De ruimte is wat er nog vrij is of vrijkomt."],
+  fte:["FTE","Fulltime-equivalent: 1 FTE is een volledige werkweek. Twee medewerkers van elk een halve week zijn samen 1 FTE."],
+  functiegroep:["Functiegroep","Een cluster van vergelijkbare functies, bijvoorbeeld alle adviseurs. De app werkt alleen met groepen, nooit met personen."],
+  segment:["Functiesegment","Indeling naar belang voor de ambitie. Strategisch: bepaalt of de doelen gehaald worden. Kern: voert het primaire werk uit. Ondersteunend: maakt het werk van anderen mogelijk."],
+  schaars:["Schaars","Een functiegroep waarvoor moeilijk nieuwe mensen te vinden zijn. Tekorten in deze groepen krijgen later extra aandacht."],
+  idu:["IDU-matrix","Instroom, Doorstroom en Uitstroom: hoeveel mensen kwamen erbij, wisselden van functiegroep of vertrokken. Het verleden helpt om het verloop van de komende jaren te schatten."],
+  verloop:["Verloop","Het deel van de medewerkers dat per jaar vertrekt om een andere reden dan pensioen, als percentage van de groep."],
+  aanbod:["Toekomstig aanbod","Het aantal FTE dat er over 1, 3 of 5 jaar nog is als je niets doet: huidige FTE min pensioen, min verwacht verloop, plus of min doorstroom."],
+  hr3p:["HR3P","Model dat een groep indeelt op prestatie en potentieel. Je vult alleen aantallen per kwadrant in, geen namen."],
+  gap:["Gap","Het verschil tussen wat de afdeling straks nodig heeft en wat er straks is. Een tekort, een overschot of een competentie die onvoldoende aanwezig is."]
+};
+const STEPS=[
+ {intro:"In de kick-off leggen we vast waarom de afdeling nu met strategische personeelsplanning begint en wie daarbij betrokken is. Een gedeeld gevoel van urgentie en heldere afspraken bepalen of het traject straks tot keuzes leidt. Daarna plannen we de sessies en spreken we af wie welke stukken en gegevens aanlevert.",t:"Kick-off en urgentie",q:"Waarom beginnen we nu, en is alles geregeld om te starten?",fase:1,tijd:["Sessie 1 uur"],voor:"HRBP",
+  vragen:["Wat gaat er mis als we de komende drie jaar niets doen?","Welke kans laten we liggen zonder de juiste mensen?","Wie moet meedenken en wie moet alleen op de hoogte zijn?","Welke stukken liggen er al waar we op kunnen bouwen?","Wat delen we wel en niet buiten deze groep?"]},
+ {intro:"We vertalen de koers van de afdeling naar mensen: welk werk verandert en wat vraagt dat aan capaciteit, competenties en cultuur. Dit is het kompas van het traject: alles wat we hierna analyseren, toetsen we aan deze ambitie. Met een basisscenario en eventueel een alternatief houden we rekening met onzekerheid.",t:"Personele ambitie",q:"Wat willen we bereiken, en wat vraagt dat van onze mensen?",fase:1,tijd:["Sessie 2 uur"],voor:"HRBP en leidinggevende",
+  vragen:["Waar wil de afdeling over 3 tot 5 jaar om bekendstaan?","Welk werk doen we dan niet meer, en welk werk komt erbij?","Hoeveel mensen zijn daarvoor nodig, meer of minder dan nu?","Welk gedrag past bij die toekomst en zien we dat nu al?"]},
+ {intro:"We kijken naar buiten: welke ontwikkelingen komen op de afdeling af en hoe staat de arbeidsmarkt ervoor? De vraag naar en het aanbod van personeel worden voor een groot deel door de omgeving bepaald. Het resultaat is een korte lijst kansen en bedreigingen.",t:"Externe analyse",q:"Welke ontwikkelingen van buiten raken ons personeel?",fase:1,tijd:["Sessie 1,5 uur","Voorbereiding 1 uur"],voor:"Leidinggevende",
+  vragen:["Welke ontwikkeling raakt onze mensen het hardst?","Wat verandert er in wetgeving of beleid de komende jaren?","Welke technologie neemt werk over of vraagt nieuwe kennis?","Voor welke functies vinden we nu al moeilijk mensen?"]},
+ {intro:"We kijken naar binnen: waar is de afdeling sterk, wat houdt haar tegen en hoeveel formatieruimte is er? Zo weten we op welke kracht we kunnen bouwen en binnen welke grenzen het actieplan moet passen. Samen met stap 2 levert dit een SWOT-overzicht op.",t:"Interne analyse",q:"Waar zijn we sterk, wat houdt ons tegen en hoeveel ruimte is er?",fase:1,tijd:["Sessie 1,5 uur","Voorbereiding 1 uur"],voor:"Leidinggevende",
+  vragen:["Waar zijn we echt goed in, volgens onze klanten of collega's?","Wat remt ons het meest in het dagelijks werk?","Past de manier van leidinggeven bij de ambitie?","Hoeveel formatieruimte is er, nu en over drie jaar?"]},
+ {intro:"We delen de functies in groepen in en bepalen per groep hoe belangrijk die is voor de ambitie. Daardoor kunnen we straks gericht kiezen: een tekort in een strategische of schaarse groep weegt zwaarder dan elders. Alle volgende stappen werken met deze groepen, nooit met personen.",t:"Functiesegmentatie",q:"Welke functiegroepen hebben we, en hoe belangrijk zijn ze voor de ambitie?",fase:1,tijd:["30 minuten, in de sessie van stap 3"],voor:"HRBP en leidinggevende",
+  vragen:["Welke functies bepalen of we onze ambitie halen?","Welke functies kunnen we relatief makkelijk vervangen of inhuren?","Zijn er groepen die zo klein zijn dat we ze beter samenvoegen?"]},
+ {intro:"We brengen in cijfers in beeld wie er nu werkt en berekenen hoeveel mensen er over 1, 3 en 5 jaar nog zijn als we niets doen. Zo zien we waar pensioen en verloop gaten slaan voordat het zover is. De HRBP bereidt de cijfers voor, in de sessie duiden we ze samen.",t:"Kwantitatieve analyse",q:"Hoeveel mensen hebben we nu, en hoeveel straks?",fase:2,tijd:["Sessie 2 uur","Voorbereiding HRBP 8 uur"],voor:"HRBP",
+  vragen:["Welke groepen verliezen de komende 5 jaar de meeste mensen?","Is het verloop van de afgelopen jaren een goede voorspeller, of speelde er iets bijzonders?","Waar leunen we zwaar op tijdelijke contracten of inhuur?","Wat valt op in de leeftijdsopbouw?"]},
+ {intro:"Naast aantallen kijken we naar kwaliteit: prestatie en potentieel, competenties en wat medewerkers zelf willen. Genoeg mensen is namelijk iets anders dan de juiste mensen. We werken alleen met aantallen en percentages per groep, zodat niets naar personen te herleiden is.",t:"Kwalitatieve analyse",q:"Wat kunnen en willen onze mensen?",fase:2,tijd:["Sessie 2 uur","Voorbereiding leidinggevende 4 uur"],voor:"Leidinggevende",
+  vragen:["Welke groepen hebben veel talent, en waar maken we ons zorgen?","Welke competenties worden belangrijker door onze ambitie?","Wat willen medewerkers zelf: blijven, groeien of iets anders?","Waar staan werkdruk of vitaliteit onder druk?"]},
+ {intro:"We leggen de toekomstige vraag naast het toekomstige aanbod en zien waar tekorten, overschotten en competentieverschillen ontstaan. Dit is het scharnierpunt van het traject: hier kiezen we waar we wel en niet op inzetten. De 3 tot 5 belangrijkste gaps gaan door naar het actieplan.",t:"Gap-analyse",q:"Waar zit het verschil tussen vraag en aanbod?",fase:2,tijd:["Sessie 2,5 uur","Voorbereiding HRBP 2 uur"],voor:"HRBP",
+  vragen:["Welke tekorten raken de ambitie direct?","Welke gap wordt groter met elk jaar dat we wachten?","Waar hebben we zelf invloed op, en waar niet?","Welke 3 tot 5 gaps pakken we nu aan, en wat laten we bewust liggen?"]},
+ {intro:"Per gekozen gap bepalen we maatregelen: werven, ontwikkelen, inhuren, behouden, uitstroom begeleiden of het werk anders organiseren. Zo wordt de analyse een plan met eigenaren, data en een toets aan de formatieruimte.",t:"HR-actieplan",q:"Welke maatregelen nemen we?",fase:3,tijd:["Sessie 3 uur","Uitwerking 4 uur"]},
+ {intro:"We spreken af hoe we de voortgang volgen en wanneer we het plan herijken. Zonder borging verdwijnt een plan in de la.",t:"Borging en monitoring",q:"Hoe houden we het plan levend?",fase:3,tijd:["In de sessie van stap 8"]}
+];
+const HUES=[["#a3a4f7","163,164,247"],["#5fd0c0","95,208,192"],["#6aa8f0","106,168,240"],["#e6b455","230,180,85"]];
+const ICONS=['<path d="M5 21V4h11l-2 4 2 4H5"/>','<circle cx="12" cy="12" r="9"/><path d="M15.500 8.500l-2 5-5 2 2-5z"/>','<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.500 3 14.500 0 18M12 3c-3 3.500-3 14.500 0 18"/>','<path d="M4 21V9l8-6 8 6v12M9 21v-7h6v7"/>','<path d="M12 3l9 5-9 5-9-5zM3 12.500l9 5 9-5M3 17l9 5 9-5"/>','<path d="M5 21V11M12 21V4M19 21v-7"/>','<circle cx="9" cy="8" r="3.500"/><path d="M2.500 20c.600-3.400 3.200-5.500 6.500-5.500s5.900 2.100 6.500 5.500M16 4.700a3.500 3.500 0 010 6.600M18.200 14.900c1.800.800 3 2.600 3.300 5.100"/>','<path d="M6 20V9M18 20v-5M3 20h18M6 5h12M9 2L6 5l3 3M15 2l3 3-3 3"/>','<path d="M4 6l1.500 1.500L8 5M4 12l1.500 1.500L8 11M4 18l1.500 1.500L8 17M12 6h8M12 12h8M12 18h8"/>','<path d="M4 12a8 8 0 0113.700-5.600L20 8M20 4v4h-4M20 12a8 8 0 01-13.700 5.600L4 16M4 20v-4h4"/>'];
+const GROUPS=[["Voorbereiding",[0]],["Richting",[1]],["Analyse",[2,3,4,5,6,7]],["Plan en borging",[8,9]]];
+const STATUS=[["niet","Niet gestart",""],["prep","In voorbereiding","prep"],["disc","Besproken","disc"],["ok","Akkoord","ok"]];
+const DESTEP=[
+ ["D","Demografisch","Vergrijzing, instroom van jongeren, groei of krimp",[["Veel medewerkers gaan binnen 5 jaar met pensioen","bedreiging"],["Minder jongeren stromen in op de arbeidsmarkt","bedreiging"],["Meer zij-instromers en herintreders beschikbaar","kans"]]],
+ ["E","Economisch","Conjunctuur, lonen, budgetdruk",[["Krappe arbeidsmarkt drijft salarissen op","bedreiging"],["Bezuinigingen of budgetdruk","bedreiging"],["Groeiende vraag naar onze dienstverlening","kans"]]],
+ ["S","Sociaal-cultureel","Werk en privé, hybride werken, diversiteit",[["Behoefte aan hybride en flexibel werken","kans"],["Medewerkers wisselen sneller van baan","bedreiging"],["Meer aandacht voor werkdruk en vitaliteit","kans"]]],
+ ["T","Technologisch","Automatisering, AI, nieuwe systemen",[["AI en automatisering nemen routinewerk over","kans"],["Nieuwe systemen vragen digitale vaardigheden","bedreiging"],["Werken met data maakt betere sturing mogelijk","kans"]]],
+ ["Ec","Ecologisch","Duurzaamheid, klimaat, mobiliteit",[["Duurzaamheidseisen vragen nieuwe kennis","bedreiging"],["Duurzaam werkgeverschap trekt nieuw talent aan","kans"],["Reis- en thuiswerkbeleid verandert door klimaatdoelen","kans"]]],
+ ["P","Politiek-juridisch","Wetgeving, cao, beleid en toezicht",[["Nieuwe wet- en regelgeving verandert het werk","bedreiging"],["Cao-wijzigingen in loon, verlof of eerder stoppen","bedreiging"],["Hogere AOW-leeftijd: medewerkers werken langer door","kans"]]]
+];
+const MINF=3,MAXF=5;
+const ASPECT=[["structuur","Structuur","Indeling van teams, rollen en verantwoordelijkheden"],["cultuur","Cultuur","Hoe mensen met elkaar en met het werk omgaan"],["leiderschap","Leiderschap","Stijl en kwaliteit van leidinggeven"],["processen","Werkprocessen","Hoe het werk loopt, van aanvraag tot resultaat"],["hr","HR-instrumenten","Gesprekscyclus, opleiden, werving, beloning"]];
+const IMPACT=[["hoog","Hoog"],["midden","Midden"],["laag","Laag"]];
+const NU=[["","Kies"],["makkelijk","Makkelijk"],["gaatwel","Gaat wel"],["lastig","Lastig"],["zeerlastig","Zeer lastig"]];
+const STRAKS=[["","Kies"],["makkelijker","Wordt makkelijker"],["gelijk","Blijft gelijk"],["lastiger","Wordt lastiger"]];
+const NUCLS={makkelijk:"pos",gaatwel:"",lastig:"warn",zeerlastig:"neg"};
+const SEGMENT=[["","Kies"],["strategisch","Strategisch"],["kern","Kern"],["ondersteunend","Ondersteunend"]];
+const SESSIES=[["Kick-off","Stap 0","1 uur"],["Personele ambitie","Stap 1","2 uur"],["Externe analyse","Stap 2","1,5 uur"],["Interne analyse en functiesegmentatie","Stap 3 en 4","2 uur"],["Kwantitatieve analyse","Stap 5","2 uur"],["Kwalitatieve analyse","Stap 6","2 uur"],["Gap-analyse","Stap 7","2,5 uur"],["HR-actieplan en borging","Stap 8 en 9","3 uur"]];
+const DATA_ITEMS=["Aantal medewerkers en FTE per functiegroep","Leeftijdsopbouw in cohorten","Contractvormen (vast en tijdelijk)","Schaalindeling per functiegroep","Verzuimpercentage per functiegroep","Instroom, doorstroom en uitstroom over de afgelopen 3 jaar"];
+const TAKEN=["Sessies inplannen en uitnodigingen versturen","Ruimte met groot scherm reserveren","Deelnemers informeren over doel en vertrouwelijkheid","Ambitie van het MT ophalen of laten formuleren","Bestaande stukken verzamelen en delen"];
+const STUKKEN=["Jaarplan van de afdeling","Begroting en formatieoverzicht","Strategienota of koersdocument van de organisatie","Uitkomsten medewerkersonderzoek","Eerdere personeels- of formatieplannen"];
+const PRESETS={
+ voortzetting:{naam:"Voortzetting huidige koers",omschrijving:"Taken en omvang blijven ongeveer gelijk. Het werk verandert geleidelijk.",werk:"Routinewerk neemt licht af door digitalisering. Er komt meer tijd voor advies en complexe zaken.",capaciteit:"Ongeveer gelijk aan nu (21 FTE), met een verschuiving van 2 FTE van administratie naar advies.",competenties:"Digitale vaardigheid, klantgericht adviseren, samenwerken over teams heen.",cultuur:"Eigenaarschap nemen en van elkaar leren."},
+ groei:{naam:"Groei",omschrijving:"De vraag naar ons werk neemt de komende jaren sterk toe.",werk:"Het aantal aanvragen stijgt met 25%, vooral de complexe. Meer afstemming met partners.",capaciteit:"Van 21 naar 26 FTE, vooral juristen en toezichthouders.",competenties:"Projectmatig werken, snel inwerken van nieuwe collega's, regievoeren.",cultuur:"Flexibel en oplossingsgericht, ruimte voor nieuwe collega's."},
+ krimp:{naam:"Krimp of bezuiniging",omschrijving:"Het budget daalt, we moeten hetzelfde werk met minder mensen doen.",werk:"Taken met de minste waarde stoppen of bundelen. Meer standaardisering.",capaciteit:"Van 21 naar 18 FTE via natuurlijk verloop, geen gedwongen ontslagen.",competenties:"Breed inzetbaar zijn, prioriteren, efficiënt werken met standaarden.",cultuur:"Open over keuzes, focus op wat echt moet."},
+ automatisering:{naam:"Sterke automatisering",omschrijving:"Eenvoudig werk wordt grotendeels door systemen en AI gedaan.",werk:"70% van de eenvoudige aanvragen loopt automatisch. Mensen doen uitzonderingen, controle en klantcontact.",capaciteit:"Van 21 naar 19 FTE, met minder administratieve en meer specialistische functies.",competenties:"Werken met data en AI, kritisch beoordelen van uitkomsten, procesverbetering.",cultuur:"Nieuwsgierig en lerend, experimenteren mag."},
+ taken:{naam:"Nieuwe taken door wetgeving",omschrijving:"Nieuwe wet- of regelgeving legt extra taken bij de afdeling.",werk:"Er komt een nieuwe toezichtstaak bij. Bestaande procedures worden integraal.",capaciteit:"Tijdelijk 3 FTE extra voor de invoering, daarna structureel 1,5 FTE.",competenties:"Juridische kennis van de nieuwe wet, integraal beoordelen, samenwerken met ketenpartners.",cultuur:"Zorgvuldig en samenwerkingsgericht."},
+ eigen:{naam:"",omschrijving:"",werk:"",capaciteit:"",competenties:"",cultuur:""}
+};
+const PRESET_OPTS=[["voortzetting","Voortzetting huidige koers"],["groei","Groei"],["krimp","Krimp of bezuiniging"],["automatisering","Sterke automatisering"],["taken","Nieuwe taken door wetgeving"],["eigen","Eigen scenario"]];
+const VB={
+ ambitie:"In 2030 handelen we 90% van de aanvragen binnen de termijn af, met een vitaal en digitaal vaardig team waarin kennis niet van enkele specialisten afhangt.",
+ missie:"Wij zorgen dat inwoners en ondernemers snel en zorgvuldig weten waar ze aan toe zijn.",
+ visie:"Over vijf jaar zijn we de afdeling waar eenvoudige aanvragen vanzelf gaan en waar collega's tijd hebben voor het gesprek bij complexe zaken.",
+ doel:"90% van de eenvoudige aanvragen binnen 5 werkdagen afgehandeld",
+ termijn:"2028"
+};
+
+/* ---------- Toestand ---------- */
+const uid=()=>Math.random().toString(36).slice(2,9);
+function defaults(){
+  const st=()=>({_status:"niet",_aanzet:"",_opm:[]});
+  return {
+    meta:{afdeling:"",voorbeeld:false},
+    s0:Object.assign(st(),{aanleiding:"",zorgen:"",kansen:"",verwachtingen:"",vertrouwelijkheid:"",mtambitie:"",mttoel:"",
+      betrokkenen:[{id:uid(),rol:"HRBP",bijdrage:"Begeleidt het traject en verwerkt de gegevens"},{id:uid(),rol:"Leidinggevende",bijdrage:"Eigenaar van het plan, bereidt stappen voor"},{id:uid(),rol:"MT",bijdrage:"Stelt de ambitie vast en beslist"}],
+      sessies:SESSIES.map(()=>({datum:""})),
+      taken:TAKEN.map(x=>({id:uid(),item:x,wie:"",wanneer:"",klaar:false})),
+      stukken:STUKKEN.map(x=>({id:uid(),item:x,besch:"",wie:""})),
+      data:DATA_ITEMS.map(x=>({id:uid(),item:x,wie:"",wanneer:"",klaar:false}))}),
+    s1:Object.assign(st(),{ambitie:"",horizon:"",missie:"",visie:"",doelen:[{id:uid(),tekst:"",termijn:""}],
+      scenarios:[{id:uid(),preset:"",naam:"Basisscenario",omschrijving:"",werk:"",capaciteit:"",competenties:"",cultuur:""}]}),
+    s2:Object.assign(st(),{factoren:[]}),
+    s3:Object.assign(st(),{aspecten:Object.fromEntries(ASPECT.map(a=>[a[0],{sterk:"",zwak:""}])),formToe:"",formBez:"",formWijz:"",inhuur:"",fintoel:""}),
+    s4:st(),
+    s5:Object.assign(st(),{pensioen:"67",g:{}}),
+    s6:Object.assign(st(),{g:{}}),
+    s7:Object.assign(st(),{vraag:{},gaps:{}}),
+    fg:{groepen:[]}
+  };
+}
+const DOCS=["meta","s0","s1","s2","s3","s4","s5","s6","s7","fg"];const LIVE=8;
+let state=defaults();
+const ui={sec:{},as:{},all:false,step:0,role:"hrbp",scen:0,scen7:0,grp:"",csvMsg:null,csvText:null,merge:[],mode:"loading",slow:false,readOnly:false,save:"ok",pending:false,fs:false,notice:"",vb:null};
+
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const getP=(o,p)=>p.split(".").reduce((a,k)=>a==null?a:a[k],o);
+function setP(o,p,v){const ks=p.split(".");const l=ks.pop();ks.reduce((a,k)=>a[k],o)[l]=v;}
+const lines=t=>String(t||"").split(/\n+/).map(x=>x.trim()).filter(Boolean);
+const short=(t,n=140)=>{t=String(t||"").trim().replace(/\s+/g," ");return t.length>n?t.slice(0,n-1)+"…":t;};
+const lab=(arr,v)=>(arr.find(a=>a[0]===v)||["",""])[1];
+const fmtD=(d,o)=>new Date(d+"T12:00:00").toLocaleDateString("nl-NL",o||{day:"numeric",month:"short"});
+const locked=prep=>ui.readOnly||ui.mode!=="db"&&ui.mode!=="local"||(ui.role==="lg"&&!prep);
+const autoSchaars=g=>g.nu==="lastig"||g.nu==="zeerlastig"||(g.nu==="gaatwel"&&g.straks==="lastiger");
+const isSchaars=g=>g.schaars==null?autoSchaars(g):!!g.schaars;
+const marktTxt=g=>g.nu?lab(NU,g.nu).toLowerCase()+(g.straks?", "+lab(STRAKS,g.straks).toLowerCase():""):"";
+const num=v=>{const n=parseFloat(String(v==null?"":v).replace(",","."));return isFinite(n)?n:0;};
+const nf=(v,d=1)=>Number(v).toLocaleString("nl-NL",{maximumFractionDigits:d});
+function formRuimte(){const s=state.s3;if(s.formToe===""&&s.formBez==="") return null;const toe=num(s.formToe),bez=num(s.formBez);return {toe,bez,nu:toe-bez,straks:toe-bez+num(s.formWijz)};}
+const stOf=n=>n<LIVE?(state["s"+n]._status||"niet"):"niet";
+function aanZetAuto(n){const st=stOf(n);return st==="ok"?"Afgerond":st==="disc"?"HRBP":STEPS[n].voor;}
+const aanZet=n=>state["s"+n]._aanzet||aanZetAuto(n);
+const rollen=()=>[...new Set(state.s0.betrokkenen.map(b=>(b.rol||"").trim()).filter(Boolean))];
+function wieOpts(v){const r=rollen();const o=[["","Kies"],...r.map(x=>[x,x])];if(v&&!r.includes(v)) o.push([v,v+" (staat niet meer bij betrokkenen)"]);return o;}
+const optHTML=(opts,v)=>opts.map(([val,t])=>`<option value="${esc(val)}"${v===val?" selected":""}>${esc(t)}</option>`).join("");
+
+/* ---------- Bouwstenen ---------- */
+const info=k=>`<button type="button" class="info" data-act="info" data-term="${k}" aria-label="Uitleg: ${esc(TERMS[k][0])}">i</button>`;
+function fld(doc,path,label,o={}){
+  let v=getP(state[doc],path); if(v==null) v="";
+  const id="f-"+doc+"-"+path.replace(/\./g,"-"),lk=locked(o.prep);
+  const com=`id="${id}" data-doc="${doc}" data-path="${path}"${lk?" disabled":""}${o.attr?" "+o.attr:""}${label?"":` aria-label="${esc(o.aria||"")}"`}`;
+  let c;
+  if(o.opts) c=`<select ${com}>${optHTML(o.opts,v)}</select>`;
+  else if(o.type==="checkbox") c=`<input ${com} type="checkbox"${v?" checked":""}>`;
+  else if(o.rows) c=`<textarea ${com} rows="${o.rows}" placeholder="${esc(o.ph||"")}">${esc(v)}</textarea>`;
+  else c=`<input ${com} type="${o.type||"text"}" value="${esc(v)}" placeholder="${esc(o.ph||"")}"${o.type==="number"?(o.neg?"":' min="0"')+' step="any" inputmode="decimal"':""}>`;
+  if(!label) return c;
+  const vb=o.vb&&!lk?`<button type="button" class="btn vb" data-act="vb" data-doc="${doc}" data-path="${path}" data-vb="${esc(o.vb)}">Voorbeeld</button>`:"";
+  return `<div class="fld"><div class="lab"><label for="${id}">${label}</label>${o.info?info(o.info):""}${vb}</div>${c}${o.hint?`<p class="hint">${o.hint}</p>`:""}</div>`;
+}
+const wie=(path,v,prep)=>fld("s0",path,"",{aria:"Wie",prep,opts:wieOpts(v),attr:'data-wie="1"'});
+const delBtn=(doc,path,i,prep,what)=>locked(prep)?"":`<button type="button" class="btn del" data-act="del" data-doc="${doc}" data-path="${path}" data-i="${i}" aria-label="${esc(what)} verwijderen">Verwijder</button>`;
+const addBtn=(kind,text,prep,extra="")=>locked(prep)?"":`<div><button type="button" class="btn sm ghost" data-act="add" data-kind="${kind}" ${extra}>+ ${text}</button></div>`;
+const ex=inner=>`<details class="ex"><summary>Ingevuld voorbeeld</summary>${inner}</details>`;
+const bul=(a,c="sumlist")=>a.length?`<ul class="${c}">${a.map(x=>`<li>${x}</li>`).join("")}</ul>`:"";
+
+/* ---------- Samenvattingen ---------- */
+function plan(){
+  const ss=state.s0.sessies.map((s,i)=>({d:s.datum,i})).filter(s=>s.d);
+  if(!ss.length) return {n:0};
+  const ts=ss.map(s=>Date.parse(s.d)), min=Math.min(...ts), max=Math.max(...ts);
+  const dagen=Math.round((max-min)/864e5);
+  let volg=true; for(let i=1;i<ss.length;i++) if(ts[i]<ts[i-1]) volg=false;
+  return {n:ss.length,ss,ts,min,max,dagen,maanden:dagen/30.44,volg};
+}
+const euro=v=>{const n=Number(String(v).replace(",","."));return isFinite(n)&&String(v).trim()!==""?"€ "+n.toLocaleString("nl-NL",{maximumFractionDigits:0}):esc(v);};
+const SUM=[
+ ()=>{const s=state.s0,p=plan(),a=[];
+  if(s.aanleiding) a.push("<b>Aanleiding:</b> "+esc(short(s.aanleiding)));
+  if(s.zorgen) a.push("<b>Zorgen:</b> "+esc(short(s.zorgen,100)));
+  if(s.kansen) a.push("<b>Kansen:</b> "+esc(short(s.kansen,100)));
+  const b=rollen(); if(b.length) a.push("<b>Betrokken:</b> "+b.map(esc).join(", "));
+  if(s.mtambitie) a.push("<b>Ambitie MT:</b> "+{ja:"is geformuleerd",deels:"deels geformuleerd",nee:"nog niet geformuleerd"}[s.mtambitie]);
+  const t=s.taken.filter(x=>x.item); if(t.length) a.push(`<b>Voorbereiding:</b> ${t.filter(x=>x.klaar).length} van ${t.length} taken klaar`);
+  const st=s.stukken.filter(x=>x.besch==="ja"); if(st.length) a.push("<b>Beschikbare stukken:</b> "+st.map(x=>esc(x.item)).join(", "));
+  if(p.n) a.push(`<b>Planning:</b> ${p.n} van 8 sessies gepland`+(p.n>1?`, doorlooptijd ${p.maanden.toFixed(1).replace(".",",")} maanden`:""));
+  if(s.data.length) a.push(`<b>Data voor stap 5:</b> ${s.data.filter(x=>x.klaar).length} van ${s.data.length} aangeleverd`);
+  return a;},
+ ()=>{const s=state.s1,a=[];
+  if(s.ambitie) a.push("<b>Ambitie:</b> "+esc(short(s.ambitie,180)));
+  s.scenarios.forEach((c,i)=>{const bits=[c.capaciteit&&"capaciteit: "+short(c.capaciteit,70),c.competenties&&"competenties: "+short(c.competenties,70)].filter(Boolean);
+    a.push(`<b>${i?"Alternatief":"Basis"}scenario:</b> ${esc(c.naam||"nog niet gekozen")}${bits.length?". "+esc(bits.join("; ")):""}`);});
+  return a;},
+ ()=>{const f=state.s2.factoren.filter(x=>x.tekst),a=[];
+  if(f.length){const k=f.filter(x=>x.soort==="kans").length;a.push(`${k} kansen en ${f.length-k} bedreigingen`);}
+  f.filter(x=>x.impact==="hoog").slice(0,4).forEach(x=>a.push(`<b>Hoge impact (${x.soort}):</b> ${esc(short(x.tekst,100))}`));
+  const kr=state.fg.groepen.filter(g=>g.naam&&isSchaars(g));
+  if(kr.length) a.push("<b>Moeilijk te vervullen:</b> "+kr.map(g=>esc(g.naam)+" ("+marktTxt(g)+")").join(", "));
+  return a;},
+ ()=>{const s=state.s3,a=[];let st=0,zw=0;
+  ASPECT.forEach(x=>{st+=lines(s.aspecten[x[0]].sterk).length;zw+=lines(s.aspecten[x[0]].zwak).length;});
+  if(st||zw) a.push(`${st} sterktes en ${zw} zwaktes vastgelegd`);
+  const fr=formRuimte(); if(fr) a.push(`<b>Formatie:</b> ${nf(fr.toe)} FTE toegestaan, ${nf(fr.bez)} FTE bezet, vrije ruimte ${nf(fr.nu)} FTE (over 3 jaar ${nf(fr.straks)} FTE)`);
+  if(s.inhuur) a.push("<b>Ruimte voor inhuur:</b> "+nf(num(s.inhuur))+" FTE");
+  return a;},
+ ()=>{const g=state.fg.groepen.filter(x=>x.naam),a=[];
+  if(g.length) a.push(`${g.length} functiegroepen`);
+  SEGMENT.slice(1).forEach(([v,t])=>{const x=g.filter(y=>y.segment===v);if(x.length) a.push(`<b>${t}:</b> ${x.map(y=>esc(y.naam)).join(", ")}`);});
+  const sc=g.filter(isSchaars); if(sc.length) a.push("<b>Schaars:</b> "+sc.map(y=>esc(y.naam)).join(", "));
+  return a;},
+ ()=>SUM5(),()=>SUM6(),()=>SUM7()
+];
+
+/* ---------- Afgeleide blokken ---------- */
+const DER={
+ amb:()=>{const a=state.s1.ambitie.trim(),h=state.s1.horizon.trim();
+  return `<button type="button" data-act="amb" title="Ga naar stap 1 om de ambitie aan te passen"><span class="k">Onze ambitie${h?" "+esc(h):""}</span><span class="one${a?"":" leeg"}">${a?esc(a):"Nog niet vastgelegd. Klik om de ambitie in stap 1 te formuleren."}</span><span class="go">Stap 1 →</span></button>`;},
+ sum:()=>{const a=SUM[ui.step]();return a.length?bul(a):'<p class="empty">Vult zich zodra je velden invult.</p>';},
+ borging:()=>{const r=rollen();if(!r.length) return '<p class="note warn">Voer eerst betrokkenen op bij Verwachtingen en afspraken. Daarna kun je ze hier aan taken koppelen.</p>';
+  const s=state.s0,used=new Set([...s.taken,...s.stukken,...s.data].map(x=>x.wie).filter(Boolean));
+  const zonder=r.filter(x=>!used.has(x));
+  return zonder.length?`<p class="note warn">Nog zonder taak of aanlevering: <b>${zonder.map(esc).join(", ")}</b>. Koppel iedere betrokkene aan minstens één regel, of haal de rol weg bij betrokkenen.</p>`:'<p class="note ok">Alle betrokkenen zijn aan minstens één taak of aanlevering gekoppeld.</p>';},
+ tijdlijn:()=>{const p=plan();
+  if(p.n<2) return '<p class="empty">Vul minstens twee sessiedata in om de tijdlijn en de doorlooptijd te zien.</p>';
+  const span=(p.max-p.min)||1, pos=t=>(t-p.min)/span*100;
+  let h='<div class="tl"><div class="track"></div>';
+  const d=new Date(p.min); d.setDate(1); d.setMonth(d.getMonth()+1);
+  for(;d.getTime()<=p.max;d.setMonth(d.getMonth()+1)){const x=pos(d.getTime());h+=`<i class="tick" style="left:${x}%"></i><span class="mn" style="left:${x}%">${d.toLocaleDateString("nl-NL",{month:"short"})}</span>`;}
+  p.ss.forEach((s,k)=>{const x=pos(p.ts[k]);h+=`<span class="lbl ${k%2?"dn":"up"}" style="left:${x}%">${fmtD(s.d)}</span><span class="dot" style="left:${x}%" title="${esc(SESSIES[s.i][0])}">${s.i+1}</span>`;});
+  h+="</div>";
+  const m=p.maanden.toFixed(1).replace(".",","), w=Math.round(p.dagen/7);
+  let cls="ok",msg=`Doorlooptijd ${m} maanden (${w} weken). Dat past binnen de richtlijn van 3 tot 4 maanden.`;
+  if(p.n<8){cls="";msg=`Doorlooptijd tot nu toe ${m} maanden (${w} weken). Nog ${8-p.n} sessies zonder datum.`;}
+  else if(p.maanden>4.3){cls="warn";msg=`Doorlooptijd ${m} maanden (${w} weken). Dat is langer dan de richtlijn van 3 tot 4 maanden: het risico is dat de vaart eruit gaat.`;}
+  else if(p.maanden<2.7){cls="warn";msg=`Doorlooptijd ${m} maanden (${w} weken). Dat is korter dan de richtlijn: controleer of er genoeg tijd is voor de voorbereiding van stap 5 en 6.`;}
+  h+=`<p class="note ${cls}">${msg}</p>`;
+  if(!p.volg) h+='<p class="note bad">De data staan niet in volgorde. Een latere sessie is eerder gepland dan een eerdere.</p>';
+  return h;},
+ teller:()=>{const f=state.s2.factoren.filter(x=>x.tekst);
+  const one=(soort,t,c)=>{const n=f.filter(x=>x.soort===soort).length;
+   const msg=n<MINF?`Nog ${MINF-n} nodig voor het minimum van ${MINF}.`:n>MAXF?`${n-MAXF} meer dan het maximum van ${MAXF}. Kies de belangrijkste en verwijder de rest.`:"Binnen de richtlijn.";
+   return `<div class="${c}"><span class="k">${t}</span><span class="n">${n} <small>richtlijn ${MINF} tot ${MAXF}</small></span><div class="m">${[0,1,2,3,4].map(i=>`<i class="${i<Math.min(n,MAXF)?(n>MAXF?"over":"on"):""}"></i>`).join("")}</div><span class="hint">${msg}</span></div>`;};
+  return one("kans","Kansen","kans")+one("bedreiging","Bedreigingen","bedr");},
+ matrix:()=>{const f=state.s2.factoren.filter(x=>x.tekst);
+  if(!f.length) return '<p class="empty">Nog geen ontwikkelingen ingevuld. Kies hierboven een veelgebruikte ontwikkeling of voeg er zelf een toe.</p>';
+  const cov=DESTEP.map(d=>{const k=f.filter(x=>x.cat===d[0]&&x.soort==="kans").length,b=f.filter(x=>x.cat===d[0]&&x.soort==="bedreiging").length;
+   return `<div class="${k+b?"":"leeg"}"><b>${d[1]}</b><span>${k+b?`<em class="p">${k} ${k===1?"kans":"kansen"}</em> · <em class="n">${b} bedr.</em>`:"nog leeg"}</span></div>`;}).join("");
+  const cell=(imp,s)=>{const x=f.filter(y=>y.impact===imp&&y.soort===s);
+   return `<div class="cell">${x.length?x.map(y=>`<div class="mi"><span class="fb" title="${lab(DESTEP.map(d=>[d[0],d[1]]),y.cat)}">${y.cat}</span><span>${esc(y.tekst)}</span></div>`).join(""):'<span class="empty">geen</span>'}</div>`;};
+  const nk=f.filter(x=>x.soort==="kans").length;
+  return `<div class="cov">${cov}</div>
+   <div class="mx"><div class="h">Impact</div><div class="h kans">Kansen <span class="tag pos">${nk}</span></div><div class="h bedr">Bedreigingen <span class="tag neg">${f.length-nk}</span></div>
+   ${IMPACT.map(i=>`<div class="rh"><b>${i[1]}</b><span class="hint">impact</span></div>${cell(i[0],"kans")}${cell(i[0],"bedreiging")}`).join("")}</div>
+   <p class="hint">De letter voor elke regel is het DESTEP-veld: ${DESTEP.map(d=>d[0]+" = "+d[1].toLowerCase()).join(", ")}.</p>`;},
+ markt:()=>{const g=state.fg.groepen.filter(x=>x.naam&&x.nu);
+  if(!g.length) return "";
+  return `<h3>Arbeidsmarkt</h3><div class="mk">${g.map(x=>`<span>${esc(x.naam)}</span><span class="tag ${NUCLS[x.nu]}">Nu: ${lab(NU,x.nu).toLowerCase()}</span><span class="ar">${x.straks?"→ "+lab(STRAKS,x.straks).toLowerCase():""}</span><span>${autoSchaars(x)?'<span class="tag neg">schaars</span>':""}</span>`).join("")}</div>`;},
+ swot:()=>{const s=state.s3,S=[],W=[];
+  ASPECT.forEach(a=>{lines(s.aspecten[a[0]].sterk).forEach(l=>S.push(`${esc(l)} <span class="hint">(${a[1]})</span>`));lines(s.aspecten[a[0]].zwak).forEach(l=>W.push(`${esc(l)} <span class="hint">(${a[1]})</span>`));});
+  const ord={hoog:0,midden:1,laag:2},cl={hoog:"neg",midden:"warn",laag:""},f=state.s2.factoren.filter(x=>x.tekst).sort((a,b)=>ord[a.impact]-ord[b.impact]);
+  const it=x=>`<span class="tag ${x.soort==="kans"?(x.impact==="hoog"?"pos":""):cl[x.impact]}">${lab(IMPACT,x.impact)}</span> ${esc(x.tekst)}`;
+  const O=f.filter(x=>x.soort==="kans").map(it),T=f.filter(x=>x.soort==="bedreiging").map(it);
+  state.fg.groepen.filter(g=>g.naam&&isSchaars(g)).forEach(g=>T.push(`<span class="tag neg">Arbeidsmarkt</span> ${esc(g.naam)}: ${marktTxt(g)}`));
+  const q=(c,t,sub,a)=>`<div class="${c}"><h3>${t}<small>${sub}</small></h3>${a.length?bul(a):'<p class="empty">Nog niets ingevuld.</p>'}</div>`;
+  return `<div class="swot">${q("s","Sterktes","intern, stap 3",S)}${q("w","Zwaktes","intern, stap 3",W)}${q("o","Kansen","extern, stap 2",O)}${q("t","Bedreigingen","extern, stap 2",T)}</div>`;},
+ segs:()=>{const g=state.fg.groepen.filter(x=>x.naam);
+  if(!g.length) return '<p class="empty">Nog geen functiegroepen vastgelegd.</p>';
+  const col=(v,t,c)=>{const x=g.filter(y=>y.segment===v);return `<div><span><span class="tag ${c}">${t}</span></span>${x.length?bul(x.map(y=>esc(y.naam)+(isSchaars(y)?' <span class="tag neg">schaars</span>':""))):'<p class="empty">geen</p>'}</div>`;};
+  const zonder=g.filter(y=>!y.segment);
+  return `<div class="segs">${col("strategisch","Strategisch","acc")}${col("kern","Kern","pos")}${col("ondersteunend","Ondersteunend","")}</div>${zonder.length?`<p class="note warn">Nog zonder segment: ${zonder.map(y=>esc(y.naam)).join(", ")}.</p>`:""}`;},
+ privacy:()=>{const k=state.fg.groepen.filter(g=>g.naam&&Number(g.aantal)>0&&Number(g.aantal)<5);
+  return k.length?`<p class="note bad"><b>Let op herleidbaarheid.</b> ${k.map(g=>esc(g.naam)+" ("+esc(g.aantal)+")").join(", ")} ${k.length>1?"hebben":"heeft"} minder dan 5 medewerkers. Gegevens over zo'n kleine groep kunnen naar personen te herleiden zijn. Voeg de groep in stap 4 samen met een verwante groep.</p>`:"";},
+ tabs:()=>{const s=state.s1,c=ui.scen;return s.scenarios.map((x,i)=>`<button type="button" class="tab" role="tab" aria-selected="${i===c}" data-act="scen" data-i="${i}">${i?"Alternatief":"Basis"}: ${esc(x.naam||"zonder naam")}</button>`).join("");},
+ formruimte:()=>{const f=formRuimte();if(!f) return "";
+  const t5=fgs().reduce((a,g)=>a+calc(g.id).fte,0),af=t5>0&&state.s3.formBez!==""&&Math.abs(t5-f.bez)>=0.1;
+  return `<p class="note ${f.nu<0?"bad":""}">Vrije formatieruimte nu: <b>${nf(f.nu)} FTE</b>. Toegestane formatie over 3 jaar: <b>${nf(f.toe+num(state.s3.formWijz))} FTE</b>.${f.nu<0?" De bezetting is hoger dan de toegestane formatie.":""}</p>${af?`<p class="note warn">De bezetting hier (${nf(f.bez)} FTE) wijkt af van het totaal in stap 5 (${nf(t5)} FTE).</p>`:""}`;},
+ chk5:()=>{const G=fgs();if(!G.length) return "";const id=curGrp(G),d=g5(id),c=calc(id),a=[];
+  const sc=d.coh.reduce((s,x)=>s+num(x),0),sk=d.con.reduce((s,x)=>s+num(x),0);
+  
+  if(sc&&c.aantal&&sc!==c.aantal) a.push(`<p class="note warn">De leeftijdscohorten tellen op tot ${sc}, het aantal medewerkers is ${c.aantal}.</p>`);
+  if(sk&&c.aantal&&sk!==c.aantal) a.push(`<p class="note warn">De contractvormen tellen op tot ${sk}, het aantal medewerkers is ${c.aantal}.</p>`);
+  const pp=d.pens.map(x=>x===""?null:num(x));
+  if((pp[0]!==null&&pp[1]!==null&&pp[1]<pp[0])||(pp[1]!==null&&pp[2]!==null&&pp[2]<pp[1])) a.push(`<p class="note warn">De pensioenaantallen lopen niet op. Binnen 3 jaar telt de mensen van binnen 1 jaar mee, en binnen 5 jaar die van binnen 3 jaar.</p>`);
+  if(c.fte>c.aantal&&c.aantal) a.push(`<p class="note warn">Het aantal FTE is hoger dan het aantal medewerkers. Controleer de invoer.</p>`);
+  if(c.aantal) a.push(`<p class="note">Historisch verloop: <b>${nf(c.histPct)}%</b> per jaar. Historische doorstroom: <b>${nf(c.histDoor)} FTE</b> netto per jaar. De berekening gebruikt ${d.verloop!==""?"jouw aangepaste verloop van "+nf(c.v*100)+"%":"het historische verloop"} en ${d.door!==""?"jouw aangepaste doorstroom":"de historische doorstroom"}.</p>`);
+  return a.join("");},
+ aanbod:()=>{const G=fgs().filter(g=>calc(g.id).fte>0);
+  if(!G.length) return '<p class="empty">Vul per functiegroep minstens het aantal medewerkers en FTE in om de berekening te zien.</p>';
+  const tot={fte:0,1:0,3:0,5:0,p:0};
+  const rows=G.map(g=>{const c=calc(g.id);tot.fte+=c.fte;tot.p+=c.pens5;[1,3,5].forEach(n=>tot[n]+=c.y[n]);
+   const pc=c.fte?Math.round((c.y[5]/c.fte-1)*100):0;
+   return `<tr><td>${esc(g.naam)}${isSchaars(g)?' <span class="tag neg">schaars</span>':""}</td><td class="r">${nf(c.fte)}</td><td class="r">${nf(c.pens5)}</td><td class="r">${nf(c.v*100)}%</td><td class="r">${nf(c.y[1])}</td><td class="r">${nf(c.y[3])}</td><td class="r">${nf(c.y[5])}</td><td class="r"><span class="tag ${pc<=-25?"neg":pc<=-10?"warn":""}">${pc>0?"+":""}${pc}%</span></td></tr>`;}).join("");
+  return `<div class="tw"><table><thead><tr><th>Functiegroep</th><th class="r">FTE nu</th><th class="r">Pensioen 5 jaar</th><th class="r">Verloop</th><th class="r">Over 1 jaar</th><th class="r">Over 3 jaar</th><th class="r">Over 5 jaar</th><th class="r">Na 5 jaar</th></tr></thead><tbody>${rows}
+  <tr><td><b>Totaal</b></td><td class="r"><b>${nf(tot.fte)}</b></td><td class="r"><b>${nf(tot.p)}</b></td><td></td><td class="r"><b>${nf(tot[1])}</b></td><td class="r"><b>${nf(tot[3])}</b></td><td class="r"><b>${nf(tot[5])}</b></td><td></td></tr></tbody></table></div>
+  <p class="hint">Aanbod = huidige FTE, min pensioenuitstroom, min verwacht verloop, plus of min doorstroom. Nieuwe instroom telt niet mee: dit is wat er overblijft als je niets doet.</p>`;},
+ ch_lft:()=>{const G=fgs(),it=COH.map((c,i)=>({l:c[0],v:G.reduce((s,g)=>s+num(g5(g.id).coh[i]),0)})).reverse();return barsH(it,"medewerkers","Leeftijdsopbouw van de afdeling");},
+ ch_fte:()=>barsH(fgs().map(g=>({l:g.naam,v:calc(g.id).fte})),"FTE","FTE per functiegroep"),
+ ch_ver:()=>{let G=fgs().filter(g=>calc(g.id).fte>0);if(!G.length) return '<p class="empty">Nog geen cijfers.</p>';
+  let ser=G.map(g=>{const c=calc(g.id);return {n:g.naam,v:[c.fte,c.y[1],c.y[3],c.y[5]]};});
+  if(ser.length>8){const o=ser.slice(7);ser=ser.slice(0,7);ser.push({n:"Overige groepen",v:[0,1,2,3].map(i=>o.reduce((s,x)=>s+x.v[i],0))});}
+  return lineCh(ser);},
+ hr3pov:()=>{const G=fgs().filter(g=>g6(g.id).hr.some(x=>num(x)>0));if(!G.length) return '<p class="empty">Nog geen aantallen ingevuld.</p>';
+  return `<div class="legend">${HR4.map((h,i)=>`<span><i style="background:${SER[i]}"></i>${h[0]}</span>`).join("")}</div>
+  <div class="tw"><table><thead><tr><th>Functiegroep</th>${HR4.map(h=>`<th class="r">${h[0]}</th>`).join("")}<th>Verdeling</th></tr></thead><tbody>${G.map(g=>{const h=g6(g.id).hr.map(num),t=h.reduce((a,b)=>a+b,0);
+   return `<tr><td>${esc(g.naam)}</td>${h.map(x=>`<td class="r">${x} <span class="hint">${Math.round(x/t*100)}%</span></td>`).join("")}<td><div class="stack">${h.map((x,i)=>x?`<i style="flex:${x};background:${SER[i]}" title="${HR4[i][0]}: ${x}"></i>`:"").join("")}</div></td></tr>`;}).join("")}</tbody></table></div>`;},
+ chk6:()=>{const G=fgs();if(!G.length) return "";const id=curGrp(G),h=g6(id).hr.map(num),t=h.reduce((a,b)=>a+b,0),n=calc(id).aantal,a=[];
+  if(t&&n&&t!==n) a.push(`<p class="note warn">De vier kwadranten tellen op tot ${t}, de groep heeft ${n} medewerkers.</p>`);
+  if(h.some(x=>x>0&&x<3)) a.push(`<p class="note">Een kwadrant met 1 of 2 medewerkers kan in een kleine groep herkenbaar zijn. Bespreek zulke aantallen alleen in het MT en deel ze niet breder.</p>`);
+  return a.join("");},
+ gapq:()=>{const G=fgs(),sc=scen7();if(!G.length) return "";
+  return `<div class="tw"><table><thead><tr><th>Functiegroep</th><th class="r">FTE nu</th><th class="r">Aanbod over 3 jaar</th><th class="r">Vraag over 3 jaar</th><th>Verschil</th></tr></thead><tbody>${G.map(g=>{const c=calc(g.id),v=vraag(sc.id,g.id);let t='<span class="hint">vraag nog niet ingevuld</span>';
+   if(v!==null){const d=c.y[3]-v,bal=Math.abs(d)<Math.max(0.2,v*0.05);t=bal?'<span class="tag pos">in balans</span>':d<0?`<span class="tag neg">tekort ${nf(-d)} FTE</span>`:`<span class="tag warn">overschot ${nf(d)} FTE</span>`;}
+   return `<tr><td>${esc(g.naam)}${fgTags(g)}</td><td class="r">${nf(c.fte)}</td><td class="r">${nf(c.y[3])}</td><td class="r">${v===null?"":nf(v)}</td><td>${t}</td></tr>`;}).join("")}</tbody></table></div>
+   `;},
+ gapk:()=>{const out=fgs().map(g=>{const cs=g6(g.id).comp.filter(c=>c.naam);if(!cs.length) return "";
+   return `<div class="cgrp"><div><b style="font-weight:600">${esc(g.naam)}</b>${fgTags(g)}</div>${cs.map(c=>{const p=Math.min(100,num(c.pct)),t=Math.min(100,num(c.doel)),d=t-p;
+    return `<div class="crow"><span>${esc(c.naam)}</span><div class="cb" title="Nu op niveau ${nf(p,0)}%, straks nodig ${nf(t,0)}%"><i class="tr"></i><i class="fl" style="width:${p}%"></i>${d>0?`<i class="ms" style="left:${p}%;width:${d}%"></i>`:""}<i class="tg" style="left:${t}%"></i></div><span>${d>0?`<span class="tag ${d>=25?"neg":"warn"}">${nf(p,0)}% nu, ${nf(t,0)}% nodig</span>`:'<span class="tag pos">Op niveau</span>'}</span></div>`;}).join("")}</div>`;}).join("");
+  return out?out+'<div class="lg2" style="margin-top:10px"><span><i style="width:18px;height:8px;border-radius:4px;background:#199e70"></i>nu op niveau</span><span><i style="width:18px;height:8px;border-radius:2px;background:repeating-linear-gradient(135deg,rgba(240,136,117,.75) 0 4px,rgba(240,136,117,.25) 4px 8px)"></i>nog te ontwikkelen</span><span><i style="width:3px;height:14px;border-radius:2px;background:var(--ink)"></i>straks nodig</span></div>':'<p class="empty">Nog geen competenties ingevuld in stap 6.</p>';},
+ prio:()=>{const L=gaps();if(!L.length) return "";
+  const key=g=>g.g.segment==="strategisch"||isSchaars(g.g);
+  const cell=(im,ur)=>{const x=L.map((g,i)=>[g,i]).filter(([g])=>num(state.s7.gaps[g.key].impact)===im&&num(state.s7.gaps[g.key].urg)===ur);
+   return `<div class="c ${im>=4&&ur>=4?"hot":im>=4?"plan":ur>=4?"fast":""}${ur===3?" bx":""}${im===4?" by":""}">${x.map(([g,i])=>`<span class="bub ${state.s7.gaps[g.key].sel?"sel":""}${key(g)?" key":""}" title="${esc(g.txt)}">${i+1}</span>`).join("")}</div>`;};
+  const n=L.filter(g=>state.s7.gaps[g.key].sel).length;
+  return `<div class="quad"><span class="k yl">Impact op de ambitie →</span><div class="qp">${[5,4,3,2,1].map(im=>[1,2,3,4,5].map(ur=>cell(im,ur)).join("")).join("")}<span class="ql tl">Inplannen</span><span class="ql tr">Nu aanpakken</span><span class="ql bl2">Volgen</span><span class="ql br">Snel en klein oplossen</span></div>
+   <div class="qt">${[1,2,3,4,5].map(u=>`<span>${u}</span>`).join("")}</div><span class="k xl">Urgentie →</span>
+   <div style="grid-column:1/-1;display:flex;flex-direction:column;gap:8px;margin-top:6px"><div class="lg2"><span><span class="bub sel" style="display:inline-grid;width:18px;height:18px;vertical-align:-4px;margin-right:6px"></span>gekozen voor het actieplan</span><span><span class="bub key" style="display:inline-grid;width:18px;height:18px;vertical-align:-4px;margin-right:8px"></span>strategische of schaarse functiegroep</span></div>
+   <p class="note ${n>=3&&n<=5?"ok":"warn"}">${n} ${n===1?"gap":"gaps"} gekozen. ${n<3?"Kies er minstens 3.":n>5?"Kies er hooguit 5, anders wordt het plan onuitvoerbaar.":"Dat past binnen de richtlijn van 3 tot 5."}</p></div></div>`;},
+ kpi:()=>{const t=KPI[ui.step]?KPI[ui.step]():[];return t.map(x=>`<div class="kpi ${x[3]||""}" title="${String(x[2]||"").replace(/<[^>]+>/g,"")}"><span class="k">${x[0]}</span><div class="row"><span class="v">${x[1]}</span><span class="s">${x[2]||""}</span></div></div>`).join("");},
+ gapbar:id=>{const sc=scen7(),G=fgs(),c=calc(id),v=vraag(sc.id,id);
+  const mx=Math.max(1,...G.map(g=>{const x=calc(g.id),w=vraag(sc.id,g.id);return Math.max(x.fte,x.y[3],w||0);}))*1.08,pc=x=>Math.min(100,x/mx*100);
+  let gp="",vd='<span class="hint">vul de vraag in</span>';
+  if(v!==null){const d=c.y[3]-v,bal=inBal(d,v);
+   if(!bal) gp=`<i class="gp ${d<0?"neg":"warn"}" style="left:${pc(Math.min(c.y[3],v))}%;width:${pc(Math.abs(d))}%"></i>`;
+   vd=bal?'<span class="tag pos">In balans</span>':d<0?`<span class="tag neg">Tekort ${nf(-d)} FTE</span>`:`<span class="tag warn">Overschot ${nf(d)} FTE</span>`;}
+  return `<div><div class="bt" title="Aanbod over 3 jaar: ${nf(c.y[3])} FTE${v!==null?", vraag: "+nf(v)+" FTE":""}"><i class="tr"></i><i class="sup" style="width:${pc(c.y[3])}%"></i>${gp}${v!==null?`<i class="dem" style="left:${pc(v)}%"></i>`:""}</div><div class="bl"><span>aanbod ${nf(c.y[3])} FTE</span><span>${v!==null?"vraag "+nf(v)+" FTE":""}</span></div></div><div>${vd}</div>`;},
+ head:()=>stepMeta(ui.step)
+};
+
+/* ---------- Stap 5 tot en met 7: gegevens en berekening ---------- */
+const SER=["#3987e5","#d95926","#199e70","#c98500","#d55181","#008300","#9085e9","#e66767"];
+const COH=[["Tot 25 jaar",18,25],["25 tot 34",25,35],["35 tot 44",35,45],["45 tot 54",45,55],["55 tot 59",55,60],["60 tot 64",60,65],["65 en ouder",65,0]];
+const CON=["Vast","Tijdelijk"];const AOW=N=>N<=1?67:67.25;
+const IDU=["Instroom","Doorstroom in","Doorstroom uit","Uitstroom"];
+const HR4=[["Talent","Presteert goed en kan doorgroeien"],["Vakvolwassen","Presteert goed en zit op de juiste plek"],["In ontwikkeling","Nog niet op niveau, groeit wel"],["Aandacht nodig","Blijft achter in prestatie en groei"]];
+const YEARS=()=>{const y=new Date().getFullYear();return [y-3,y-2,y-1];};
+const fgs=()=>state.fg.groepen.filter(x=>x.naam);
+function curGrp(G){if(!G.find(g=>g.id===ui.grp)) ui.grp=G[0].id;return ui.grp;}
+function g5(id){const g=state.s5.g;if(!g[id]) g[id]={aantal:"",fte:"",coh:["","","","","","",""],con:["",""],pens:["","",""],schaal:"",verzuim:"",idu:[["","","",""],["","","",""],["","","",""]],verloop:"",door:""};
+  const x=g[id];if(!x.pens) x.pens=["","",""];if(x.con.length>2) x.con=x.con.slice(0,2);return x;}
+function g6(id){const g=state.s6.g;if(!g[id]) g[id]={hr:["","","",""],comp:[],amb:"",mob:"",duur:"",bron:""};return g[id];}
+function calc(id){
+  const d=g5(id),fg=state.fg.groepen.find(x=>x.id===id)||{},aantal=num(d.aantal)||num(fg.aantal),fte=num(d.fte);
+  const per=aantal?fte/aantal:0,rows=d.idu.filter(r=>r.some(x=>x!=="")),k=rows.length||1;
+  const histUit=rows.reduce((s,r)=>s+num(r[3]),0)/k,histPct=aantal?histUit/aantal*100:0;
+  const histDoor=rows.reduce((s,r)=>s+num(r[1])-num(r[2]),0)/k*per;
+  const v=Math.min(1,Math.max(0,(d.verloop!==""?num(d.verloop):histPct)/100)),door=d.door!==""?num(d.door):histDoor;
+  const est=N=>{const P=AOW(N);return COH.reduce((s,c,i)=>{const lo=P-N,b=c[2]||P,a=c[2]?c[1]:65;return s+num(d.coh[i])*Math.min(1,Math.max(0,(b-lo)/(b-a)));},0);};
+  const pk={1:0,3:1,5:2},pensN=N=>d.pens[pk[N]]!==""?num(d.pens[pk[N]]):est(N),pens=N=>pensN(N)*per;
+  const y={};[1,3,5].forEach(N=>{const rest=Math.max(0,fte-pens(N));y[N]=Math.max(0,rest*Math.pow(1-v,N)+door*N);});
+  return {aantal,fte,per,histPct,histDoor,v,door,pens5:Math.min(fte,pens(5)),est:[est(1),est(3),est(5)],y};
+}
+const scen7=()=>{const s=state.s1.scenarios;if(ui.scen7>=s.length) ui.scen7=0;return s[ui.scen7];};
+function vraag(sid,gid){const v=(state.s7.vraag[sid]||{})[gid];return v===undefined||v===""?null:num(v);}
+const fgTags=g=>(g.segment==="strategisch"?' <span class="tag acc">strategisch</span>':"")+(isSchaars(g)?' <span class="tag neg">schaars</span>':"");
+const LVL=[["laag","Laag"],["midden","Midden"],["hoog","Hoog"]];
+const lvl=v=>({"1":"laag","2":"laag","3":"midden","4":"hoog","5":"hoog",laag:"laag",midden:"midden",hoog:"hoog"}[v]||"");
+const lvn=v=>({laag:1,midden:2,hoog:3}[lvl(v)]||0);
+const inBal=(d,v)=>Math.abs(d)<Math.max(0.2,v*0.05);
+const isKey=g=>g.segment==="strategisch"||isSchaars(g);
+function gaps(){
+  const sc=scen7(),out=[];
+  fgs().forEach(g=>{const c=calc(g.id),v=vraag(sc.id,g.id);
+    if(v!==null){const d=c.y[3]-v,w=d<0?"tekort":"overschot";if(!inBal(d,v)) out.push({key:"q_"+sc.id+"_"+g.id,g,cap:1,size:Math.abs(d),kind:d<0?"Tekort":"Overschot",kort:`${d<0?"Tekort":"Overschot"} van ${nf(Math.abs(d))} FTE`,chip:w,txt:`${g.naam}: ${w} van ${nf(Math.abs(d))} FTE over 3 jaar`});}
+    g6(g.id).comp.filter(c=>c.naam).forEach(c=>{const d=num(c.doel)-num(c.pct);if(d>0) out.push({key:"c_"+g.id+"_"+c.id,g,cap:0,size:d,kind:"Competentie",kort:`${c.naam}: ${nf(num(c.pct),0)}% op niveau, ${nf(num(c.doel),0)}% nodig`,chip:c.naam.toLowerCase(),txt:`${g.naam}: ${c.naam}, ${nf(num(c.pct),0)}% op niveau en ${nf(num(c.doel),0)}% nodig`});});});
+  out.forEach(x=>{x.k=state.s7.gaps[x.key]||{impact:"",urg:"",sel:false};x.sc=lvn(x.k.impact)*lvn(x.k.urg);});
+  return out.sort((a,b)=>b.cap-a.cap||b.sc-a.sc||b.size-a.size);
+}
+function setGap(key,f,v){if(!state.s7.gaps[key]) state.s7.gaps[key]={impact:"",urg:"",sel:false};const k=state.s7.gaps[key];if(f==="sel") k.sel=!k.sel;else k[f]=lvl(k[f])===v?"":v;markDirty("s7");touch();}
+function prioHTML(){
+  const L=gaps();if(!L.length) return '<p class="empty">Er zijn nog geen gaps. Vul bij Vraag en aanbod de vraag over 3 jaar in, en in stap 5 en 6 de cijfers en competenties.</p>';
+  const lk=locked(0)?" disabled":"",n=L.filter(g=>g.k.sel).length;
+  const seg=(g,f)=>`<div class="sg" role="group" aria-label="${f==="impact"?"Impact":"Urgentie"}">${LVL.map(l=>`<button type="button" data-act="lvl" data-key="${g.key}" data-f="${f}" data-v="${l[0]}" aria-pressed="${lvl(g.k[f])===l[0]}"${lk}>${l[1]}</button>`).join("")}</div>`;
+  const row=g=>`<div class="ptr${g.k.sel?" sel":""}"><div class="tx"><b>${esc(g.g.naam)}${isKey(g.g)?' <span class="tag neg" title="Strategische of schaarse functiegroep">sleutelgroep</span>':""}</b><span>${esc(g.kort)}</span></div>${seg(g,"impact")}${seg(g,"urg")}<button type="button" class="pick" data-act="gsel" data-key="${g.key}" aria-pressed="${!!g.k.sel}"${lk}>${g.k.sel?"In actieplan":"Naar actieplan"}</button></div>`;
+  const cap=L.filter(g=>g.cap),co=L.filter(g=>!g.cap),big=co.filter(g=>g.size>=20||g.sc||g.k.sel),min=co.filter(g=>!big.includes(g));
+  const ch=L.filter(g=>g.k.sel),lo=ch.length?Math.min(...ch.map(g=>g.sc)):0,mis=L.filter(g=>!g.k.sel&&g.sc>lo&&ch.length);
+  const cell=(im,ur)=>{const x=L.filter(g=>lvl(g.k.impact)===im&&lvl(g.k.urg)===ur);return `<div class="c${im==="hoog"&&ur==="hoog"?" hot":""}">${x.map(g=>`<span class="mc${g.k.sel?" sel":""}" title="${esc(g.txt)}">${esc(short(g.g.naam,26))}: ${esc(short(g.chip,26))}</span>`).join("")}</div>`;};
+  const open=L.filter(g=>!g.sc).length;
+  return `<div class="prio3">
+   <ol class="how"><li><b>Scoor elke gap.</b> Impact: hoe zwaar raakt dit de ambitie? Urgentie: hoe snel moet er iets gebeuren?</li><li><b>Kies 3 tot 5 gaps voor het actieplan.</b> Voor elke gekozen gap bedenken we in stap 8 maatregelen. Wat je niet kiest, pakken we nu bewust niet aan.</li><li><b>Controleer onderaan in de matrix</b> of de gekozen gaps ook de zwaarste zijn.</li></ol>
+   <div>
+    <div class="pth"><span class="k">Gap</span><span class="k">Impact op de ambitie</span><span class="k">Urgentie</span><span class="k">Actieplan?</span></div>
+    ${cap.length?`<div class="ptg">Capaciteit <small>tekort of overschot over 3 jaar</small></div>${cap.map(row).join("")}`:""}
+    ${big.length?`<div class="ptg">Competenties <small>verschil van 20 procentpunt of meer</small></div>${big.map(row).join("")}`:""}
+    ${min.length?`<details class="minor"><summary>Toon ${min.length} kleinere competentieverschillen</summary>${min.map(row).join("")}</details>`:""}
+   </div>
+   <p class="note ${n>5?"warn":n>=3?"ok":""}"><b>${n} van de ${L.length} gaps gekozen voor het actieplan.</b> ${n<3?"Kies er minstens 3.":n>5?"Kies er hooguit 5, anders wordt het plan onuitvoerbaar.":"Dat past binnen de richtlijn van 3 tot 5."}${open?` Nog ${open} ${open===1?"gap heeft":"gaps hebben"} geen score.`:""}</p>
+   ${mis.length?`<p class="note warn">Niet gekozen, maar zwaarder gescoord dan een gekozen gap: ${mis.slice(0,3).map(g=>esc(g.g.naam+" ("+g.chip+")")).join(", ")}.</p>`:""}
+   <div class="mx3w"><div class="subh">Controle: liggen de gekozen gaps rechtsboven? <span class="hint">paars is gekozen</span></div>
+    <div class="mx3">${["hoog","midden","laag"].map(im=>`<div class="ax y">${im==="midden"?"Impact<br>midden":lab(LVL,im)}</div>${["laag","midden","hoog"].map(ur=>cell(im,ur)).join("")}`).join("")}<div></div>${LVL.map(l=>`<div class="ax">${l[0]==="midden"?"Urgentie midden":l[1]}</div>`).join("")}</div>
+   </div></div>`;
+}
+function mergeData(sel,nid){
+  const add=(a,b)=>a===""&&b===""?"":String(Math.round((num(a)+num(b))*100)/100);
+  const d=g5(nid),q=g6(nid);
+  sel.forEach(x=>{const o=g5(x.id),p=g6(x.id);
+    d.aantal=add(d.aantal,o.aantal);d.fte=add(d.fte,o.fte);d.coh=d.coh.map((v,i)=>add(v,o.coh[i]));d.con=d.con.map((v,i)=>add(v,o.con[i]));
+    d.idu=d.idu.map((r,i)=>r.map((v,j)=>add(v,o.idu[i][j])));d.schaal=[d.schaal,o.schaal].filter(Boolean).join(" / ");
+    q.hr=q.hr.map((v,i)=>add(v,p.hr[i]));q.comp=q.comp.concat(p.comp).slice(0,6);
+    ["amb","mob","duur"].forEach(k=>{q[k]=[q[k],p[k]].filter(Boolean).join("\n");});q.bron=q.bron||p.bron;
+    Object.keys(state.s7.vraag).forEach(sid=>{const m=state.s7.vraag[sid];if(m[x.id]!==undefined&&m[x.id]!=="") m[nid]=add(m[nid]||"",m[x.id]);});});
+  ["s5","s6","s7"].forEach(markDirty);
+}
+
+/* ---------- Grafieken ---------- */
+function barsH(items,unit,label){
+  if(!items.some(i=>i.v>0)) return '<p class="empty">Nog geen cijfers.</p>';
+  const W=640,L=200,R=64,rh=30,max=Math.max(...items.map(i=>i.v)),H=items.length*rh+4;
+  return `<svg viewBox="0 0 ${W} ${H}" class="ch" role="img" aria-label="${esc(label)}">${items.map((it,i)=>{const w=it.v>0?Math.max(4,(W-L-R)*it.v/max):0,y=i*rh+4;
+    return `<text x="${L-12}" y="${y+14}" text-anchor="end" class="cl">${esc(short(it.l,30))}</text><rect x="${L}" y="${y}" width="${W-L-R}" height="18" fill="transparent"><title>${esc(it.l)}: ${nf(it.v)} ${unit}</title></rect><rect x="${L}" y="${y}" width="${w}" height="18" rx="4" fill="${SER[0]}"><title>${esc(it.l)}: ${nf(it.v)} ${unit}</title></rect><text x="${L+w+8}" y="${y+14}" class="cv">${nf(it.v)}</text>`;}).join("")}</svg>`;
+}
+function lineCh(ser){
+  const W=640,H=270,pl=40,pr=ser.length<=4?150:18,pt=12,pb=30,T=[0,1,3,5],TL=["Nu","Over 1 jaar","Over 3 jaar","Over 5 jaar"];
+  const raw=Math.max(...ser.flatMap(s=>s.v),1),e=Math.pow(10,Math.floor(Math.log10(raw))),max=[1,2,2.5,5,10].map(m=>m*e).find(m=>m>=raw);
+  const x=t=>pl+t/5*(W-pl-pr),y=v=>pt+(H-pt-pb)*(1-v/max);
+  let h=`<svg viewBox="0 0 ${W} ${H}" class="ch" role="img" aria-label="Verloop van huidig naar toekomstig aanbod in FTE per functiegroep">`;
+  for(let i=0;i<=4;i++){const v=max*i/4;h+=`<line class="gr" x1="${pl}" x2="${W-pr}" y1="${y(v)}" y2="${y(v)}"/><text class="ax" x="${pl-8}" y="${y(v)+4}" text-anchor="end">${nf(v)}</text>`;}
+  T.forEach((t,i)=>{h+=`<text class="ax" x="${x(t)}" y="${H-8}" text-anchor="${i===0?"start":i===3?"end":"middle"}">${TL[i]}</text>`;});
+  ser.forEach((s,k)=>{h+=`<polyline fill="none" stroke="${SER[k]}" stroke-width="2" stroke-linejoin="round" points="${s.v.map((v,i)=>x(T[i])+","+y(v)).join(" ")}"/>`;
+    s.v.forEach((v,i)=>{h+=`<circle cx="${x(T[i])}" cy="${y(v)}" r="4.5" fill="${SER[k]}" stroke="var(--raise)" stroke-width="2"><title>${esc(s.n)}, ${TL[i].toLowerCase()}: ${nf(v)} FTE</title></circle>`;});});
+  if(ser.length<=4){const ends=ser.map((s,k)=>({k,y:y(s.v[3]),s})).sort((a,b)=>a.y-b.y);for(let i=1;i<ends.length;i++) if(ends[i].y-ends[i-1].y<15) ends[i].y=ends[i-1].y+15;
+    ends.forEach(o=>{h+=`<text class="cv" x="${W-pr+10}" y="${o.y+4}">${esc(short(o.s.n,18))} ${nf(o.s.v[3])}</text>`;});}
+  h+="</svg>";
+  if(ser.length>1) h+=`<div class="legend">${ser.map((s,k)=>`<span><i style="background:${SER[k]}"></i>${esc(s.n)}</span>`).join("")}</div>`;
+  return h;
+}
+
+/* ---------- CSV ---------- */
+const COHKEY=["lft_tot_25","lft_25_34","lft_35_44","lft_45_54","lft_55_59","lft_60_64","lft_65_plus"];
+function csvTemplate(){
+  const head=["functiegroep","aantal","fte",...COHKEY,"vast","tijdelijk","schaal","verzuim_pct","pensioen_binnen_1_jaar","pensioen_binnen_3_jaar","pensioen_binnen_5_jaar"];
+  YEARS().forEach(j=>head.push("instroom_"+j,"doorstroom_in_"+j,"doorstroom_uit_"+j,"uitstroom_"+j));
+  const q=c=>/[;"\n]/.test(c)?'"'+c.replace(/"/g,'""')+'"':c,dc=c=>String(c).replace(".",",");
+  const G=fgs(),rows=G.length?G.map(g=>{const d=g5(g.id);return [q(g.naam),dc(d.aantal),dc(d.fte),...d.coh.map(dc),...d.con.map(dc),q(d.schaal),dc(d.verzuim),...d.pens.map(dc),...d.idu.flat().map(dc)];}):[["Voorbeeld functiegroep",...Array(28).fill("")]];
+  return [head,...rows].map(r=>r.join(";")).join("\r\n");
+}
+function parseCSV(text,sep){
+  const out=[];let row=[],cur="",inq=false;
+  for(let i=0;i<text.length;i++){const ch=text[i];
+    if(inq){if(ch==='"'){if(text[i+1]==='"'){cur+='"';i++;}else inq=false;}else cur+=ch;}
+    else if(ch==='"') inq=true;
+    else if(ch===sep){row.push(cur);cur="";}
+    else if(ch==="\n"||ch==="\r"){if(ch==="\r"&&text[i+1]==="\n") i++;row.push(cur);cur="";if(row.some(c=>c.trim()!=="")) out.push(row);row=[];}
+    else cur+=ch;}
+  row.push(cur);if(row.some(c=>c.trim()!=="")) out.push(row);
+  return out;
+}
+function importCSV(text){
+  const done=(k,m)=>{ui.csvMsg=[k,m];if(typeof document!=="undefined"){renderMain();renderNav();}};
+  text=String(text||"").replace(/^﻿/,"");
+  const first=text.split(/\r?\n/)[0]||"",sep=[";","\t",","].sort((a,b)=>first.split(b).length-first.split(a).length)[0];
+  const rows=parseCSV(text,sep);
+  if(rows.length<2) return done("bad","Het bestand bevat geen gegevensregels. Gebruik het sjabloon.");
+  const head=rows[0].map(c=>c.trim().toLowerCase());
+  if(head.some(c=>/personeelsnummer|achternaam|voornaam|naam_medewerker|medewerkernaam|bsn|geboortedatum/.test(c))) return done("bad","Dit bestand lijkt gegevens per persoon te bevatten. Dat is niet toegestaan. Lever alleen totalen per functiegroep aan met het sjabloon.");
+  if(head[0]!=="functiegroep"||head[12]!=="schaal"||head.length<17) return done("bad","De kolommen komen niet overeen met het sjabloon. Download het sjabloon opnieuw en vul dat in.");
+  const nm=c=>{c=String(c==null?"":c).trim().replace(/\s/g,"").replace(",",".");return c===""||isFinite(Number(c))?c:"";};
+  let upd=0,neu=0;
+  rows.slice(1).forEach(r=>{const naam=(r[0]||"").trim();if(!naam) return;
+    let g=state.fg.groepen.find(x=>(x.naam||"").trim().toLowerCase()===naam.toLowerCase());
+    if(!g){g={id:uid(),naam,segment:"",schaars:null,aantal:"",nu:"",straks:""};state.fg.groepen.push(g);neu++;}else upd++;
+    const d=g5(g.id);d.aantal=nm(r[1]);d.fte=nm(r[2]);d.coh=[3,4,5,6,7,8,9].map(i=>nm(r[i]));d.con=[10,11].map(i=>nm(r[i]));d.schaal=(r[12]||"").trim();d.verzuim=nm(r[13]);d.pens=[14,15,16].map(i=>nm(r[i]));
+    d.idu=[0,1,2].map(y=>[0,1,2,3].map(c=>nm(r[17+y*4+c])));if(d.aantal) g.aantal=d.aantal;});
+  ui.csvText=null;markDirty("s5");markDirty("fg");touch();
+  done("ok",`${upd} functiegroepen bijgewerkt${neu?`, ${neu} nieuwe functiegroepen toegevoegd (vul in stap 4 het segment aan)`:""}.`);
+}
+async function saveFile(filename,data,mime){
+  let dl=null;try{dl=window.claude&&window.claude.use?await window.claude.use("downloads"):null;}catch(e){}
+  if(dl){try{await dl.save({filename,data});return "ok";}catch(e){return e&&e.code==="declined"?"declined":"fail";}}
+  if(typeof window.claude!=="undefined") return "fail";
+  try{const u=URL.createObjectURL(new Blob([data],{type:mime})),a=document.createElement("a");a.href=u;a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),2000);return "ok";}catch(e){return "fail";}
+}
+function bkMsg(t){const e=document.getElementById("bkmsg");if(e) e.textContent=t;}
+async function backupDownload(){
+  const o={app:"spp-dashboard",versie:1,opgeslagen:new Date().toISOString()};DOCS.forEach(id=>{o[id]=state[id];});
+  const naam="spp-dossier-"+(state.meta.afdeling||"afdeling").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")+"-"+new Date().toISOString().slice(0,10)+".json";
+  const r=await saveFile(naam,JSON.stringify(o,null,1),"application/json");
+  bkMsg(r==="ok"?"Dossier opgeslagen als "+naam:r==="declined"?"":"Opslaan als bestand lukt hier niet.");
+}
+function backupImport(text){
+  let o;try{o=JSON.parse(text);}catch(e){bkMsg("Dit is geen geldig dossierbestand.");return;}
+  if(!o||o.app!=="spp-dashboard"||!o.s0){bkMsg("Dit bestand is geen SPP-dossier.");return;}
+  DOCS.forEach(id=>{if(o[id]){state[id]=merged(id,o[id]);markDirty(id);}});
+  ui.sec={};render();bkMsg("Dossier geopend"+(o.opgeslagen?" (bewaard op "+new Date(o.opgeslagen).toLocaleDateString("nl-NL")+")":"")+".");
+}
+async function csvDownload(){
+  const csv=csvTemplate(),r=await saveFile("spp-stap5-sjabloon.csv","\ufeff"+csv,"text/csv");
+  if(r==="declined") return;
+  if(r==="ok") ui.csvMsg=["ok","Sjabloon gedownload. Vul het in Excel in, bewaar het als CSV en importeer het hier."];
+  else{ui.csvText=csv;ui.csvMsg=["warn","Downloaden lukt hier niet. Kopieer de tekst hieronder en plak die in Excel of in een bestand met de naam sjabloon.csv."];}
+  renderMain();
+}
+
+
+/* ---------- Formulieren stap 5 tot en met 7 ---------- */
+const noFg=()=>`<section class="card"><h2>Eerst functiegroepen vastleggen</h2><p class="sub" style="margin:0">Deze stap werkt per functiegroep. Leg de groepen eerst vast in stap 4.</p><div><button type="button" class="btn" data-act="go" data-n="4">Naar stap 4</button></div></section>`;
+const grpTabs=(G,id)=>`<div class="gtabs" role="tablist">${G.map(g=>`<button type="button" role="tab" aria-selected="${g.id===id}" data-act="grp" data-id="${g.id}">${esc(g.naam)}</button>`).join("")}</div>`;
+const FORM5=()=>{const G=fgs();if(!G.length) return noFg();
+  const id=curGrp(G),p="g."+id,d=g5(id),c=calc(id),fg=G.find(g=>g.id===id),yrs=YEARS(),lk=locked(0);
+  const n=(path,l,o)=>fld("s5",p+"."+path,l,Object.assign({type:"number"},o||{}));
+  return `<section class="card"><header><h2>Huidig personeelsbestand</h2>${info("functiegroep")}</header>
+   <p class="sub">Hoe ziet de bezetting er nu uit? Alle cijfers gaan over de huidige medewerkers, behalve de verwachting onderaan.</p>
+   ${grpTabs(G,id)}
+   <div class="grid4">${n("aantal","Aantal medewerkers",{ph:fg.aantal?String(fg.aantal)+" (uit stap 4)":""})}${n("fte","FTE",{info:"fte"})}${fld("s5",p+".schaal","Schaal",{ph:"Bijvoorbeeld 8 tot 10"})}${n("verzuim","Verzuim (%)")}</div>
+   <div class="subh">Leeftijdsopbouw <span class="hint">aantal medewerkers per leeftijdsgroep</span></div>
+   <div class="grid7">${COH.map((x,i)=>n("coh."+i,x[0])).join("")}</div>
+   <div class="subh">Contractvorm en pensioen <span class="hint">aantal medewerkers; pensioen binnen 3 jaar is inclusief binnen 1 jaar</span></div>
+   <div class="grid5">${CON.map((x,i)=>n("con."+i,x+" contract")).join("")}${["Pensioen binnen 1 jaar","Binnen 3 jaar","Binnen 5 jaar"].map((x,i)=>n("pens."+i,x,{ph:"schatting "+nf(c.est[i])})).join("")}</div>
+   <p class="hint">De AOW-leeftijd in Nederland is 67 jaar in 2026 en 2027 en 67 jaar en 3 maanden van 2028 tot en met 2031 (bron: Rijksoverheid). Laat je een vak leeg, dan schat de app het aantal op basis van de leeftijdsopbouw.</p>
+   <div class="subh">In-, door- en uitstroom ${info("idu")} <span class="hint">aantal medewerkers per jaar, uitstroom zonder pensioen</span></div>
+   <div class="tw"><table><thead><tr><th>Jaar</th>${IDU.map(x=>`<th>${x}</th>`).join("")}</tr></thead><tbody>${yrs.map((y,r)=>`<tr><td class="num">${y}</td>${IDU.map((x,k)=>`<td style="min-width:110px">${fld("s5",`${p}.idu.${r}.${k}`,"",{type:"number",aria:x+" "+y})}</td>`).join("")}</tr>`).join("")}</tbody></table></div>
+   <div class="subh">Verwachting voor de toekomst ${info("verloop")}</div>
+   <div class="grid2">${n("verloop","Verwacht verloop per jaar (%)",{ph:"Leeg = historisch ("+nf(c.histPct)+"%)",hint:"Pas aan als het verleden geen goede voorspeller is."})}${n("door","Verwachte doorstroom per jaar (FTE)",{neg:1,ph:"Leeg = historisch ("+nf(c.histDoor)+")",hint:"Plus als er per saldo mensen bij komen uit andere groepen, min als ze vertrekken naar andere groepen."})}</div>
+   <div data-derived="chk5" class="work" style="gap:8px">${DER.chk5()}</div>
+   ${ui.notice?`<p class="note ok">${esc(ui.notice)}</p>`:""}
+   ${c.aantal>0&&c.aantal<5&&!lk&&G.length>1?`<div class="note bad" style="display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center"><span style="flex:1 1 280px"><b>Minder dan 5 medewerkers.</b> Gegevens over zo'n kleine groep kunnen naar personen te herleiden zijn. Voeg de groep samen met een verwante groep.</span><select id="mw-${id}" aria-label="Samenvoegen met" style="width:auto;max-width:240px">${G.filter(y=>y.id!==id).map(y=>`<option value="${y.id}">${esc(y.naam)}</option>`).join("")}</select><button type="button" class="btn sm" data-act="merge2" data-id="${id}">Samenvoegen</button></div>`:""}
+   ${lk?"":`<details class="ex"${ui.csvMsg||ui.csvText!=null?" open":""}><summary>Liever in Excel invullen?</summary>
+   <p>Download het sjabloon met alle functiegroepen, vul het in Excel in en importeer het weer. Lever alleen totalen per groep aan, nooit regels per persoon.</p>
+   <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:8px"><button type="button" class="btn sm" data-act="csvdl">CSV-sjabloon downloaden</button><label class="btn sm" for="csvfile">CSV importeren</label><input type="file" id="csvfile" accept=".csv,text/csv,text/plain" data-csv="1" hidden></div>
+   ${ui.csvMsg?`<p class="note ${ui.csvMsg[0]}" style="margin-top:8px">${esc(ui.csvMsg[1])}</p>`:""}
+   ${ui.csvText!=null?`<div class="fld" style="margin-top:8px"><textarea id="csvtext" rows="5" aria-label="CSV-tekst" spellcheck="false">${esc(ui.csvText)}</textarea><div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="btn sm" data-act="csvcopy">Kopieer tekst</button><button type="button" class="btn sm" data-act="csvpaste">Importeer deze tekst</button></div></div>`:""}
+   </details>`}
+  </section>
+  <section class="card"><header><h2>Toekomstig personeelsbestand</h2>${info("aanbod")}</header><p class="sub">Berekend uit het huidige personeelsbestand: wat is er over 1, 3 en 5 jaar nog als we niets doen?</p>
+   <div class="chbox"><div data-derived="ch_ver" class="work" style="gap:10px">${DER.ch_ver()}</div></div>
+   <div data-derived="aanbod" class="work" style="gap:10px">${DER.aanbod()}</div>
+   <div class="chbox"><h3>Leeftijdsopbouw van de afdeling</h3><span class="hint">Aantal medewerkers per leeftijdsgroep, oudste bovenaan</span><div data-derived="ch_lft">${DER.ch_lft()}</div></div>
+  </section>`;};
+const FORM6=()=>{const G=fgs();if(!G.length) return noFg();
+  const id=curGrp(G),p="g."+id,d=g6(id);
+  return `<section class="card"><header><h2>Huidig personeelsbestand</h2><span class="prep">voorbereiding</span></header>
+   <p class="sub">Hoe staat de huidige groep ervoor in prestatie, potentieel en competenties? Alleen aantallen en percentages, geen namen of individuele beoordelingen.</p>
+   ${grpTabs(G,id)}
+   <div class="subh">Prestatie en potentieel ${info("hr3p")} <span class="hint">aantal medewerkers per kwadrant</span></div>
+   <div class="hr3p">${HR4.map((h,i)=>`<div>${fld("s6",`${p}.hr.${i}`,h[0],{type:"number",prep:1,hint:h[1]})}</div>`).join("")}</div>
+   <div data-derived="chk6" class="work" style="gap:8px">${DER.chk6()}</div>
+   <div class="subh">Kerncompetenties <span class="hint">maximaal 6: wat beheerst de groep nu, en wat is straks nodig?</span></div>
+   ${state.s1.scenarios[0].competenties?`<p class="note"><b>In stap 1 genoemd als nodig voor de ambitie:</b> ${esc(state.s1.scenarios[0].competenties)}</p>`:""}
+   ${d.comp.length?`<div class="tw"><table><thead><tr><th>Competentie</th><th>Nu op niveau (%)</th><th>Straks nodig (%)</th><th></th></tr></thead><tbody>${d.comp.map((c,i)=>`<tr><td style="min-width:200px">${fld("s6",`${p}.comp.${i}.naam`,"",{prep:1,aria:"Competentie",ph:"Bijvoorbeeld digitale vaardigheid"})}</td><td style="min-width:110px">${fld("s6",`${p}.comp.${i}.pct`,"",{type:"number",prep:1,aria:"Nu op niveau",ph:"60"})}</td><td style="min-width:110px">${fld("s6",`${p}.comp.${i}.doel`,"",{type:"number",prep:1,aria:"Straks nodig",ph:"80"})}</td><td>${delBtn("s6",p+".comp",i,1,"Competentie")}</td></tr>`).join("")}</tbody></table></div>`:'<p class="empty">Nog geen competenties voor deze groep.</p>'}
+   ${d.comp.length<6?addBtn("comp","Competentie toevoegen",1,`data-id="${id}"`):'<p class="hint">Het maximum van 6 competenties is bereikt.</p>'}
+   <p class="hint">Vul het percentage medewerkers in dat de competentie op het gewenste niveau beheerst. Dat zegt meer dan een gemiddelde score.</p>
+   <div class="subh">Medewerkersperspectief</div>
+   <div class="grid2">${fld("s6",p+".amb","Ambities",{rows:3,prep:1,ph:"Wat willen medewerkers in deze groep bereiken?"})}${fld("s6",p+".mob","Mobiliteitswens",{rows:3,prep:1,ph:"Blijven, doorgroeien, iets anders gaan doen?"})}${fld("s6",p+".duur","Duurzame inzetbaarheid",{rows:3,prep:1,ph:"Vitaliteit en werkdruk: wat speelt er?"})}${fld("s6",p+".bron","Bron",{prep:1,opts:[["","Kies"],["jaargesprekken","Jaargesprekken"],["enquete","Enquête"],["teamsessie","Teamsessie"],["meerdere","Meerdere bronnen"]],hint:"Waar is dit beeld op gebaseerd?"})}</div>
+   ${ex("<p><b>Juristen (5):</b> 1 talent, 3 vakvolwassen, 1 in ontwikkeling. Competenties: integraal beoordelen 40% op niveau, 80% nodig; digitale vaardigheid 60% op niveau, 90% nodig.</p><p><b>Medewerkersperspectief:</b> twee collega's willen doorgroeien naar senior, werkdruk wordt als hoog ervaren. Bron: jaargesprekken.</p>")}
+  </section>
+  <section class="card"><header><h2>Overzicht huidig personeelsbestand</h2></header><div data-derived="hr3pov" class="work" style="gap:10px">${DER.hr3pov()}</div></section>`;};
+const FORM7=()=>{const G=fgs();if(!G.length) return noFg();
+  const S=state.s1.scenarios,sc=scen7();if(!state.s7.vraag[sc.id]) state.s7.vraag[sc.id]={};
+  return `<section class="card"><header><h2>Vraag en aanbod</h2>${info("gap")}</header>
+   <p class="sub">Hoeveel FTE is er over 3 jaar per functiegroep nodig om de ambitie waar te maken? De app zet dat af tegen het aanbod over 3 jaar uit stap 5, niet tegen de huidige bezetting.</p>
+   ${S.length>1?`<div class="gtabs" role="tablist">${S.map((x,i)=>`<button type="button" role="tab" aria-selected="${i===ui.scen7}" data-act="scen7" data-i="${i}">${i?"Alternatief":"Basis"}: ${esc(x.naam||"zonder naam")}</button>`).join("")}</div>`:""}
+   <p class="note"><b>Uit stap 1, ${esc(sc.naam||"scenario")}:</b> ${sc.capaciteit?esc(sc.capaciteit):"nog geen capaciteit beschreven."}${sc.werk?" Werk: "+esc(short(sc.werk,160)):""}</p>
+   <div class="gq"><div class="gqrow hd"><span class="k">Functiegroep</span><span class="k">Vraag over 3 jaar</span><span class="k">Aanbod tegenover vraag</span><span class="k">Uitkomst</span></div>
+   ${G.map(g=>`<div class="gqrow"><div class="nm"><b>${esc(g.naam)}</b><small>nu ${nf(calc(g.id).fte)} FTE</small><span>${fgTags(g)}</span></div><div>${fld("s7",`vraag.${sc.id}.${g.id}`,"",{type:"number",aria:"Vraag over 3 jaar "+g.naam,ph:"FTE"})}</div><div data-derived="gapbar" data-arg="${g.id}" style="display:contents">${DER.gapbar(g.id)}</div></div>`).join("")}</div>
+   <div class="lg2"><span><i style="width:18px;height:10px;border-radius:5px;background:#3987e5"></i>aanbod over 3 jaar</span><span><i style="width:3px;height:16px;border-radius:2px;background:var(--ink)"></i>vraag over 3 jaar</span><span><i style="width:18px;height:10px;border-radius:3px;background:repeating-linear-gradient(135deg,rgba(240,136,117,.75) 0 4px,rgba(240,136,117,.25) 4px 8px)"></i>tekort</span><span><i style="width:18px;height:10px;border-radius:3px;background:repeating-linear-gradient(135deg,rgba(230,180,85,.8) 0 4px,rgba(230,180,85,.3) 4px 8px)"></i>overschot</span></div>
+  </section>
+  <section class="card"><header><h2>Competenties</h2></header><p class="sub">Deze competenties en percentages zijn per functiegroep vastgelegd in stap 6, op basis van wat in stap 1 nodig is genoemd voor de ambitie. Je past ze daar aan.</p><div><button type="button" class="btn sm" data-act="go" data-n="6">Competenties aanpassen in stap 6</button></div><div data-derived="gapk">${DER.gapk()}</div></section>
+  <section class="card"><header><h2>Prioritering</h2></header>
+   <p class="sub">Niet alles kan tegelijk. Hier bepaal je welke verschillen tussen vraag en aanbod de afdeling als eerste aanpakt.</p>
+   ${prioHTML()}
+  </section>`;};
+DER.gsc=k=>{const g=state.s7.gaps[k];return g?String(num(g.impact)*num(g.urg)):"";};
+const KPI=[
+ ()=>{const s=state.s0,p=plan(),t=s.taken.filter(x=>x.item),d=s.data;return [["Sessies gepland",`${p.n||0}<small> van 8</small>`,p.n>1?"eerste "+fmtD(p.ss[0].d)+", laatste "+fmtD(p.ss[p.n-1].d):"nog in te plannen",p.n===8?"pos":""],["Doorlooptijd",p.n>1?`${nf(p.maanden)}<small> maanden</small>`:"-","richtlijn 3 tot 4 maanden",p.n>1&&p.maanden>4.3?"warn":""],["Taken klaar",`${t.filter(x=>x.klaar).length}<small> van ${t.length}</small>`,"praktische voorbereiding","inf"],["Gegevens binnen",`${d.filter(x=>x.klaar).length}<small> van ${d.length}</small>`,"voor stap 5","inf"]];},
+ ()=>{const s=state.s1;return [["Horizon",esc(s.horizon)||"-","jaar waarop we plannen"],["Scenario's",s.scenarios.length,s.scenarios.map(x=>esc(x.naam||"zonder naam")).join(" en "),"inf"]];},
+ ()=>{const f=state.s2.factoren.filter(x=>x.tekst),k=f.filter(x=>x.soort==="kans").length;return [["Kansen",k,`richtlijn ${MINF} tot ${MAXF}`,"pos"],["Bedreigingen",f.length-k,`richtlijn ${MINF} tot ${MAXF}`,"neg"],["Hoge impact",f.filter(x=>x.impact==="hoog").length,"ontwikkelingen","warn"],["Schaarse groepen",fgs().filter(isSchaars).length,"op de arbeidsmarkt","warn"]];},
+ ()=>{let a=0,b=0;ASPECT.forEach(x=>{a+=lines(state.s3.aspecten[x[0]].sterk).length;b+=lines(state.s3.aspecten[x[0]].zwak).length;});const f=formRuimte();return [["Sterktes",a,"om op te bouwen","pos"],["Zwaktes",b,"om rekening mee te houden","warn"],["Formatieruimte nu",f?`${nf(f.nu)}<small> FTE</small>`:"-","toegestaan min bezet",f&&f.nu<0?"neg":""],["Formatie over 3 jaar",f?`${nf(f.toe+num(state.s3.formWijz))}<small> FTE</small>`:"-","toegestaan na wijziging","inf"]];},
+ ()=>{const g=fgs();return [["Functiegroepen",g.length,"basis voor alle analyses"],["Strategisch",g.filter(x=>x.segment==="strategisch").length,"bepalend voor de ambitie","inf"],["Schaars",g.filter(isSchaars).length,"moeilijk te vervullen","neg"],["Kleiner dan 5",g.filter(x=>{const a=calc(x.id).aantal;return a>0&&a<5;}).length,"let op herleidbaarheid","warn"]];},
+ ()=>{const t=fgs().reduce((s,g)=>{const c=calc(g.id);s.f+=c.fte;s.a+=c.y[3];s.b+=c.y[5];s.p+=c.pens5;return s;},{f:0,a:0,b:0,p:0}),pc=x=>t.f?Math.round((x/t.f-1)*100)+"% ten opzichte van nu":"";return [["FTE nu",nf(t.f),"huidige bezetting"],["Over 3 jaar",nf(t.a),pc(t.a),"warn"],["Over 5 jaar",nf(t.b),pc(t.b),"neg"],["Pensioen",`${nf(t.p)}<small> FTE</small>`,"binnen 5 jaar","inf"]];},
+ ()=>{let h=[0,0,0,0],lo=0;fgs().forEach(g=>{const d=g6(g.id);d.hr.forEach((x,i)=>h[i]+=num(x));lo+=d.comp.filter(c=>c.naam&&num(c.doel)>num(c.pct)).length;});const n=h.reduce((a,b)=>a+b,0),pc=x=>n?Math.round(x/n*100)+"% van de afdeling":"";return [["Talent",h[0],pc(h[0]),"pos"],["Vakvolwassen",h[1],pc(h[1]),"inf"],["In ontwikkeling",h[2],pc(h[2])],["Aandacht nodig",h[3],pc(h[3]),"warn"]];},
+ ()=>{const sc=scen7();let vr=0,ab=0,te=0,ok=true;fgs().forEach(g=>{const v=vraag(sc.id,g.id);if(v===null){ok=false;return;}const y=calc(g.id).y[3];vr+=v;ab+=y;const d=y-v;if(d<0&&!inBal(d,v)) te+=Math.round(-d*10)/10;});const n=gaps().filter(g=>g.k.sel).length;return [["Vraag over 3 jaar",ok?`${nf(vr)}<small> FTE</small>`:"-",esc(sc.naam||"basisscenario"),"inf"],["Aanbod over 3 jaar",`${nf(ab)}<small> FTE</small>`,"zonder ingrijpen"],["Tekorten samen",`${nf(te)}<small> FTE</small>`,"over alle functiegroepen","neg"],["Gekozen gaps",n,"richtlijn 3 tot 5",n>=3&&n<=5?"pos":""]];}
+];
+function SUM5(){const G=fgs().filter(g=>calc(g.id).fte>0),a=[];if(!G.length) return a;
+  const t=G.reduce((s,g)=>{const c=calc(g.id);s.f+=c.fte;s.y3+=c.y[3];s.y5+=c.y[5];s.n+=c.aantal;return s;},{f:0,y3:0,y5:0,n:0});
+  a.push(`<b>Bezetting:</b> ${nf(t.n,0)} medewerkers, ${nf(t.f)} FTE`);
+  a.push(`<b>Aanbod zonder ingrijpen:</b> ${nf(t.y3)} FTE over 3 jaar, ${nf(t.y5)} FTE over 5 jaar`);
+  const w=G.map(g=>({g,c:calc(g.id)})).map(x=>({n:x.g.naam,p:x.c.fte?(x.c.y[5]/x.c.fte-1)*100:0})).sort((a,b)=>a.p-b.p).filter(x=>x.p<=-10).slice(0,3);
+  if(w.length) a.push("<b>Grootste daling na 5 jaar:</b> "+w.map(x=>`${esc(x.n)} (${Math.round(x.p)}%)`).join(", "));
+  return a;}
+function SUM6(){const a=[];fgs().forEach(g=>{const d=g6(g.id),h=d.hr.map(num),t=h.reduce((x,y)=>x+y,0),bits=[];
+    if(t) bits.push(`${h[0]} talent, ${h[3]} aandacht nodig`);
+    const low=d.comp.filter(c=>c.naam&&num(c.doel)-num(c.pct)>0).map(c=>c.naam);if(low.length) bits.push("onder niveau: "+low.join(", "));
+    if(bits.length) a.push(`<b>${esc(g.naam)}:</b> ${esc(bits.join("; "))}`);});
+  return a;}
+function SUM7(){const k=ui.scen7;ui.scen7=0;const L=gaps();ui.scen7=k;const a=[];if(!L.length) return a;
+  a.push(`Basisscenario: ${L.filter(g=>g.cap).length} verschillen in capaciteit en ${L.filter(g=>!g.cap).length} in competenties`);
+  L.filter(g=>g.k.sel).forEach(g=>a.push(`<b>Gekozen:</b> ${esc(g.txt)}`));
+  return a;}
+
+
+/* ---------- Stappen ---------- */
+function stepMeta(n){
+  const st=STATUS.find(s=>s[0]===stOf(n));
+  return `<span class="chip"><span class="pill ${st[2]}">${st[1]}</span></span>${n<LIVE?`<span class="chip">Aan zet <b>${esc(aanZet(n))}</b></span>`:""}${STEPS[n].tijd.map(t=>`<span class="chip">${t}</span>`).join("")}`;
+}
+const scVb=(c,k)=>{const p=PRESETS[state.s1.scenarios[c].preset]||{};return p[k]||PRESETS.voortzetting[k];};
+const FORM=[
+ // Stap 0
+ ()=>{const s=state.s0;
+  return `<section class="card"><header><h2>Aanleiding</h2><span class="prep">voorbereiding</span></header>
+   ${fld("s0","aanleiding","Waarom nu strategische personeelsplanning?",{rows:3,prep:1,info:"spp",ph:"Bijvoorbeeld: een kwart van het team gaat binnen vijf jaar met pensioen"})}
+   <div class="grid2">${fld("s0","zorgen","Welke zorgen spelen er?",{rows:3,prep:1,ph:"Eén zorg per regel"})}${fld("s0","kansen","Welke kansen spelen er?",{rows:3,prep:1,ph:"Eén kans per regel"})}</div>
+   ${ex("<p><b>Aanleiding:</b> de afdeling Vergunningen krijgt door nieuwe wetgeving 20% meer aanvragen, terwijl 6 van de 24 collega's binnen vier jaar met pensioen gaan.</p><p><b>Zorgen:</b> kennis verdwijnt met ervaren collega's; vacatures voor juristen staan gemiddeld 5 maanden open.</p><p><b>Kansen:</b> digitalisering van eenvoudige aanvragen maakt tijd vrij voor complex werk.</p>")}
+  </section>
+  <section class="card"><header><h2>Afspraken</h2></header>
+   ${fld("s0","verwachtingen","Wat verwachten we van dit traject?",{rows:2,ph:"Bijvoorbeeld: een actieplan dat we kunnen opnemen in het jaarplan"})}
+   <div class="fld"><div class="lab"><label>Betrokkenen</label>${info("mt")}</div><p class="hint">Noem rollen, geen namen van medewerkers. Deze rollen kun je verderop aan taken en aanleveringen koppelen.</p>
+    <div class="rows">${s.betrokkenen.map((b,i)=>`<div class="row r-betr">${fld("s0",`betrokkenen.${i}.rol`,"",{aria:"Rol",ph:"Rol, bijvoorbeeld teamleider of controller"})}${fld("s0",`betrokkenen.${i}.bijdrage`,"",{aria:"Betrokkenheid",ph:"Hoe betrokken? Meedenken, beslissen, informeren"})}${delBtn("s0","betrokkenen",i,0,"Betrokkene")}</div>`).join("")}</div>
+    ${addBtn("betr","Betrokkene toevoegen",0)}</div>
+   ${fld("s0","vertrouwelijkheid","Afspraken over vertrouwelijkheid",{rows:2,ph:"Bijvoorbeeld: we bespreken groepen, geen personen. Uitkomsten delen we pas na akkoord van het MT."})}
+  </section>
+  <section class="card"><header><h2>Sessieplanning</h2></header>
+   <p class="sub">Plan alle sessies vooraf in. Richtlijn voor het hele traject: 3 tot 4 maanden.</p>
+   <div class="tw"><table><thead><tr><th>Nr</th><th>Sessie</th><th>Stappen</th><th>Duur</th><th>Datum</th></tr></thead><tbody>
+   ${SESSIES.map((x,i)=>`<tr><td class="num">${i+1}</td><td>${x[0]}</td><td>${x[1]}</td><td>${x[2]}</td><td style="min-width:150px">${fld("s0",`sessies.${i}.datum`,"",{type:"date",aria:"Datum sessie "+(i+1)})}</td></tr>`).join("")}
+   </tbody></table></div>
+   <div data-derived="tijdlijn">${DER.tijdlijn()}</div>
+  </section>
+  <section class="card"><header><h2>Voorbereiding</h2></header>
+   <p class="sub">Wie regelt wat voordat de inhoud begint? Dit onderdeel is vooral voor de HRBP.</p>
+   <div class="grid2">${fld("s0","mtambitie","Heeft het MT al een ambitie geformuleerd?",{info:"ambitie",opts:[["","Kies"],["ja","Ja, die ligt er"],["deels","Deels, nog niet uitgewerkt"],["nee","Nee, nog niet"]]})}${fld("s0","mttoel","Waar staat die, of wat is er nog nodig?",{ph:"Bijvoorbeeld: staat in het jaarplan, paragraaf 2"})}</div>
+   <div class="fld"><div class="lab"><label>Taken</label></div>
+   <div class="tw"><table><thead><tr><th>Taak</th><th>Wie</th><th>Uiterlijk</th><th>Klaar</th><th></th></tr></thead><tbody>
+   ${s.taken.map((d,i)=>`<tr><td style="min-width:330px">${fld("s0",`taken.${i}.item`,"",{aria:"Taak",ph:"Taak"})}</td><td style="min-width:160px">${wie(`taken.${i}.wie`,d.wie)}</td><td style="min-width:150px">${fld("s0",`taken.${i}.wanneer`,"",{type:"date",aria:"Uiterlijk"})}</td><td>${fld("s0",`taken.${i}.klaar`,"",{type:"checkbox",aria:"Klaar"})}</td><td>${delBtn("s0","taken",i,0,"Taak")}</td></tr>`).join("")}
+   </tbody></table></div>${addBtn("taak","Taak toevoegen",0)}</div>
+   <div class="fld"><div class="lab"><label>Bestaande stukken</label></div><p class="hint">Welke documenten liggen er al waar we op kunnen bouwen? Denk aan jaarplan, nota's en eerdere analyses.</p>
+   <div class="tw"><table><thead><tr><th>Stuk</th><th>Beschikbaar?</th><th>Wie levert aan</th><th></th></tr></thead><tbody>
+   ${s.stukken.map((d,i)=>`<tr><td style="min-width:250px">${fld("s0",`stukken.${i}.item`,"",{aria:"Stuk",ph:"Naam van het stuk"})}</td><td style="min-width:150px">${fld("s0",`stukken.${i}.besch`,"",{aria:"Beschikbaar",opts:[["","Onbekend"],["ja","Ja"],["nee","Nee, bestaat niet"]]})}</td><td style="min-width:160px">${wie(`stukken.${i}.wie`,d.wie)}</td><td>${delBtn("s0","stukken",i,0,"Stuk")}</td></tr>`).join("")}
+   </tbody></table></div>${addBtn("stuk","Stuk toevoegen",0)}</div>
+   <div class="fld"><div class="lab"><label>Gegevens voor stap 5</label></div><p class="hint">Wie levert welke cijfers aan? Vraag alleen totalen per functiegroep op, geen lijsten met personen.</p></div>
+   <div class="tw"><table><thead><tr><th>Gegeven</th><th>Wie levert aan</th><th>Uiterlijk</th><th>Binnen</th><th></th></tr></thead><tbody>
+   ${s.data.map((d,i)=>`<tr><td style="min-width:250px">${fld("s0",`data.${i}.item`,"",{aria:"Gegeven"})}</td><td style="min-width:160px">${wie(`data.${i}.wie`,d.wie)}</td><td style="min-width:150px">${fld("s0",`data.${i}.wanneer`,"",{type:"date",aria:"Uiterlijk"})}</td><td>${fld("s0",`data.${i}.klaar`,"",{type:"checkbox",aria:"Binnen"})}</td><td>${delBtn("s0","data",i,0,"Gegeven")}</td></tr>`).join("")}
+   </tbody></table></div>${addBtn("data","Gegeven toevoegen",0)}
+   <div data-derived="borging">${DER.borging()}</div>
+  </section>`;},
+ // Stap 1
+ ()=>{const s=state.s1; if(ui.scen>=s.scenarios.length) ui.scen=0; const c=ui.scen,alt=s.scenarios[1],dis=locked(0)?" disabled":"";
+  return `<section class="card"><header><h2>Personele ambitie</h2>${info("ambitie")}<span class="prep">voorbereiding</span></header>
+   <p class="sub">Eén of twee zinnen. Deze tekst staat daarna bij elke stap bovenaan, als geheugensteun bij het invullen.</p>
+   ${state.s0.mtambitie==="ja"&&state.s0.mttoel?`<p class="note">Bij de kick-off genoteerd: het MT heeft al een ambitie. ${esc(state.s0.mttoel)}</p>`:""}
+   ${fld("s1","ambitie","Wat wil de afdeling over 3 tot 5 jaar met haar mensen bereiken?",{rows:2,prep:1,vb:VB.ambitie,ph:"In [jaar] zijn wij een afdeling die ..."})}
+   <div class="grid3">${fld("s1","horizon","Horizon",{prep:1,ph:"Bijvoorbeeld 2030"})}</div>
+  </section>
+  <section class="card"><header><h2>Scenario's</h2>${info("scenario")}</header>
+   <p class="sub">Kies eerst op welk toekomstbeeld je plant. Een alternatief is optioneel. In latere stappen kun je de vraag naar personeel per scenario invullen.</p>
+   <div class="grid2">
+    <div class="fld"><div class="lab"><label for="sc-0">Basisscenario</label></div><select id="sc-0" data-scensel="0"${dis}>${optHTML([["","Kies een scenario"],...PRESET_OPTS],s.scenarios[0].preset||"")}</select><p class="hint">De meest waarschijnlijke ontwikkeling.</p></div>
+    <div class="fld"><div class="lab"><label for="sc-1">Alternatief scenario</label></div><select id="sc-1" data-scensel="1"${dis}>${optHTML([["","Geen alternatief"],...PRESET_OPTS],alt?(alt.preset||"eigen"):"")}</select><p class="hint">Wat als het anders loopt?</p></div>
+   </div>
+   ${ui.notice?`<p class="note warn">${esc(ui.notice)}</p>`:""}
+  <div class="subh">Vertaling naar mensen</div>
+   <div class="tabs" role="tablist" data-derived="tabs">${DER.tabs()}</div>
+   <div class="grid2">${fld("s1",`scenarios.${c}.naam`,"Naam van het scenario",{ph:"Geef het scenario een herkenbare naam"})}${fld("s1",`scenarios.${c}.omschrijving`,"Korte omschrijving",{rows:2,vb:scVb(c,"omschrijving"),ph:"Wat is in dit scenario anders dan nu?"})}</div>
+   <div class="grid2">
+    ${fld("s1",`scenarios.${c}.werk`,"Welk werk verandert?",{rows:3,vb:scVb(c,"werk"),ph:"Wat valt weg, wat komt erbij, wat wordt anders?"})}
+    ${fld("s1",`scenarios.${c}.capaciteit`,"Hoeveel capaciteit is nodig?",{rows:3,info:"fte",vb:scVb(c,"capaciteit"),ph:"Meer of minder dan nu? Geef een schatting in FTE"})}
+    ${fld("s1",`scenarios.${c}.competenties`,"Welke competenties zijn nodig?",{rows:3,vb:scVb(c,"competenties"),ph:"Kennis, vaardigheden en gedrag"})}
+    ${fld("s1",`scenarios.${c}.cultuur`,"Welke cultuur past daarbij?",{rows:3,vb:scVb(c,"cultuur"),ph:"Hoe werken we samen, wat vinden we normaal?"})}
+   </div>
+   <p class="hint">De knop Voorbeeld bij elk vak toont een voorbeeld dat past bij het gekozen scenario. Je kunt het overnemen en daarna aanpassen.</p>
+   ${c&&!locked(0)?`<div><button type="button" class="btn del" data-act="scendel">Alternatief scenario verwijderen</button></div>`:""}
+  </section>`;},
+ // Stap 2
+ ()=>{const f=state.s2.factoren,g=state.fg.groepen,lk=locked(1);
+  return `<section class="card"><header><h2>Wat komt er op ons af?</h2>${info("destep")}<span class="prep">voorbereiding</span></header>
+   <p class="sub">Kies per veld alleen wat het personeel echt raakt. Richtlijn: in totaal ${MINF} tot ${MAXF} kansen en ${MINF} tot ${MAXF} bedreigingen. Niet elk veld hoeft gevuld.</p>
+   ${DESTEP.map(d=>{const rows=f.map((x,i)=>[x,i]).filter(([x])=>x.cat===d[0]);const have=new Set(rows.map(([x])=>x.tekst));
+    const sug=d[3].map((p,j)=>have.has(p[0])?"":`<button type="button" class="sug" data-act="sug" data-cat="${d[0]}" data-j="${j}">${p[0]}</button>`).join("");
+    return `<div class="dfield"><div class="hd"><b>${d[1]}</b><span class="hint">${d[2]}</span></div>
+     ${rows.length?`<div class="rows">${rows.map(([x,i])=>`<div class="row r-fac">${fld("s2",`factoren.${i}.tekst`,"",{prep:1,aria:"Ontwikkeling "+d[1],ph:"Beschrijf de ontwikkeling"})}${fld("s2",`factoren.${i}.impact`,"",{prep:1,aria:"Impact op personeel",opts:IMPACT.map(a=>[a[0],"Impact: "+a[1].toLowerCase()])})}${fld("s2",`factoren.${i}.soort`,"",{prep:1,aria:"Kans of bedreiging",opts:[["kans","Kans"],["bedreiging","Bedreiging"]]})}${delBtn("s2","factoren",i,1,"Ontwikkeling")}</div>`).join("")}</div>`:""}
+     ${lk?"":`<div class="sugs"><button type="button" class="btn sm ghost" data-act="add" data-kind="factor" data-cat="${d[0]}">+ Eigen ontwikkeling</button>${sug?`<details class="sugd"><summary class="btn sm ghost">+ Veelgekozen</summary><div class="sugs">${sug}</div></details>`:""}</div>`}</div>`;}).join("")}
+  </section>
+  <section class="card"><header><h2>Arbeidsmarkt</h2>${info("markt")}<span class="prep">voorbereiding</span></header>
+   <p class="sub">Twee vragen per functiegroep, op basis van je eigen ervaring. Dezelfde lijst komt terug in stap 4.</p>
+   ${g.length?`<div class="tw"><table><thead><tr><th>Functiegroep</th><th>Hoe lastig is een vacature nu te vullen?</th><th>Wat verwacht je de komende jaren?</th><th></th></tr></thead><tbody>
+   ${g.map((x,i)=>`<tr><td style="min-width:190px">${fld("fg",`groepen.${i}.naam`,"",{prep:1,aria:"Functiegroep",ph:"Naam functiegroep"})}</td><td style="min-width:170px">${fld("fg",`groepen.${i}.nu`,"",{prep:1,aria:"Nu",opts:NU})}</td><td style="min-width:190px">${fld("fg",`groepen.${i}.straks`,"",{prep:1,aria:"Verwachting",opts:STRAKS})}</td><td>${delBtn("fg","groepen",i,1,"Functiegroep")}</td></tr>`).join("")}
+   </tbody></table></div>`:'<p class="empty">Nog geen functiegroepen. Voeg de eerste toe.</p>'}
+   ${addBtn("fg","Functiegroep toevoegen",1)}
+   <p class="hint">Een groep telt als schaars wanneer vacatures nu lastig of zeer lastig te vullen zijn, of wanneer het nu gaat maar lastiger wordt.</p>
+  </section>
+  <section class="card"><header><h2>Kansen en bedreigingen</h2></header><p class="sub">Naast elkaar, de zwaarste bovenaan.</p><div data-derived="matrix" class="work" style="gap:12px">${DER.matrix()}</div></section>`;},
+ // Stap 3
+ ()=>`<section class="card"><header><h2>Sterktes en zwaktes</h2><span class="prep">voorbereiding</span></header>
+   <p class="sub">Eén punt per regel. Elke regel komt als los punt in het SWOT-overzicht.</p>
+   <div class="colhd"><span class="k" style="color:var(--pos)">Sterktes</span><span class="k" style="color:var(--warn)">Zwaktes</span></div>
+   ${ASPECT.map(a=>`<div class="dfield"><div class="hd"><b>${a[1]}</b><span class="hint">${a[2]}</span></div><div class="grid2">${fld("s3",`aspecten.${a[0]}.sterk`,"",{rows:2,prep:1,aria:"Sterktes "+a[1],ph:"Sterk: wat gaat goed?"})}${fld("s3",`aspecten.${a[0]}.zwak`,"",{rows:2,prep:1,aria:"Zwaktes "+a[1],ph:"Zwak: wat houdt ons tegen?"})}</div></div>`).join("")}
+   ${ex("<ul><li><b>Structuur:</b> sterk: korte lijnen binnen teams. Zwak: kennis zit bij enkele specialisten.</li><li><b>Leiderschap:</b> sterk: teamleiders zijn benaderbaar. Zwak: weinig sturing op ontwikkeling.</li><li><b>HR-instrumenten:</b> zwak: opleidingsbudget wordt voor 60% benut.</li></ul>")}
+  </section>
+  <section class="card"><header><h2>Formatiekaders</h2>${info("formatie")}<span class="prep">voorbereiding</span></header>
+   <p class="sub">Hoeveel ruimte is er in FTE? In stap 8 toetst de app de maatregelen aan deze ruimte.</p>
+   <div class="grid2">${fld("s3","formToe","Toegestane formatie (FTE)",{type:"number",prep:1,ph:"22.5"})}${fld("s3","formBez","Huidige bezetting (FTE)",{type:"number",prep:1,ph:"21"})}${fld("s3","formWijz","Verwachte wijziging formatie komende 3 jaar (FTE)",{type:"number",neg:1,prep:1,ph:"-1 of 2",hint:"Plus bij groei, min bij een taakstelling."})}${fld("s3","inhuur","Ruimte voor tijdelijke inhuur (FTE)",{type:"number",prep:1,ph:"1"})}</div>
+   <div data-derived="formruimte">${DER.formruimte()}</div>
+   ${fld("s3","fintoel","Toelichting",{rows:2,prep:1,ph:"Bijvoorbeeld: taakstelling van 1 FTE vanaf volgend jaar, tijdelijke formatie voor de nieuwe wet tot 2028"})}
+  </section>
+  <section class="card"><header><h2>SWOT-overzicht</h2>${info("swot")}</header><p class="sub">Automatisch samengesteld uit stap 2 en stap 3.</p><div data-derived="swot">${DER.swot()}</div></section>`,
+ // Stap 4
+ ()=>{const g=state.fg.groepen;
+  return `<section class="card"><header><h2>Functiegroepen en segment</h2>${info("segment")}</header>
+   <p class="sub">Geef per functiegroep aan hoe belangrijk die is voor de ambitie (segment) en of er moeilijk mensen voor te vinden zijn (schaars). Strategische en schaarse groepen krijgen in de gap-analyse het label sleutelgroep: een tekort daar weegt zwaarder.</p>
+   ${ui.notice?`<p class="note ok">${esc(ui.notice)}</p>`:""}
+   ${g.length?`<div class="tw"><table><thead><tr><th>Functiegroep</th><th>Segment</th><th>Schaars op de arbeidsmarkt? ${info("schaars")}</th><th></th></tr></thead><tbody>
+   ${g.map((x,i)=>{const dis=locked(0)?" disabled":"";
+    return `<tr>
+    <td style="min-width:190px">${fld("fg",`groepen.${i}.naam`,"",{prep:1,aria:"Functiegroep",ph:"Naam functiegroep"})}</td>
+    <td style="min-width:180px">${fld("fg",`groepen.${i}.segment`,"",{aria:"Segment",opts:SEGMENT})}</td>
+    <td style="min-width:260px"><select id="sch-${x.id}" data-schaars="${i}" aria-label="Schaars op de arbeidsmarkt"${dis}>${optHTML([["auto",x.nu?`Volgt stap 2: ${autoSchaars(x)?"ja":"nee"} (${marktTxt(x)})`:"Volgt stap 2: nog niet ingevuld"],["ja","Ja, schaars"],["nee","Nee, niet schaars"]],x.schaars==null?"auto":x.schaars?"ja":"nee")}</select></td>
+    <td>${delBtn("fg","groepen",i,0,"Functiegroep")}</td></tr>`;}).join("")}
+   </tbody></table></div>`:'<p class="empty">Nog geen functiegroepen. Voeg de eerste toe, of begin bij de arbeidsmarkt in stap 2.</p>'}
+   <div style="display:flex;flex-wrap:wrap;gap:8px">${locked(1)?"":'<button type="button" class="btn sm ghost" data-act="add" data-kind="fg">+ Functiegroep toevoegen</button>'}
+</div>
+   ${ex("<ul><li><b>Juristen</b> (5): strategisch, schaars.</li><li><b>Vergunningverleners</b> (9): kern, schaars.</li><li><b>Toezichthouders</b> (6): kern.</li><li><b>Administratief medewerkers</b> (4): ondersteunend. Minder dan 5, dus samengevoegd met Ondersteuning.</li></ul>")}
+  <div class="subh">Overzicht per segment</div><div data-derived="segs">${DER.segs()}</div></section>`;},
+ FORM5,FORM6,FORM7
+];
+
+/* ---------- Render ---------- */
+function renderTop(){
+  document.getElementById("ws").innerHTML=`<input type="text" id="f-meta-afdeling" data-doc="meta" data-path="afdeling" aria-label="Naam van de afdeling" placeholder="Naam van de afdeling" value="${esc(state.meta.afdeling)}"${locked(0)?" disabled":""}><small>Strategische personeelsplanning</small>`;
+  document.getElementById("top").innerHTML=`<div class="crumb" id="crumb"></div><div class="right"><span class="save" id="save"></span>
+   <div class="seg" role="group" aria-label="Ik werk als"><button type="button" data-act="role" data-role="hrbp" aria-pressed="${ui.role==="hrbp"}">HRBP</button><button type="button" data-act="role" data-role="lg" aria-pressed="${ui.role==="lg"}">Leidinggevende</button></div>
+   <button type="button" class="btn" data-act="sessie">Sessiemodus</button></div>`;
+  renderSave();
+}
+function renderSave(){
+  if(typeof document==="undefined") return;
+  const el=document.getElementById("save"); if(!el) return;
+  const t={ok:ui.mode==="local"?"Opgeslagen op dit apparaat":"Alles opgeslagen",bezig:"Bezig met opslaan",fout:"Opslaan mislukt"}[ui.save];
+  el.className="save "+ui.save; el.innerHTML=ui.mode==="loading"?"":`<i></i>${t}`;
+}
+function renderNav(){
+  const cls=n=>STATUS.find(s=>s[0]===stOf(n))[2];
+  document.getElementById("side").innerHTML=`<button type="button" data-act="go" data-n="-1"${ui.step<0?' aria-current="step"':""}><span class="nr">≡</span><span class="t">Overzicht</span><span></span></button>`+GROUPS.map(([g,ns])=>`<div class="k">${g}</div>`+ns.map(n=>`<button type="button" data-act="go" data-n="${n}" class="${n>=LIVE?"later":""}"${n===ui.step?' aria-current="step"':""} title="${n>=LIVE?"Volgt in fase "+STEPS[n].fase:STATUS.find(x=>x[0]===stOf(n))[1]+", aan zet: "+esc(aanZet(n))}"><span class="nr">${n}</span><span class="t">${STEPS[n].t}</span><span class="dot ${cls(n)}"></span></button>`).join("")).join("");
+  const ok=[0,1,2,3,4,5,6,7].filter(n=>stOf(n)==="ok").length;
+  document.getElementById("prog").innerHTML=`<div class="bar" role="img" aria-label="${ok} van 10 stappen akkoord">${STEPS.map((s,n)=>`<span class="${cls(n)}"></span>`).join("")}</div><small>${ok} van 10 stappen akkoord</small>`;
+  const c=document.getElementById("crumb"); const ttl=ui.step<0?"Overzicht":`Stap ${ui.step}: ${STEPS[ui.step].t}`;if(c) c.innerHTML=`SPP-dashboard &nbsp;/&nbsp; <b>${ttl}</b>`;
+  document.getElementById("sessbar").innerHTML=`<b>${ttl}</b><button type="button" class="btn sm" data-act="go" data-n="${ui.step-1}"${ui.step<0?" disabled":""}>Vorige</button><button type="button" class="btn sm" data-act="go" data-n="${ui.step+1}"${ui.step>8?" disabled":""}>Volgende</button><button type="button" class="btn sm" data-act="sessie">Sessiemodus verlaten</button>`;
+}
+const PREP=[[1,"Personele ambitie","20 min",1],[2,"Ontwikkelingen en arbeidsmarkt","1 uur",2],[3,"Sterktes, zwaktes en formatie","1 uur",3],[6,"Aantallen en competenties per groep","4 uur",5]];
+function asideHTML(n){
+  const s=state["s"+n],lg=ui.role==="lg",hr=!lg&&!locked(0),op=(k,d)=>(ui.as[k]===undefined?d:ui.as[k])?" open":"";
+  let h="";
+  if(lg) h+=`<details class="card acc sumc" data-as="todo"${op("todo",true)}><summary>Jouw voorbereiding</summary><div class="in"><div class="todo">${PREP.map(p=>{const d=state.s0.sessies[p[3]].datum;return `<button type="button" data-act="todo" data-n="${p[0]}"><b>Stap ${p[0]}</b><span class="pill ${STATUS.find(x=>x[0]===stOf(p[0]))[2]}">${STATUS.find(x=>x[0]===stOf(p[0]))[1]}</span><small>${p[1]}. Ongeveer ${p[2]}${d?", klaar vóór "+fmtD(d,{day:"numeric",month:"long"}):""}.</small></button>`;}).join("")}</div></div></details>`;
+  h+=`<details class="card acc${lg?"":" sumc"}" data-as="sum"${op("sum",!lg)}><summary>Samenvatting</summary><div class="in"><div data-derived="sum">${DER.sum()}</div>${n>0?`<div class="prevs"><span class="k">Eerdere stappen</span>${[...Array(n).keys()].map(k=>{const a=SUM[k]();return `<details class="prev"><summary>Stap ${k}: ${STEPS[k].t}</summary>${a.length?bul(a,""):'<p class="empty">Nog niets ingevuld.</p>'}</details>`;}).join("")}</div>`:""}</div></details>`;
+  h+=`<details class="card acc" data-as="vragen"${op("vragen",!lg)}><summary>Hulpvragen voor het gesprek</summary><div class="in">${bul(STEPS[n].vragen,"")}</div></details>`;
+  const opm=s._opm.length?s._opm.map((o,i)=>`<div class="o${o.af?" af":""}"><input type="checkbox" id="opm-${o.id}" data-opmaf="${i}" aria-label="Afgehandeld"${o.af?" checked":""}${hr?"":" disabled"}><span><small class="k">${o.type==="vraag"?"Vervolgvraag":"Opmerking"} · ${esc(o.datum||"")}</small><span class="tx">${esc(o.tekst)}</span></span>${hr?`<button type="button" class="btn del" data-act="del" data-doc="s${n}" data-path="_opm" data-i="${i}" aria-label="Opmerking verwijderen">×</button>`:"<span></span>"}</div>`).join(""):'<p class="empty">Nog geen opmerkingen.</p>';
+  if(lg){if(s._opm.length) h+=`<details class="card acc" data-as="status" open><summary>Opmerkingen van de HRBP</summary><div class="in"><div class="opm">${opm}</div></div></details>`;}
+  else h+=`<details class="card acc hrbp" data-as="status"${op("status",true)}><summary>Status en opvolging</summary><div class="in">
+   <div class="grid2" style="grid-template-columns:1fr 1fr;gap:10px"><div class="fld"><div class="lab"><label for="st-status">Status</label></div><select id="st-status" data-status="1"${hr?"":" disabled"}>${optHTML(STATUS.map(x=>[x[0],x[1]]),stOf(n))}</select></div>
+   <div class="fld"><div class="lab"><label for="st-aanzet">Aan zet</label></div><select id="st-aanzet" data-aanzet="1"${hr?"":" disabled"}>${optHTML([["","Automatisch"],["HRBP","HRBP"],["Leidinggevende","Leidinggevende"],["HRBP en leidinggevende","Samen"]],s._aanzet||"")}</select></div></div>
+   <div class="opm">${opm}</div>
+   ${hr?`<div class="fld"><textarea id="opm-tekst" rows="2" placeholder="Nieuwe opmerking of vervolgvraag" aria-label="Nieuwe opmerking of vervolgvraag"></textarea><div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="btn sm" data-act="opm" data-type="opm">+ Opmerking</button><button type="button" class="btn sm" data-act="opm" data-type="vraag">+ Vervolgvraag</button></div></div>`:""}
+  </div></details>`;
+  return h;
+}
+function overviewHTML(){
+  const ch=(()=>{const k=ui.scen7;ui.scen7=0;const L=gaps().filter(g=>g.k.sel);ui.scen7=k;return L;})();
+  return `<div class="hero" data-nr=""><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h7v6H4zM13 5h7v4h-7zM13 11h7v8h-7zM4 13h7v6H4z"/></svg></div><div><span class="k">Overzicht</span><h1>${esc(state.meta.afdeling||"De afdeling")} in één oogopslag</h1><p class="q">De ambitie, de stand per stap en de gekozen gaps.</p></div></div>
+  <div class="amb2" data-derived="amb">${DER.amb()}</div>
+  ${ch.length?`<section class="card" style="margin-bottom:12px"><header><h2>Gekozen voor het actieplan</h2></header>${bul(ch.map(g=>`<b>${esc(g.g.naam)}</b>: ${esc(g.kort)}${isKey(g.g)?' <span class="tag neg">sleutelgroep</span>':""}`))}</section>`:""}
+  <div class="ovw">${[0,1,2,3,4,5,6,7].map(n=>{const st=STATUS.find(x=>x[0]===stOf(n)),a=SUM[n]().slice(0,5),k=KPI[n]();
+    return `<section class="card" data-act="go" data-n="${n}" role="button" tabindex="0"><header><h2>${n}. ${STEPS[n].t}</h2><span class="pill ${st[2]}">${st[1]}</span></header><div class="mini">${k.map(x=>`<span>${x[0]} <b>${String(x[1]).replace(/<small>/g,"").replace(/<\/small>/g,"")}</b></span>`).join("")}</div>${a.length?bul(a):'<p class="empty">Nog niets ingevuld.</p>'}</section>`;}).join("")}</div>`;
+}
+function renderMain(){
+  const n=ui.step,S=STEPS[n],m=document.getElementById("main");
+  let banner="";
+  if(ui.mode==="local") banner='<p class="note banner">Wat je invult wordt bewaard in deze browser op dit apparaat. Gebruik Dossier opslaan (links) om het als bestand te bewaren of op een ander apparaat te openen.</p>';
+  if(ui.readOnly) banner='<p class="note warn banner">Je kunt dit werkboek bekijken maar niet wijzigen. Vraag de eigenaar om je als bijdrager toe te voegen.</p>';
+  if(state.meta.voorbeeld) banner+='<div class="note warn banner" style="display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center"><span style="flex:1 1 320px">Dit dashboard is aangevuld met voorbeeldgegevens om te laten zien wat het oplevert. Vervang ze door de echte gegevens van de afdeling.</span>'+(locked(0)?"":'<button type="button" class="btn sm" data-act="meldweg">Melding verbergen</button>')+'</div>';
+  if(ui.mode==="loading"){m.innerHTML=`<section class="card"><h2>Gegevens ophalen</h2><p class="sub" style="margin:0">${ui.slow?"De opgeslagen gegevens zijn nog niet bereikbaar. Controleer je verbinding. De app blijft het proberen.":"Een moment, de eerder ingevulde gegevens worden geladen."}</p></section>`;return;}
+  if(ui.role==="lg"&&n>=0&&n<LIVE) banner+='<p class="note banner">Je kijkt als leidinggevende. Onderdelen met het label Voorbereiding vul jij vooraf in. De rest vullen we samen in de sessie.</p>';
+  m.classList.remove("sect");
+  if(n<0){m.style.setProperty("--hue",HUES[0][0]);m.style.setProperty("--hrgb",HUES[0][1]);m.innerHTML=banner+overviewHTML();return;}
+  const ph=GROUPS.findIndex(g=>g[1].includes(n)),hu=HUES[ph];m.style.setProperty("--hue",hu[0]);m.style.setProperty("--hrgb",hu[1]);
+  const head=`<div class="hero" data-nr="${n}"><div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true">${ICONS[n]}</svg></div><div><span class="k">Stap ${n} van 9 · ${GROUPS[ph][0]}</span><h1>${S.t}</h1><p class="q">${S.q}</p></div><div class="meta" data-derived="head">${stepMeta(n)}</div><p class="intro">${S.intro}</p></div>${n<LIVE?`<div class="kpis" data-derived="kpi">${DER.kpi()}</div>`:""}<div class="amb2" data-derived="amb">${DER.amb()}</div>`;
+  const foot=`<div class="foot"><button type="button" class="btn" data-act="go" data-n="${n-1}">${n<1?"Naar het overzicht":"Vorige stap"}</button><button type="button" class="btn pri" data-act="go" data-n="${n+1}"${n>8?" disabled":""}>Volgende stap</button></div>`;
+  if(n>=LIVE){m.innerHTML=banner+head+`<section class="card"><h2>Deze stap volgt in fase ${S.fase}</h2><p class="sub" style="margin:0">Stap 0 tot en met 7 zijn nu beschikbaar. Wat je daar invult, vormt de basis voor deze stap.</p></section>`+foot;return;}
+  m.innerHTML=banner+head+`<div class="cols"><div class="work">${FORM[n]()}</div><aside class="aside">${asideHTML(n)}</aside></div>`+foot;
+  sections();
+}
+function sections(){
+  const work=document.querySelector("#main .work");if(!work) return;
+  const secs=[...work.children].filter(x=>x.tagName==="SECTION");if(secs.length<2) return;
+  let cur=ui.sec[ui.step];if(cur===undefined) cur=(ui.step===5&&(ui.role==="lg"||document.body.classList.contains("sessie"))&&fgs().some(g=>calc(g.id).fte>0))?1:0;if(cur>=secs.length) cur=0;
+  if(!ui.all) document.getElementById("main").classList.add("sect");
+  const bar=document.createElement("div");bar.className="secnav";bar.setAttribute("role","tablist");
+  bar.innerHTML=secs.map((x,i)=>{const h=x.querySelector("h2");return `<button type="button" role="tab" data-act="sec" data-i="${i}" aria-selected="${!ui.all&&i===cur}"><span>${i+1}</span>${esc(h?h.textContent:"Onderdeel")}</button>`;}).join("")+`<button type="button" class="all" data-act="secall" aria-pressed="${ui.all}">${ui.all?"Per onderdeel":"Alles tonen"}</button>`;
+  work.prepend(bar);
+  secs.forEach((x,i)=>{const hd=x.querySelector(":scope > header");if(hd){const b=document.createElement("span");b.className="secno";b.textContent=i+1;hd.prepend(b);}
+    if(ui.all) return;
+    if(i!==cur){x.hidden=true;return;}
+    const f=document.createElement("div");f.className="secfoot";
+    f.innerHTML=(i>0?`<button type="button" class="btn sm" data-act="sec" data-i="${i-1}">Vorig onderdeel</button>`:`<button type="button" class="btn sm" data-act="go" data-n="${ui.step-1}">${ui.step<1?"Naar het overzicht":"Vorige stap"}</button>`)+(i<secs.length-1?`<button type="button" class="btn sm pri" data-act="sec" data-i="${i+1}">Volgend onderdeel: ${esc(secs[i+1].querySelector("h2").textContent)}</button>`:`<button type="button" class="btn sm pri" data-act="go" data-n="${ui.step+1}"${ui.step>8?" disabled":""}>Naar de volgende stap</button>`);
+    x.appendChild(f);});
+}
+function render(){ui.pending=false;renderTop();renderNav();renderMain();}
+let dTimer=0;
+function refreshDerived(){clearTimeout(dTimer);dTimer=setTimeout(()=>{
+  document.querySelectorAll("[data-derived]").forEach(el=>{const f=DER[el.dataset.derived];if(f) el.innerHTML=f(el.dataset.arg);});
+  document.querySelectorAll("select[data-wie]").forEach(el=>{if(el!==document.activeElement){const v=el.value;el.innerHTML=optHTML(wieOpts(v),v);}});
+  renderNav();},250);}
+
+/* ---------- Opslag ---------- */
+let db=null;const dirty=new Set(),timers={},writing={},again={};
+const LS="spp-werkboek-v1";
+function setSave(s){ui.save=s;renderSave();}
+function markDirty(id){dirty.add(id);setSave("bezig");clearTimeout(timers[id]);timers[id]=setTimeout(()=>flush(id),700);}
+async function flush(id){
+  if(ui.mode==="local"){try{localStorage.setItem(LS,JSON.stringify(state));dirty.delete(id);setSave(dirty.size?"bezig":"ok");}catch(e){setSave("fout");}return;}
+  if(!db) return;
+  if(writing[id]){again[id]=true;return;}
+  writing[id]=true;const body=JSON.stringify(state[id]);let fail=false;
+  try{await db.doc("spp/"+id).set(JSON.parse(body));if(JSON.stringify(state[id])===body) dirty.delete(id);}
+  catch(e){fail=true;if(e&&e.code==="invalid_argument"){ui.readOnly=true;render();}setSave("fout");}
+  writing[id]=false;
+  if(again[id]&&!fail){again[id]=false;flush(id);}else if(!fail) setSave(dirty.size?"bezig":"ok");
+}
+function merged(id,data){
+  const d=Object.assign(defaults()[id],JSON.parse(JSON.stringify(data||{})));
+  if(id==="fg") d.groepen.forEach(g=>{if(g.nu===undefined){g.nu={ruim:"makkelijk",gemiddeld:"gaatwel",krap:"lastig",zeerkrap:"zeerlastig"}[g.krapte]||"";g.straks="";}});
+  return d;
+}
+function typing(){const a=document.activeElement;return !!(a&&a.matches&&a.matches("input[type=text],input[type=number],input[type=date],textarea"));}
+function startLocal(){
+  try{const raw=localStorage.getItem(LS);if(raw){const o=JSON.parse(raw);DOCS.forEach(id=>{if(o[id]) state[id]=merged(id,o[id]);});}}catch(e){}
+  ui.mode="local";render();
+}
+function initStore(){
+  if(typeof window.claude==="undefined"||!window.claude.use){startLocal();return;}
+  const slow=setTimeout(()=>{if(ui.mode==="loading"){ui.slow=true;render();}},10000);
+  window.claude.use("db").then(d=>{
+    if(!d){clearTimeout(slow);startLocal();return;}
+    db=d;
+    d.collection("spp").onSnapshot(snap=>{
+      let changed=false;
+      snap.docs.forEach(doc=>{
+        if(!DOCS.includes(doc.id)||dirty.has(doc.id)||(doc.metadata&&doc.metadata.hasPendingWrites)) return;
+        const m=merged(doc.id,doc.data());
+        if(JSON.stringify(m)!==JSON.stringify(state[doc.id])){state[doc.id]=m;changed=true;}
+      });
+      const first=ui.mode==="loading"&&!(snap.metadata&&snap.metadata.fromCache);
+      if(first){clearTimeout(slow);ui.mode="db";}
+      if(first||(changed&&ui.mode==="db")){if(typing()&&!first) ui.pending=true;else render();}
+    },()=>{clearTimeout(slow);if(ui.mode==="loading") startLocal();else{ui.readOnly=true;render();}});
+  }).catch(()=>{clearTimeout(slow);startLocal();});
+}
+
+/* ---------- Interactie ---------- */
+function touch(){const n=ui.step;if(n>=0&&n<LIVE&&state["s"+n]._status==="niet"){state["s"+n]._status="prep";markDirty("s"+n);}}
+function go(n){n=Math.max(-1,Math.min(9,n));ui.step=n;ui.merge=[];ui.notice="";ui.csvMsg=null;ui.csvText=null;try{history.replaceState(null,"",n<0?"#overzicht":"#stap-"+n);}catch(e){}render();window.scrollTo(0,0);}
+const NEW={
+  comp:b=>["s6","g."+b.dataset.id+".comp",{id:uid(),naam:"",wanneer:"beide",pct:"",doel:"80"}],
+  betr:()=>["s0","betrokkenen",{id:uid(),rol:"",bijdrage:""}],
+  taak:()=>["s0","taken",{id:uid(),item:"",wie:"",wanneer:"",klaar:false}],
+  stuk:()=>["s0","stukken",{id:uid(),item:"",besch:"",wie:""}],
+  data:()=>["s0","data",{id:uid(),item:"",wie:"",wanneer:"",klaar:false}],
+  doel:()=>["s1","doelen",{id:uid(),tekst:"",termijn:""}],
+  factor:b=>["s2","factoren",{id:uid(),cat:b.dataset.cat,tekst:"",impact:"midden",soort:"bedreiging"}],
+  fg:()=>["fg","groepen",{id:uid(),naam:"",segment:"",schaars:null,aantal:"",nu:"",straks:""}]
+};
+const emptyScen=p=>{const d=PRESETS[p]||PRESETS.eigen;return {id:uid(),preset:p,naam:d.naam,omschrijving:d.omschrijving,werk:"",capaciteit:"",competenties:"",cultuur:""};};
+function pickScen(i,p){
+  const sc=state.s1.scenarios;ui.notice="";
+  if(i===1&&!p){
+    if(!sc[1]) return;
+    if(sc[1].werk||sc[1].capaciteit||sc[1].competenties||sc[1].cultuur){ui.notice="Het alternatieve scenario bevat al tekst. Gebruik de knop Verwijderen onder de vakken om het te wissen.";renderMain();return;}
+    sc.splice(1,1);ui.scen=0;
+  }else if(i===1&&!sc[1]){sc.push(emptyScen(p));ui.scen=1;}
+  else{const x=sc[i],names=Object.values(PRESETS).map(v=>v.naam),oms=Object.values(PRESETS).map(v=>v.omschrijving),d=PRESETS[p]||PRESETS.eigen;
+    x.preset=p;
+    if(!x.naam||x.naam==="Basisscenario"||names.includes(x.naam)) x.naam=d.naam;
+    if(!x.omschrijving||oms.includes(x.omschrijving)) x.omschrijving=d.omschrijving;
+    ui.scen=i;}
+  markDirty("s1");touch();renderMain();renderNav();
+}
+function onClick(e){
+  const b=e.target.closest("[data-act]");
+  if(!b){if(!e.target.closest("#pop")) closePop();return;}
+  const a=b.dataset.act;
+  if(a==="info"){showPop(b,`<b>${esc(TERMS[b.dataset.term][0])}</b><span>${esc(TERMS[b.dataset.term][1])}</span>`,"t:"+b.dataset.term);return;}
+  if(a==="vb"){ui.vb={doc:b.dataset.doc,path:b.dataset.path,text:b.dataset.vb};showPop(b,`<span class="k">Voorbeeld</span><span>${esc(b.dataset.vb)}</span><div><button type="button" class="btn sm pri" data-act="vbuse">Overnemen in het vak</button></div>`,"v:"+b.dataset.path);return;}
+  if(a==="vbdoel"){showPop(b,`<span class="k">Voorbeeld</span><span>${esc(VB.doel)} (${VB.termijn})</span><div><button type="button" class="btn sm pri" data-act="vbdoeluse">Toevoegen als doel</button></div>`,"v:doel");return;}
+  closePop();
+  if(a==="go") go(Number(b.dataset.n));
+  else if(a==="vbuse"&&ui.vb){setP(state[ui.vb.doc],ui.vb.path,ui.vb.text);markDirty(ui.vb.doc);touch();renderMain();renderNav();}
+  else if(a==="vbdoeluse"){const d=state.s1.doelen,e0=d.find(x=>!x.tekst);if(e0){e0.tekst=VB.doel;e0.termijn=VB.termijn;}else d.push({id:uid(),tekst:VB.doel,termijn:VB.termijn});markDirty("s1");touch();renderMain();renderNav();}
+  else if(a==="role"){ui.role=b.dataset.role;try{localStorage.setItem(LS+"-rol",ui.role);}catch(x){}render();}
+  else if(a==="sessie") toggleSessie();
+  else if(a==="sug"){const d=DESTEP.find(x=>x[0]===b.dataset.cat),p=d[3][Number(b.dataset.j)];state.s2.factoren.push({id:uid(),cat:d[0],tekst:p[0],impact:"midden",soort:p[1]});markDirty("s2");touch();renderMain();renderNav();}
+  else if(a==="add"){const [doc,path,item]=NEW[b.dataset.kind](b);getP(state[doc],path).push(item);markDirty(doc);touch();renderMain();renderNav();
+    const rows=document.querySelectorAll(`[data-doc="${doc}"][data-path^="${path}.${getP(state[doc],path).length-1}."]`);if(rows[0]) rows[0].focus();}
+  else if(a==="del"){
+    if(!b.classList.contains("armed")){b.classList.add("armed");b.dataset.old=b.textContent;b.textContent="Zeker weten?";setTimeout(()=>{if(b.isConnected){b.classList.remove("armed");b.textContent=b.dataset.old;}},3500);return;}
+    getP(state[b.dataset.doc],b.dataset.path).splice(Number(b.dataset.i),1);markDirty(b.dataset.doc);ui.merge=[];renderMain();renderNav();}
+  else if(a==="scen"){ui.scen=Number(b.dataset.i);renderMain();}
+  else if(a==="scendel"){
+    if(!b.classList.contains("armed")){b.classList.add("armed");b.textContent="Zeker weten? Klik nogmaals";return;}
+    state.s1.scenarios.splice(1,1);ui.scen=0;ui.notice="";markDirty("s1");renderMain();}
+  else if(a==="opm"){const t=document.getElementById("opm-tekst");if(!t||!t.value.trim()){if(t) t.focus();return;}
+    state["s"+ui.step]._opm.push({id:uid(),type:b.dataset.type,tekst:t.value.trim(),datum:new Date().toLocaleDateString("nl-NL"),af:false});markDirty("s"+ui.step);renderMain();}
+  else if(a==="merge2"){const t=document.getElementById("mw-"+b.dataset.id);if(t){ui.merge=[t.value,b.dataset.id];doMerge();}}
+  else if(a==="meldweg"){state.meta.voorbeeld=false;markDirty("meta");renderMain();}
+  else if(a==="sec"){ui.sec[ui.step]=Number(b.dataset.i);renderMain();const w=document.querySelector("#main .work");if(w&&w.getBoundingClientRect().top<0) w.scrollIntoView();}
+  else if(a==="secall"){ui.all=!ui.all;renderMain();}
+  else if(a==="amb"){ui.sec[1]=0;go(1);}
+  else if(a==="lvl"){setGap(b.dataset.key,b.dataset.f,b.dataset.v);renderMain();renderNav();}
+  else if(a==="gsel"){setGap(b.dataset.key,"sel");renderMain();renderNav();}
+  else if(a==="todo"){go(Number(b.dataset.n));}
+  else if(a==="grp"){ui.grp=b.dataset.id;renderMain();}
+  else if(a==="scen7"){ui.scen7=Number(b.dataset.i);renderMain();}
+  else if(a==="csvdl") csvDownload();
+  else if(a==="bkdl") backupDownload();
+  else if(a==="csvcopy"){const t=document.getElementById("csvtext");if(t&&navigator.clipboard) navigator.clipboard.writeText(t.value).then(()=>{b.textContent="Gekopieerd";}).catch(()=>{t.select();});else if(t) t.select();}
+  else if(a==="csvpaste"){const t=document.getElementById("csvtext");if(t) importCSV(t.value);}
+}
+function doMerge(){
+  const g=state.fg.groepen,sel=g.filter(x=>ui.merge.includes(x.id));if(sel.length<2) return;
+  const rn={"":0,makkelijk:1,gaatwel:2,lastig:3,zeerlastig:4},rs={"":0,makkelijker:1,gelijk:2,lastiger:3};
+  const tot=sel.reduce((s,x)=>s+(Number(x.aantal)||0),0);
+  const m={id:uid(),naam:sel.map(x=>x.naam||"naamloos").join(" en "),segment:sel[0].segment,
+    schaars:sel.every(x=>x.schaars==null)?null:sel.some(isSchaars),aantal:tot?String(tot):"",
+    nu:sel.map(x=>x.nu||"").sort((a,b)=>rn[b]-rn[a])[0],straks:sel.map(x=>x.straks||"").sort((a,b)=>rs[b]-rs[a])[0]};
+  mergeData(sel,m.id);
+  const at=g.indexOf(sel[0]);
+  state.fg.groepen=g.filter(x=>!ui.merge.includes(x.id));state.fg.groepen.splice(at,0,m);
+  ui.merge=[];ui.notice=`Samengevoegd tot "${m.naam}". Pas de naam gerust aan.`;markDirty("fg");touch();
+  if(typeof document!=="undefined"){renderMain();renderNav();}
+}
+function onInput(e){
+  const el=e.target;
+  if(el.dataset.path){
+    const doc=el.dataset.doc;setP(state[doc],el.dataset.path,el.type==="checkbox"?el.checked:el.value);
+    markDirty(doc);if(doc!=="meta") touch();refreshDerived();
+  }
+}
+function onChange(e){
+  const el=e.target;
+  if(el.dataset.bk){const f=el.files&&el.files[0];if(f){const r=new FileReader();r.onload=()=>{backupImport(String(r.result||""));el.value="";};r.readAsText(f);}}
+  else if(el.dataset.csv){const f=el.files&&el.files[0];if(f){const r=new FileReader();r.onload=()=>importCSV(String(r.result||""));r.onerror=()=>{ui.csvMsg=["bad","Het bestand kon niet worden gelezen."];renderMain();};r.readAsText(f);}}
+  else if(el.dataset.path){if(el.dataset.doc==="fg"&&(el.tagName==="SELECT")){renderMain();renderNav();}
+    else if(el.dataset.doc==="fg"&&ui.step===4&&el.dataset.path.endsWith(".aantal")) setTimeout(()=>{const id=document.activeElement&&document.activeElement.id;renderMain();const x=id&&document.getElementById(id);if(x) x.focus();},0);
+    else if(el.dataset.doc==="s5"&&el.dataset.path.endsWith(".aantal")) setTimeout(()=>{const id=document.activeElement&&document.activeElement.id;renderMain();const x=id&&document.getElementById(id);if(x) x.focus();},0);
+    else if(el.dataset.doc==="s7"&&el.dataset.path.startsWith("vraag.")) setTimeout(()=>{const id=document.activeElement&&document.activeElement.id;renderMain();const x=id&&document.getElementById(id);if(x) x.focus();},0);}
+  else if(el.dataset.scensel) pickScen(Number(el.dataset.scensel),el.value);
+  else if(el.dataset.status){state["s"+ui.step]._status=el.value;markDirty("s"+ui.step);renderMain();renderNav();}
+  else if(el.dataset.aanzet){state["s"+ui.step]._aanzet=el.value;markDirty("s"+ui.step);renderMain();renderNav();}
+  else if(el.dataset.opmaf){state["s"+ui.step]._opm[Number(el.dataset.opmaf)].af=el.checked;markDirty("s"+ui.step);renderMain();}
+  else if(el.dataset.merge){const id=el.dataset.merge;ui.merge=el.checked?[...ui.merge,id]:ui.merge.filter(x=>x!==id);ui.notice="";renderMain();}
+  else if(el.dataset.schaars){state.fg.groepen[Number(el.dataset.schaars)].schaars=el.value==="auto"?null:el.value==="ja";markDirty("fg");touch();renderMain();renderNav();}
+}
+function showPop(b,html,key){
+  const p=document.getElementById("pop");
+  if(!p.hidden&&p.dataset.for===key){closePop();return;}
+  p.innerHTML=html;p.dataset.for=key;p.hidden=false;
+  const r=b.getBoundingClientRect(),w=Math.min(340,window.innerWidth-24);
+  p.style.width=w+"px";p.style.left=Math.max(12,Math.min(r.left-20,window.innerWidth-w-12))+"px";
+  const below=r.bottom+8;p.style.top=(below+p.offsetHeight>window.innerHeight?Math.max(8,r.top-p.offsetHeight-8):below)+"px";
+}
+function closePop(){const p=document.getElementById("pop");if(p){p.hidden=true;p.dataset.for="";}}
+function toggleSessie(){
+  const on=!document.body.classList.contains("sessie");
+  document.body.classList.toggle("sessie",on);try{localStorage.setItem(LS+"-sessie",on?"1":"");}catch(x){}renderMain();
+  try{
+    if(on&&document.documentElement.requestFullscreen){ui.fs=true;document.documentElement.requestFullscreen().catch(()=>{ui.fs=false;});}
+    else if(!on&&document.fullscreenElement) document.exitFullscreen().catch(()=>{});
+  }catch(x){ui.fs=false;}
+}
+function boot(){
+  try{const r=localStorage.getItem(LS+"-rol");if(r==="lg"||r==="hrbp") ui.role=r;}catch(e){}
+  const m=/^#stap-(\d)$/.exec(location.hash);if(m) ui.step=Number(m[1]);else if(location.hash==="#overzicht") ui.step=-1;
+  try{if(localStorage.getItem(LS+"-sessie")==="1") document.body.classList.add("sessie");}catch(e){}
+  document.addEventListener("toggle",e=>{const k=e.target&&e.target.dataset&&e.target.dataset.as;if(k) ui.as[k]=e.target.open;},true);
+  document.addEventListener("keydown",e=>{if((e.key==="Enter"||e.key===" ")&&e.target.matches&&e.target.matches('section[data-act="go"]')){e.preventDefault();go(Number(e.target.dataset.n));}});
+  document.addEventListener("click",onClick);
+  document.addEventListener("input",onInput);
+  document.addEventListener("change",onChange);
+  document.addEventListener("focusout",()=>setTimeout(()=>{if(ui.pending&&!typing()) render();},50));
+  document.addEventListener("keydown",e=>{if(e.key==="Escape") closePop();});
+  window.addEventListener("scroll",closePop,{passive:true});
+  document.addEventListener("fullscreenchange",()=>{if(!document.fullscreenElement&&ui.fs){ui.fs=false;document.body.classList.remove("sessie");}});
+  window.addEventListener("hashchange",()=>{const h=/^#stap-(\d)$/.exec(location.hash);if(h&&Number(h[1])!==ui.step) go(Number(h[1]));});
+  render();initStore();
+}
+if(typeof document!=="undefined") boot();
+if(typeof module!=="undefined") module.exports={prioHTML,overviewHTML,KPI,calc,gaps,csvTemplate,importCSV,g5,g6,state:()=>state,ui,defaults,merged,FORM,DER,SUM,asideHTML,stepMeta,doMerge,pickScen};
+</script>
+</body>
+</html>
